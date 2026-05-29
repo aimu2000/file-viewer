@@ -1,6 +1,6 @@
 {
   "name": "@flyfish-group/file-viewer3",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "private": false,
   "type": "module",
   "packageManager": "pnpm@11.0.9",
@@ -40,7 +40,7 @@
     "type-check:adapters": "pnpm --filter @flyfish-group/file-viewer-web type-check && pnpm --filter @flyfish-group/file-viewer-react type-check",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "build-lib-only": "vite build --mode lib",
+    "build-lib-only": "vite build --mode lib && node scripts/fix-lib-css.mjs && node scripts/fix-lib-workers.mjs",
     "build:viewer-assets": "pnpm build-only && node scripts/sync-viewer-assets.mjs",
     "build:adapters": "pnpm build:viewer-assets && pnpm --filter @flyfish-group/file-viewer-web build && pnpm --filter @flyfish-group/file-viewer-react build",
     "dev:adapters": "pnpm --filter @flyfish-group/file-viewer-demo dev",
