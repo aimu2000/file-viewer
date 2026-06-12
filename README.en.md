@@ -56,7 +56,7 @@ pnpm exec file-viewer-copy-assets ./public/file-viewer
 ## Why Use It
 
 - **Pure frontend and serverless.** File parsing and rendering happen in the browser. You do not need Office Server, a LibreOffice daemon, or a document conversion backend.
-- **Broad format coverage.** The current release maps 149 extensions across 20 preview pipelines, including Office, PDF, OFD, Typst, archives, email, EDA files, CAD, 3D models, Excalidraw, draw.io, EPUB, UMD, Markdown, images, audio, video, and source code.
+- **Broad format coverage.** The current release maps 152 extensions across 20 preview pipelines, including Office, PDF, OFD, Typst, archives, email, EDA files, CAD, 3D models, Excalidraw, draw.io, EPUB, UMD, Markdown, images, audio, video, and source code.
 - **Lazy loaded renderers.** Heavy PDF, Office, OFD, Typst, archive, email, CAD, 3D, ebook, Markdown, and code highlighting dependencies are loaded only when the file type needs them.
 - **Production-ready operations.** The viewer includes original file download, full rendered printing, rendered HTML export, watermark options, theme options, lifecycle hooks, iframe events, and before-operation guards for permission checks.
 - **Better document reading.** Word and PDF keep a grey workspace, white paper surface, centered reading, width fitting, navigation, zoom, rotation, and complete print / HTML export paths.

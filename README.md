@@ -45,7 +45,7 @@ Vue3、Vue2、React 和纯 JS tarball 都会随公开成品仓库一起生成。
 ## 为什么值得接入
 
 - **纯前端 Serverless。** 文档解析和展示全部在浏览器内完成，部署简单，不依赖 Office 服务端、LibreOffice 守护进程或额外转码链路。
-- **格式覆盖完整。** 当前内置 149 个扩展名映射，覆盖 Word、Excel、PowerPoint、PDF、OFD、Typst、压缩包、邮件、OLB/DRA、CAD、3D 模型、Excalidraw、draw.io、EPUB、UMD、Markdown、图片、音频、代码/文本和 MP4，能覆盖绝大多数业务附件场景。
+- **格式覆盖完整。** 当前内置 152 个扩展名映射，覆盖 Word、Excel、PowerPoint、PDF、OFD、Typst、压缩包、邮件、OLB/DRA、CAD、3D 模型、Excalidraw、draw.io、EPUB、UMD、Markdown、图片、音频、代码/文本和 MP4，能覆盖绝大多数业务附件场景。
 - **按需异步加载。** PDF、OFD、Typst、压缩包、邮件、OLB/DRA、CAD、3D 模型、绘图、Office、EPUB、UMD、Markdown 和代码高亮渲染器都按需加载，重型解析依赖不会进入其他格式的首屏路径。
 - **预览器操作完整。** 内置下载原文件、打印完整渲染结果、导出渲染后 HTML、水印开关、水印 options、主题 options、搜索高亮、上一个 / 下一个命中、行级定位和 AI 友好文本切片；PDF 使用 PDF.js 原生搜索，Word / Markdown / 代码等文本类格式使用通用 DOM 搜索，避免污染 PDF 文本层、canvas、iframe 等特殊渲染结构；`theme` 支持 `light`、`dark`、`system`，默认跟随系统，浅色业务 UI 可显式锁定 `light`；打印按钮会按当前格式和渲染链路动态显隐，Word / PDF 使用专属完整页导出适配器，不依赖当前视口，适合合同、归档和审批类场景。
 - **集成控制更完整。** 提供加载/卸载生命周期钩子、iframe 事件回传和按钮前置校验机制，下载、打印、导出前可以接入权限验证、审计确认或业务二次弹窗。
@@ -60,7 +60,7 @@ Vue3、Vue2、React 和纯 JS tarball 都会随公开成品仓库一起生成。
 
 ## 支持格式
 
-当前版本内置 149 个扩展名映射，覆盖 20 条预览链路。
+当前版本内置 152 个扩展名映射，覆盖 20 条预览链路。
 
 | 类别 | 扩展名 | 当前表现 | 适合场景 |
 | --- | --- | --- | --- |
