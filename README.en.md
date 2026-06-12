@@ -23,18 +23,18 @@ The viewer does not require a backend conversion service. It is designed for OA 
 
 | Stack | Package | Version | Recommended branch | Notes |
 | --- | --- | --- | --- | --- |
-| Vue 3 | `@flyfish-group/file-viewer3` | `1.0.22` | `v3` | Recommended version and the runtime baseline for React / vanilla JS iframe integrations |
-| Vue 2.7 | `@flyfish-group/file-viewer` | `1.0.22` | `main` | Vue 2 compatible package with the same format coverage and API semantics |
-| React 17 / 18 / 19 | `@flyfish-group/file-viewer-react` | `1.0.22` | adapter package | iframe component that loads `/file-viewer/index.html` by default |
-| Vanilla JavaScript | `@flyfish-group/file-viewer-web` | `1.0.22` | adapter package | iframe helpers and static viewer asset copier |
+| Vue 3 | `@flyfish-group/file-viewer3` | `1.0.23` | `v3` | Recommended version and the runtime baseline for React / vanilla JS iframe integrations |
+| Vue 2.7 | `@flyfish-group/file-viewer` | `1.0.23` | `main` | Vue 2 compatible package with the same format coverage and API semantics |
+| React 17 / 18 / 19 | `@flyfish-group/file-viewer-react` | `1.0.23` | adapter package | iframe component that loads `/file-viewer/index.html` by default |
+| Vanilla JavaScript | `@flyfish-group/file-viewer-web` | `1.0.23` | adapter package | iframe helpers and static viewer asset copier |
 
 For intranet or offline environments, this artifact repository also ships npm tarballs under `artifacts/`:
 
 ```bash
-npm install ./artifacts/flyfish-group-file-viewer3-1.0.22.tgz
-npm install ./artifacts/flyfish-group-file-viewer-1.0.22.tgz
-npm install ./artifacts/flyfish-group-file-viewer-web-1.0.22.tgz
-npm install ./artifacts/flyfish-group-file-viewer-react-1.0.22.tgz
+npm install ./artifacts/flyfish-group-file-viewer3-1.0.23.tgz
+npm install ./artifacts/flyfish-group-file-viewer-1.0.23.tgz
+npm install ./artifacts/flyfish-group-file-viewer-web-1.0.23.tgz
+npm install ./artifacts/flyfish-group-file-viewer-react-1.0.23.tgz
 ```
 
 When installing the React tarball offline, install the same-version web tarball first because the React package depends on `@flyfish-group/file-viewer-web`.
@@ -83,8 +83,7 @@ The viewer is organized around preview pipelines rather than one-off file extens
 | Archives | `zip`, `zipx`, `7z`, `rar`, `tar`, `gz`, `tgz`, `bz2`, `xz`, `zst`, `cab`, `iso`, `jar`, `apk`, `cbz`, `cbr`, and more | `libarchive.js` Worker, directory listing, lazy extraction, IndexedDB cache | Attachment packages and internal document bundles |
 | Email | `eml`, `msg` | `postal-mime` for EML, `@kenjiuno/msgreader` for MSG, headers, HTML/text body, attachment preview | Email archives and support tickets |
 | EDA | `olb`, `dra` | CFB-based OrCAD / Allegro structure inspection, trees, symbols, footprints, padstack candidates, properties, strings, diagnostics | Component libraries and EDA attachments |
-| CAD | `dxf` | `@cadview/core` 2D CAD preview with pan, zoom, and layer controls | Engineering drawings |
-| DWG compatibility | `dwg` | Detects renamed DXF when possible; extracts embedded preview for true DWG and explains conversion boundaries | Upload compatibility for CAD workflows |
+| CAD | `dwg`, `dxf`, `dwf`, `dwfx`, `xps` | `@flyfish-dev/cad-viewer` preview. DWG uses Worker + LibreDWG WASM, DXF uses a JS parser, and DWF/DWFx/XPS use the native `dwf-viewer` path for W2D/W3D/XPS graphics | Engineering drawings and AutoCAD archives |
 | 3D models | `glb`, `gltf`, `obj`, `stl`, `ply`, `fbx`, `dae`, `3ds`, `3mf`, `amf`, `usd`, `usda`, `usdc`, `usdz`, `kmz`, `pcd`, `wrl`, `vrml`, `xyz`, `vtk`, `vtp`, `step`, `stp`, `iges`, `igs`, `ifc`, `3dm` | Three.js interactive preview, with conversion guidance for heavy CAD/BIM kernels | 3D assets, point clouds, design models |
 | Excalidraw | `excalidraw` | Official `@excalidraw/excalidraw` restore and `exportToSvg` read-only rendering | Whiteboard sketches and product diagrams |
 | draw.io | `drawio`, `dio` | Official diagrams.net `GraphViewer` | Flowcharts and architecture diagrams |
@@ -344,7 +343,7 @@ The artifact repository also contains:
 The project provides a static nginx runtime image and build scripts for `linux/amd64` and `linux/arm64`. A typical deployment can serve the demo and comparison page directly:
 
 ```bash
-docker run --rm -p 8080:80 flyfishdev/file-viewer:1.0.22
+docker run --rm -p 8080:80 flyfishdev/file-viewer:1.0.23
 ```
 
 Then open:
