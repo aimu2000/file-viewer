@@ -332,17 +332,17 @@ npm publish --access public
 
 如果 npm 账号启用了 MFA，请使用交互式终端完成浏览器确认后再等待发布结果。
 
-公开 GitHub / Gitee 成品仓库只提交可直接使用的构建产物、示例、文档和 npm tarball，不提交当前源码目录。需要源码、二开包或商业自助开通的用户，可以前往 [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)，付费 4.99 后自助开通。
+公开 GitHub / Gitee 成品仓库只提交可直接使用的构建产物、Demo、文档站、示例文件和 npm tarball，不提交当前源码目录。为避免 Gitee 因历史二进制膨胀超过 1GB，同步 Gitee 时会使用最新完整成品快照的干净历史，而不是把多轮构建产物历史全部带过去。需要源码、二开包或商业自助开通的用户，可以前往 [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)，付费 4.99 后自助开通。
 
 ## 文档导航
 
-- [文档导览](docs/guide/index.md)
-- [快速开始](docs/guide/quickstart.md)
-- [Demo 说明](docs/guide/demo.md)
-- [组件用法](docs/guide/usage.md)
-- [支持格式](docs/guide/formats.md)
-- [本地开发与打包](docs/guide/development.md)
-- [Docker 部署](docs/guide/docker.md)
+- [文档导览](https://doc.flyfish.dev/guide/)
+- [快速开始](https://doc.flyfish.dev/guide/quickstart)
+- [Demo 说明](https://doc.flyfish.dev/guide/demo)
+- [组件用法](https://doc.flyfish.dev/guide/usage)
+- [支持格式](https://doc.flyfish.dev/guide/formats)
+- [本地开发与打包](https://doc.flyfish.dev/guide/development)
+- [Docker 部署](https://doc.flyfish.dev/guide/docker)
 
 ## 开源说明
 

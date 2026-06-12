@@ -357,7 +357,7 @@ If you build the image yourself, use the provided `Dockerfile` and keep the stat
 
 ## Public Artifacts vs Source Code
 
-This public repository is for artifact delivery. It contains minified build output, static demo sites, sample files, documentation output, and npm tarballs. It intentionally does not include the private source tree.
+This public repository is for artifact delivery. It contains minified build output, static demo sites, sample files, documentation output, and npm tarballs. It intentionally does not include the private source tree. The Gitee mirror is synchronized from a clean latest-artifact snapshot when needed, so domestic users can clone the full expanded artifact repository without inheriting oversized binary release history.
 
 If you need source code access, second development resources, or commercial customization, use the self-service source access portal:
 

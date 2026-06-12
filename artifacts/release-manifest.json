@@ -1,9 +1,9 @@
 {
   "version": "1.0.23",
   "package": "@flyfish-group/file-viewer3",
-  "generatedAt": "2026-06-12T06:52:21.874Z",
+  "generatedAt": "2026-06-12T07:22:46.691Z",
   "sourceBranch": "v3",
-  "sourceCommit": "92a192d",
+  "sourceCommit": "643d1fd",
   "adapterPackages": {
     "@flyfish-group/file-viewer-web": "1.0.23",
     "@flyfish-group/file-viewer-react": "1.0.23"
@@ -15,6 +15,7 @@
   },
   "publicRepo": "/Users/wangyu/IdeaProjects/file-viewer-public",
   "artifactOnly": true,
+  "layout": "expanded",
   "allowedRoots": [
     "README.md",
     "README.en.md",
@@ -26,5 +27,7 @@
     "docs",
     "example",
     "artifacts"
-  ]
+  ],
+  "archiveOnlyRoots": [],
+  "slimMode": false
 }
