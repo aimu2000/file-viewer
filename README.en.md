@@ -24,18 +24,18 @@ The viewer does not require a backend conversion service. It is designed for OA 
 
 | Stack | Package | Version | Recommended branch | Notes |
 | --- | --- | --- | --- | --- |
-| Vue 3 | `@flyfish-group/file-viewer3` | `1.0.24` | `v3` | Recommended version and the runtime baseline for React / vanilla JS iframe integrations |
-| Vue 2.7 | `@flyfish-group/file-viewer` | `1.0.24` | `main` | Vue 2 compatible package with the same format coverage and API semantics |
-| React 17 / 18 / 19 | `@flyfish-group/file-viewer-react` | `1.0.24` | adapter package | iframe component that loads `/file-viewer/index.html` by default |
-| Vanilla JavaScript | `@flyfish-group/file-viewer-web` | `1.0.24` | adapter package | iframe helpers and static viewer asset copier |
+| Vue 3 | `@flyfish-group/file-viewer3` | `1.0.25` | `v3` | Recommended version and the runtime baseline for React / vanilla JS iframe integrations |
+| Vue 2.7 | `@flyfish-group/file-viewer` | `1.0.25` | `main` | Vue 2 compatible package with the same format coverage and API semantics |
+| React 17 / 18 / 19 | `@flyfish-group/file-viewer-react` | `1.0.25` | adapter package | iframe component that loads `/file-viewer/index.html` by default |
+| Vanilla JavaScript | `@flyfish-group/file-viewer-web` | `1.0.25` | adapter package | iframe helpers and static viewer asset copier |
 
 For intranet or offline environments, this artifact repository also ships npm tarballs under `artifacts/`:
 
 ```bash
-npm install ./artifacts/flyfish-group-file-viewer3-1.0.24.tgz
-npm install ./artifacts/flyfish-group-file-viewer-1.0.24.tgz
-npm install ./artifacts/flyfish-group-file-viewer-web-1.0.24.tgz
-npm install ./artifacts/flyfish-group-file-viewer-react-1.0.24.tgz
+npm install ./artifacts/flyfish-group-file-viewer3-1.0.25.tgz
+npm install ./artifacts/flyfish-group-file-viewer-1.0.25.tgz
+npm install ./artifacts/flyfish-group-file-viewer-web-1.0.25.tgz
+npm install ./artifacts/flyfish-group-file-viewer-react-1.0.25.tgz
 ```
 
 When installing the React tarball offline, install the same-version web tarball first because the React package depends on `@flyfish-group/file-viewer-web`.
@@ -74,6 +74,7 @@ GitHub Releases provide all distribution downloads:
 - **Lazy loaded renderers.** Heavy PDF, Office, OFD, Typst, archive, email, CAD, 3D, ebook, Markdown, and code highlighting dependencies are loaded only when the file type needs them.
 - **Production-ready operations.** The viewer includes original file download, full rendered printing, rendered HTML export, watermark options, theme options, lifecycle hooks, iframe events, and before-operation guards for permission checks.
 - **Better document reading.** Word and PDF keep a grey workspace, white paper surface, centered reading, width fitting, navigation, zoom, rotation, and complete print / HTML export paths.
+- **Renderer-native zoom controls.** The common toolbar can zoom in, zoom out, and reset through per-format providers for PDF, Word, PPTX, virtual Excel tables, images, CAD, OFD, Typst, Markdown, code, and drawing files, avoiding fragile host-level CSS transforms.
 - **Controlled theming.** `options.theme` supports `light`, `dark`, and `system`. Light business UIs can lock the viewer to `light` even when the operating system is in dark mode.
 - **PDF toolbar ergonomics.** `toolbar.position` supports `auto`, `top`, and `bottom-right`. In `auto` mode, PDF uses a bottom-right floating operation bar to avoid duplicating the PDF navigation toolbar.
 - **Demo and comparison views.** The repository includes the main demo and a standalone `/compare.html` page for side-by-side document comparison.
@@ -241,7 +242,7 @@ npm install @flyfish-group/file-viewer-web
     options: {
       theme: 'light',
       toolbar: { position: 'bottom-right' },
-      archive: { workerUrl: '/file-viewer/vendor/libarchive/worker-bundle.js', cache: true }
+      archive: { cache: true, workerTimeoutMs: 30000 }
     },
     onEvent(event) {
       console.log(event.type, event.event, event.payload)
@@ -295,10 +296,13 @@ The viewer validates `event.origin === from` and only accepts `Blob` messages fr
 | Option | Description |
 | --- | --- |
 | `theme` | `light`, `dark`, or `system`. Default is `system`. Use `light` when embedding in a fixed light UI. |
-| `toolbar` | `true`, `false`, or an object that controls download, print, HTML export, and toolbar position. |
+| `toolbar` | `true`, `false`, or an object that controls download, print, HTML export, unified zoom controls, and toolbar position. |
+| `toolbar.zoom` | Shows or hides the built-in zoom group. The actual capability is provided by each renderer, so unsupported or interaction-sensitive formats are not force-scaled. |
 | `toolbar.position` | `auto`, `top`, or `bottom-right`. Default `auto` floats the operation bar at bottom right for PDF and keeps other formats at top. |
 | `watermark` | Text or image watermark configuration. Watermark participates in preview, print, and exported HTML. |
-| `archive.workerUrl` | Custom `libarchive.js` Worker URL for private deployment. |
+| `archive.workerUrl` | Custom `libarchive.js` Worker URL for special private deployments. By default the viewer tries `vendor/libarchive/worker-bundle.js` under the current base and falls back to the bundled Worker automatically. |
+| `archive.wasmUrl` | Custom libarchive WASM URL used by the bundled Worker fallback. |
+| `archive.workerTimeoutMs` | Worker initialization, encryption check, and directory-read timeout. Defaults to 30000ms and then falls back to ZIP/TAR/GZIP compatibility mode when possible. |
 | `archive.cache` | Enables IndexedDB cache for extracted archive entries. |
 | `archive.maxArchiveSize` | Maximum archive size allowed for directory parsing. |
 | `archive.maxEntryPreviewSize` | Maximum extracted entry size allowed for online preview. |
@@ -306,7 +310,7 @@ The viewer validates `event.origin === from` and only accepts `Blob` messages fr
 | `pdf.rangeChunkSize` | PDF.js Range request chunk size. |
 | `typst.compilerWasmUrl` | Custom Typst compiler WASM URL. |
 | `hooks` | Vue component lifecycle hooks for load and unload events. |
-| `beforeOperation` | Vue component guard before download, print, or HTML export. Return `false` to cancel. |
+| `beforeOperation` | Vue component guard before download, print, HTML export, or zoom actions. Return `false` to cancel. |
 
 React, vanilla JavaScript, and iframe integrations cannot serialize function hooks into query parameters. Use `onViewerEvent` or `onEvent` to receive lifecycle and operation events from the iframe.
 
@@ -334,8 +338,8 @@ For npm-based iframe integrations, make sure your final static output contains:
 ```txt
 file-viewer/index.html
 file-viewer/assets/*
-file-viewer/vendor/libarchive/worker-bundle.js
-file-viewer/vendor/libarchive/libarchive.wasm
+file-viewer/vendor/libarchive/worker-bundle.js  # optional unless you want a static Worker path
+file-viewer/vendor/libarchive/libarchive.wasm   # keep next to worker-bundle.js when using archive.workerUrl
 ```
 
 The artifact repository also contains:
@@ -357,7 +361,7 @@ The artifact repository also contains:
 The project provides a static nginx runtime image and build scripts for `linux/amd64` and `linux/arm64`. A typical deployment can serve the demo and comparison page directly:
 
 ```bash
-docker run --rm -p 8080:80 flyfishdev/file-viewer:1.0.24
+docker run --rm -p 8080:80 flyfishdev/file-viewer:1.0.25
 ```
 
 Then open:

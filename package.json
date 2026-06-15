@@ -1,6 +1,6 @@
 {
   "name": "@flyfish-group/file-viewer3",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "private": false,
   "type": "module",
   "packageManager": "pnpm@11.0.9",
@@ -84,7 +84,7 @@
   "types": "dist/src/package/index.d.ts",
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.1",
-    "@flyfish-dev/cad-viewer": "^0.6.2",
+    "@flyfish-dev/cad-viewer": "^0.6.4",
     "@kenjiuno/msgreader": "^1.28.0",
     "@lucide/vue": "^1.17.0",
     "@myriaddreamin/typst-ts-renderer": "0.7.0",
