@@ -348,7 +348,7 @@ npm publish --access public
 
 如果 npm 账号启用了 MFA，请使用交互式终端完成浏览器确认后再等待发布结果。
 
-公开 GitHub / Gitee 成品仓库只提交可直接使用的构建产物、Demo、文档站、示例文件和 npm tarball，不提交当前源码目录。为避免 Gitee 因历史二进制膨胀超过 1GB，同步 Gitee 时会使用最新完整成品快照的干净历史，而不是把多轮构建产物历史全部带过去。需要源码、二开包或商业自助开通的用户，可以前往 [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)，付费 4.99 后自助开通。
+公开 GitHub / Gitee 成品仓库只提交可直接使用的构建产物、Demo、文档站、示例文件和 npm tarball，不提交当前源码目录。为避免 Gitee 因历史二进制膨胀超过 1GB，同步 Gitee 时会使用最新完整成品快照的干净历史，而不是把多轮构建产物历史全部带过去。需要源码、二开包或商业自助开通的用户，可以前往 [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)，请我们喝杯柠檬水后按页面提示自助开通。
 
 ## 文档导航
 

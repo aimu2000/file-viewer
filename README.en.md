@@ -382,7 +382,7 @@ If you need source code access, second development resources, or commercial cust
 
 [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)
 
-The self-service source access price is 4.99. It is designed to make legitimate second development and commercial evaluation straightforward without mixing source delivery into the public artifact repository.
+Source access can be opened from the shop page with a small lemonade-level support for the maintainers. This keeps legitimate second development and commercial evaluation straightforward without mixing source delivery into the public artifact repository.
 
 ## License and Attribution
 
