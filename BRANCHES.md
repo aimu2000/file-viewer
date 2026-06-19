@@ -14,6 +14,15 @@ The public `flyfish-dev/file-viewer` repository is the open-source main reposito
 
 The private Gitea repository remains the complete aggregate workspace with branch cutover history, release automation, internal integration scripts, and priority support context. Sponsorship through the shop is for maintainer support and priority help while the public repositories remain open source.
 
+Before replacing remote branch roles, maintainers should prepare and inspect dry-run snapshots from the private aggregate workspace:
+
+```bash
+pnpm branch:cutover:prepare
+pnpm branch:cutover:verify
+```
+
+The snapshots are written to `.release/branch-cutover/main-core`, `.release/branch-cutover/v2-vue2.7-component`, and `.release/branch-cutover/v3-vue3-component` inside that private workspace. They contain standalone package trees plus `BRANCH_ROLE.md` and `branch-cutover-manifest.json`, so maintainers can verify the exact future `main`, `v2`, and `v3` contents before pushing any branch rewrite.
+
 Run the source-boundary gate before release work:
 
 ```bash

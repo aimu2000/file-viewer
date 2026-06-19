@@ -53,6 +53,7 @@
 - [x] 正式在线 Demo 已迁移到 `apps/viewer-demo`，组件接入示例保留在 `apps/component-demo`，`packages/` 下只保留 core、标准组件包和兼容 alias。
 - [ ] 当前 `v3` 分支提升为新的 `main` 基线，并在远端完成分支角色切换。
 - [ ] 新的 Vue3 标准组件包线提交到新的 `v3` 分支，并保持 `@file-viewer/vue3`、`@flyfish-group/file-viewer3`、`file-viewer3` 三个发布入口一致。
+- [x] 分支切换预演已标准化为 `pnpm branch:cutover:prepare` / `pnpm branch:cutover:verify`，会生成 `.release/branch-cutover/main-core`、`.release/branch-cutover/v2-vue2.7-component`、`.release/branch-cutover/v3-vue3-component` 供正式替换远端分支前审计。
 - [x] `packages/components/vue3`、`packages/components/vue2.7`、`packages/components/vue2.6`、`packages/components/react`、`packages/components/react-legacy`、`packages/components/web`、`packages/components/jquery`、`packages/components/svelte` 都只保留对应生态组件职责，不依赖其他标准组件包。
 - [x] `packages/compat/vue2.7`、`packages/compat/vue3-scoped`、`packages/compat/vue3-unscoped`、`packages/compat/web`、`packages/compat/react` 与根包只作为历史兼容别名或历史发布入口，不承载新的业务实现。
 - [x] core 与标准组件包的类型边界在 CI 中通过 `pnpm verify:core-api`、`pnpm verify:wrapper-api`、`pnpm verify:wrapper-options` 固化。
@@ -126,6 +127,7 @@
 - [ ] 私有 Gitea `main` 分支提升为 pure TypeScript core 主线。
 - [ ] 旧 `main` 分支迁移为 `v2`，对应 Vue2.7 标准组件包。
 - [ ] 当前 `v3` 基线提升为新的 core `main` 前，完成源码、产物、文档和发布记录审计。
+- [x] 远端分支替换前可以使用 `.release/branch-cutover/` 快照核对 `main` / `v2` / `v3` 的包名、README、license、manifest、历史兼容包和 workspace 依赖边界。
 - [ ] `ecosystem/branch-roles.json`、`ecosystem/wrappers.json`、`README.md`、`README.en.md` 与实际远端分支一致。
 
 ## Phase 4: 标准组件包实现
@@ -227,6 +229,8 @@
 - [x] `pnpm verify:ecosystem-checklist`
 - [x] `pnpm verify:ecosystem-readmes`
 - [x] `pnpm verify:branch-roles`
+- [x] `pnpm branch:cutover:prepare`
+- [x] `pnpm branch:cutover:verify`
 - [x] `pnpm verify:core-api`
 - [x] `pnpm verify:core-framework-neutral`
 - [x] `pnpm verify:wrapper-api`
