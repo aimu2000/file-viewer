@@ -30,11 +30,11 @@
 
 | 分类 | 扩展名 | 渲染链路 | 当前表现 | 更适合的场景 |
 | --- | --- | --- | --- | --- |
-| Word | `docx`、`docm`、`dotx`、`dotm` | `docx-preview` + 可选静态 Worker | 白色纸张显示在灰色页面底中，支持宽度自适应和长文档视觉分页；优先尝试 Worker 内完成解析和 HTML 构建，并按页渐进挂载同一份 docx-preview 结果，Worker 不可用或超时会回退到 docx-preview 原生主线程渲染，模板/宏格式按只读预览处理 | 新生成的 Word 文档、正式公文、Word 模板 |
+| Word | `docx`、`docm`、`dotx`、`dotm` | `docx-preview` + 可选静态 Worker | 白色纸张显示在灰色页面底中，支持宽度自适应；默认使用真实浏览器 DOM 完整渲染以保护目录、制表符、页眉页脚和样式继承，Worker、渐进挂载和长文档视觉分页均为显式 opt-in，模板/宏格式按只读预览处理 | 新生成的 Word 文档、正式公文、Word 模板 |
 | Word | `doc`、`dot` | `msdoc-viewer` | 使用 Word 风格页面容器，页面居中显示在灰色工作台中，增强 CFB 容错和表格布局 | 存量老文档、Word 97-2003 模板、历史附件回溯 |
 | 兼容文档 | `rtf`、`odt` | `rtf.js` / OpenDocument `content.xml` | RTF 走 RTFJS 生成只读 HTML，ODT 读取 ODF 包内正文并套用纸张阅读面 | RTF 富文本、OpenDocument 文本文档 |
-| Excel | `xlsx`、`xltx` | `styled-exceljs` + 可选静态 Worker + `e-virt-table` | 支持虚拟滚动、列宽/行高、合并单元格、常见样式和 workbook drawing 图片；Worker 不可用时自动回退主线程解析；打印按钮按能力隐藏 | 大表格预览、报表、Excel 模板 |
-| Excel 兼容格式 | `xlsm`、`xlsb`、`xls`、`xlt`、`xltm`、`csv`、`ods`、`fods`、`numbers` | `styled-exceljs` + 可选静态 Worker + `e-virt-table` | 统一读取数据、尺寸和可用样式，按浏览器能力渐进还原 | 老表格、跨平台导出的表格 |
+| Excel | `xlsx`、`xltx` | `styled-exceljs` + `e-virt-table` + 可选静态 Worker | 支持虚拟滚动、列宽/行高、合并单元格、常见样式和 workbook drawing 图片；默认主线程解析以避开 Worker 部署兼容问题，静态 Worker 需显式开启；打印按钮按能力隐藏 | 大表格预览、报表、Excel 模板 |
+| Excel 兼容格式 | `xlsm`、`xlsb`、`xls`、`xlt`、`xltm`、`csv`、`ods`、`fods`、`numbers` | `styled-exceljs` + `e-virt-table` + 可选静态 Worker | 统一读取数据、尺寸和可用样式，默认主线程渐进还原，部署环境确认可用时再开启 Worker | 老表格、跨平台导出的表格 |
 | PowerPoint | `pptx`、`pptm`、`potx`、`potm`、`ppsx`、`ppsm`、`odp` | `@aiden0z/pptx-renderer` / OpenDocument 兼容预览 | PPTX 走 core framework-neutral DOM 渲染器，按需加载 slide 渲染链路，支持懒渲染、窗口化列表、统一缩放、打印和导出 HTML；ODP 读取 OpenDocument 幻灯片文本和页面结构 | 汇报材料、说明文档、培训课件、演示模板 |
 | PDF | `pdf` | `pdfjs-dist` | 浏览器端 PDF 渲染，同源 URL 默认渐进读取，服务端支持 Range 时自动分片加载，支持缩放工具栏、页侧边栏/目录树侧边栏切换、宽度自适应、完整打印和导出 HTML | 合同、票据、版式稳定文件 |
 | OFD | `ofd` | `DLTech21/ofd.js` 源码 | 使用浏览器端 OFD 解析和页面渲染，避开 npm dist 授权 wasm 分支 | 电子发票、公文、国产版式归档材料 |
@@ -61,11 +61,11 @@
 ### Word 文档
 
 - `docx`、`docm`、`dotx`、`dotm` 使用 `docx-preview`，适合正文、表格、图片和常规版式较多的现代 Word 文档与模板。当前预览层会恢复白色纸张和灰色页面底，并根据可用宽度自动缩放；宏内容只作为只读文档结构预览，不执行宏。
-- DOCX 默认尝试通过静态 Web Worker 运行 `docx-preview` 的 ZIP/XML 解析和 HTML 构建，主线程按页面分批挂载同一份 docx-preview 结果并处理缩放、打印和导出；静态资源路径特殊时可配置 `options.docx.workerUrl`，遇到严格 CSP、旧浏览器兼容问题、MIME 配置错误或 Worker DOM 兼容边界时，可通过 `options.docx.worker: false` 回退到 docx-preview 原生主线程渲染，也可以用 `options.docx.workerTimeout` 调整默认 15000ms 的自动兜底时间。
+- DOCX 默认使用真实浏览器 DOM 中的 `docx-preview` 完整渲染，优先保证目录、制表符、页眉页脚、字段和样式继承稳定。静态 Worker、分批挂载和超长 section 视觉分页仍保留为显式 opt-in 能力，可通过 `options.docx.worker: true`、`options.docx.progressive: true` 和 `options.docx.visualPagination: true` 开启；私有静态资源路径特殊时再配置 `options.docx.workerUrl`。
 - `doc`、`dot` 使用 `msdoc-viewer`，并额外套用 Word 风格页面容器。构建前会通过包管理器无关的补丁脚本增强 CFB 局部 sector 容错，它不只是“把内容吐出来”，而是尽量保留文档阅读时的页面感。
 - `rtf` 使用 RTFJS 读取富文本结构并生成安全的只读 HTML；`odt` 读取 OpenDocument 包内 `content.xml`，提取正文块并套用纸张阅读面。它们适合跨平台导出文档的快速查看，但复杂页眉页脚、域代码或宏能力仍建议转换为 DOCX/PDF 后验收。
 - Word 打印和导出 HTML 使用独立导出适配器，只带文档页面和必要 Word 样式，不带 Demo 布局、滚动容器和缩放状态，长文档会按完整页序输出。
-- 如果源文档缺少显式分页，`.docx` 预览会在浏览器端补一层视觉分页，避免长文档变成一整条没有纸张边界的内容流。
+- 如果源文档缺少显式分页，且业务确认可以接受预览层拆分超长 section，可显式开启 `options.docx.visualPagination`；默认保持 docx-preview 原始结构，避免复杂目录和样式被二次拆分影响。
 - 如果你的业务能控制导出格式，优先推荐 `docx`；如果你面对的是存量老文档，当前 `.doc` 已经可以作为正式能力对外说明。
 
 <div class="doc-shot">
@@ -82,7 +82,7 @@
 ### 表格类文件
 
 - 表格类文件统一走 `styled-exceljs` 解析和 `e-virt-table` 虚拟渲染，适合需要保留表格结构、合并单元格、workbook drawing 图片和视觉层级的场景。
-- 表格解析默认先尝试静态 Worker，路径为当前部署 base 下的 `vendor/xlsx/sheet.worker.js`；内网静态目录或 CDN 前缀特殊时可通过 `options.spreadsheet.workerUrl` 覆盖，不希望启用 Worker 时可传 `options.spreadsheet.worker: false`。
+- 表格解析默认走主线程同一套 `styled-exceljs` 解析器，避免本地服务器、手机 WebView、MIME 或 CSP 导致 Worker 初始化后卡住。确认部署环境能稳定提供静态 Worker 时，可传 `options.spreadsheet.worker: true`，并按需通过 `options.spreadsheet.workerUrl` 指向当前部署 base 下的 `vendor/xlsx/sheet.worker.js` 或自托管路径。
 - `xlsm`、`xlsb`、`xls`、`xlt`、`xltm`、`csv`、`ods`、`fods`、`numbers` 会读取格式中能表达的数据、尺寸和样式；部分格式本身不包含完整样式时，会按可用信息渐进还原。
 - Excel 预览为了兼顾大表格性能采用虚拟表格，DOM 中不会一次性持有完整工作表，因此当前会主动隐藏打印按钮，避免浏览器只打印当前视口或截断内容。
 - 如果你正在设计业务导出格式，优先选 `xlsx`；如果你只是需要把历史附件打开看内容，兼容链路已经足够实用。

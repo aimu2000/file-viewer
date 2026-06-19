@@ -126,8 +126,8 @@ The viewer is organized around preview pipelines rather than one-off file extens
 | Word | `docx`, `docm`, `dotx`, `dotm` | `docx-preview`, read-only page preview, print and HTML export | Modern Word documents and templates |
 | Legacy Word | `doc`, `dot` | `msdoc-viewer` with Word-like paper surface and CFB tolerance fixes | Old Word 97-2003 files |
 | Compatible documents | `rtf`, `odt` | RTFJS or OpenDocument package parsing with a paper-like reading surface | RTF exports and OpenDocument text documents |
-| Excel | `xlsx`, `xltx` | `styled-exceljs` with an optional static Worker plus virtual table rendering, merged cells, styles, auto text color, workbook images, and main-thread fallback | Business spreadsheets and templates |
-| Excel-compatible | `xlsm`, `xlsb`, `xls`, `xlt`, `xltm`, `csv`, `ods`, `fods`, `numbers` | Progressive spreadsheet parsing and virtual rendering through the same Worker/fallback path | Legacy spreadsheets and lightweight data preview |
+| Excel | `xlsx`, `xltx` | `styled-exceljs` with virtual table rendering, merged cells, styles, auto text color, workbook images, fidelity-first main-thread parsing by default, and an explicit opt-in static Worker | Business spreadsheets and templates |
+| Excel-compatible | `xlsm`, `xlsb`, `xls`, `xlt`, `xltm`, `csv`, `ods`, `fods`, `numbers` | Progressive spreadsheet parsing and virtual rendering through the same default main-thread path, with Worker opt-in when deployment allows it | Legacy spreadsheets and lightweight data preview |
 | PowerPoint | `pptx`, `pptm`, `potx`, `potm`, `ppsx`, `ppsm`, `odp` | Open-source `@aiden0z/pptx-renderer` slide preview with lazy loading and windowed slide lists; ODP uses OpenDocument slide text extraction | Presentations, training decks, proposals |
 | PDF | `pdf` | `pdfjs-dist`, streaming same-origin loading, Range support, zoom, rotation, page thumbnails, outline tree, width fitting, print, HTML export | Contracts, invoices, official layout documents |
 | OFD | `ofd` | Browser-side OFD preview based on `DLTech21/ofd.js` source | Chinese e-invoices, government documents, archives |
@@ -311,11 +311,12 @@ npx file-viewer-copy-assets ./public/file-viewer
 | `archive.cache` | Enables IndexedDB cache for extracted archive entries. |
 | `archive.maxArchiveSize` | Maximum archive size allowed for directory parsing. |
 | `archive.maxEntryPreviewSize` | Maximum extracted entry size allowed for online preview. |
-| `docx.worker` | Enables the optional DOCX Worker path. If the static Worker cannot be loaded, the renderer falls back to the same `docx-preview` main-thread path. |
+| `docx.worker` | Enables the optional DOCX Worker path. Defaults to `false`; the default DOCX path uses real browser DOM with `docx-preview` for maximum outline, tab stop, header/footer, and style fidelity. |
 | `docx.workerUrl` | Custom DOCX Worker URL. The default candidate is `vendor/docx/docx.worker.js` under the current deployment base. |
-| `docx.progressive` | Mounts the generated docx-preview pages in batches so large documents can show first content earlier. |
+| `docx.progressive` | Explicit opt-in batch mounting for Worker-generated docx-preview pages. Defaults to `false` to avoid disturbing complex style inheritance. |
+| `docx.visualPagination` | Explicit opt-in visual splitting for oversized sections. Defaults to `false`; keep it off for complex outlines and field-heavy documents. |
 | `docx.workerTimeout` | DOCX Worker timeout in milliseconds. Defaults to 15000ms. |
-| `spreadsheet.worker` | Enables the optional spreadsheet Worker path. If the static Worker cannot be loaded, Excel rendering falls back to the same parser on the main thread. |
+| `spreadsheet.worker` | Enables the optional spreadsheet Worker path. Defaults to `false`; main-thread parsing avoids local-server, mobile WebView, MIME, or CSP Worker stalls. |
 | `spreadsheet.workerUrl` | Custom Spreadsheet Worker URL. The default candidate is `vendor/xlsx/sheet.worker.js` under the current deployment base. |
 | `pdf.streaming` | PDF URL loading strategy. Same-origin streaming is enabled by default. |
 | `pdf.rangeChunkSize` | PDF.js Range request chunk size. |

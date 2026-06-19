@@ -31,12 +31,15 @@
 - 压缩包预览迁移为 core 共享 archive renderer，并保留 Worker 探测、初始化超时、静态 Worker/WASM 路径和 ZIP/TAR/GZIP 兼容模式；手机 WebView、本地临时服务器、MIME 或 CSP 导致 `libarchive.js` Worker 卡住时，会自动降级，避免一直停留在 loading
 - `options.archive` 新增 `wasmUrl` 和 `workerTimeoutMs` 说明；普通私有化部署不再需要写死 `workerUrl`，只有静态目录或 CDN 路径特殊时才需要显式指定
 - 移动端 Excel / XLS 预览把工作表名称移到表格上方的横向可滚动标签栏，当前工作表自动滚入可见区域，解决手机上 sheet 名称藏在底部角落、需要技巧才能看到的问题
+- Excel / XLS 多 sheet 场景下，工作表标签改为按内容宽度展示并横向滚动，避免按整体宽度平均压缩导致 sheet 名称完全看不清
+- Excel / XLS 静态 Worker 改为显式 opt-in，默认使用同一套主线程解析器，避免本地服务器、手机 WebView、MIME 或 CSP 环境下停在 Worker 初始化阶段
+- DOCX 默认切回保真优先的真实浏览器 DOM 完整渲染；`docx.worker`、`docx.progressive` 和 `docx.visualPagination` 均改为显式 opt-in，避免复杂目录、制表符、页眉页脚和样式继承被 Worker DOM 或分批挂载扰动
 - README、文档站、React / 纯 JS 接入文档、开源 release 包和 workspace 依赖同步刷新到 `1.0.25`
 
 ### 当前主线 Demo 富样式公开样例升级
 
-- DOCX 渲染链路下沉到 `@file-viewer/core`，移除 Vue3 本地 Word vendor 入口；所有标准组件包 共享同一套 `docx-preview` 页面渲染、渐进挂载、缩放 provider、打印和 HTML 导出适配器
-- DOCX Worker 新增 `options.docx.workerUrl` 与 `options.docx.workerTimeout` 兜底，默认尝试当前部署 base 下的 `vendor/docx/docx.worker.js`，静态资源不可用、CSP/MIME 不兼容或超时后会自动回到同一套 `docx-preview` 原生主线程渲染，避免线上预览永久停留在 loading
+- DOCX 渲染链路下沉到 `@file-viewer/core`，移除 Vue3 本地 Word vendor 入口；所有标准组件包共享同一套 `docx-preview` 页面渲染、缩放 provider、打印和 HTML 导出适配器
+- DOCX Worker 保留 `options.docx.workerUrl` 与 `options.docx.workerTimeout` 兜底，静态资源不可用、CSP/MIME 不兼容或超时后会自动回到同一套 `docx-preview` 原生主线程渲染；默认关闭 Worker 以保证复杂 Word 样式稳定
 - CAD 渲染器保持在 `@flyfish-dev/cad-viewer` 0.6.4，支持 DWG / DXF / DWF / DWFx / XPS 统一预览；DWG 默认通过独立 Worker 加载 LibreDWG WASM，DWF/DWFx/XPS 使用 native renderer 渲染 W2D/W3D/XPS 图形
 - 构建脚本会复制 `libredwg-web.js`、`libredwg-web.wasm`、`dwfv-render.wasm`、`dwg-worker.js` 和 worker 依赖 chunk 到 viewer assets 的 `wasm/cad/`
 - Demo 补充 Apache Tika `blocks_and_tables.dwf` 与 Autodesk 官方 Viewer 教程的 `House.dwfx`、`RobotArm1.dwfx` 样例，用于分别验证 DWF、DWFx/XPS、W2D/W3D native renderer 和大图纸按需加载体验

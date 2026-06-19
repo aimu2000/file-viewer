@@ -198,11 +198,12 @@ const options = {
 | `archive.cache` | 是否使用 IndexedDB 缓存已解压的压缩包内文件 |
 | `archive.maxArchiveSize` | 单个压缩包允许读取目录的最大体积，默认 320MB |
 | `archive.maxEntryPreviewSize` | 压缩包内单文件允许预览的最大体积，默认 64MB |
-| `docx.worker` | 是否启用 DOCX 静态 Worker 尝试，默认 `true`；Worker 不可用时会自动回退同一套 `docx-preview` 主线程渲染 |
+| `docx.worker` | 是否启用 DOCX 静态 Worker 尝试，默认 `false`。Word 保真度优先，默认直接使用浏览器真实 DOM 执行 `docx-preview`；只有明确接受 Worker DOM 兼容边界的大文件场景才建议设为 `true` |
 | `docx.workerUrl` | 自定义 DOCX Worker 地址，默认尝试当前部署 base 下的 `vendor/docx/docx.worker.js` |
-| `docx.progressive` | 是否按批次挂载 docx-preview 生成的页面，默认 `true`，便于大文档更早出现首屏内容 |
+| `docx.progressive` | 是否按批次挂载 docx-preview 生成的页面，默认 `false`。复杂目录、页眉页脚、制表符和样式继承敏感的文件建议保持默认完整挂载 |
+| `docx.visualPagination` | 是否对 docx-preview 输出的超长 section 做预览层视觉分页，默认 `false`。只有确认源文件缺少分页且接受预览层拆分时再开启 |
 | `docx.workerTimeout` | DOCX Worker 超时时间，默认 15000ms，超时后自动回退主线程渲染 |
-| `spreadsheet.worker` | 是否启用表格静态 Worker 尝试，默认 `true`；Worker 加载失败时会自动回退同一套 `styled-exceljs` 主线程解析 |
+| `spreadsheet.worker` | 是否启用表格静态 Worker 尝试，默认 `false`；默认使用同一套 `styled-exceljs` 主线程解析以避开本地服务器、手机 WebView、MIME 或 CSP 导致的 Worker 卡住问题 |
 | `spreadsheet.workerUrl` | 自定义 Excel/XLSX Worker 地址，默认尝试当前部署 base 下的 `vendor/xlsx/sheet.worker.js` |
 | `pdf.streaming` | PDF URL 渐进读取策略，默认 `same-origin`；设为 `true` 时跨域也尝试 URL 直连读取，设为 `false` 时完全回到 Blob 下载后预览 |
 | `pdf.toolbar` | 是否显示 PDF 渲染器自己的页码、缩放和旋转工具栏。独立预览建议显示；左右文档比对等紧凑场景可设为 `false`，让 PDF 与其他格式的正文区域对齐 |
@@ -345,19 +346,21 @@ React / 纯 JS 接入时，搜索和定位仍建议由宿主 UI 调用组件或 
 
 ## DOCX Worker 渲染
 
-`.docx`、`.docm`、`.dotx`、`.dotm` 使用 `docx-preview` 做高保真页面渲染。当前会优先尝试静态 Web Worker 完成 ZIP/XML 解析和 HTML 构建，主线程只把同一份 docx-preview HTML 按页面分批挂载，再执行宽度自适应、打印和导出适配；如果 Worker URL、CSP、MIME 或旧浏览器环境不满足要求，会自动回退到同一套 `docx-preview` 主线程渲染。
+`.docx`、`.docm`、`.dotx`、`.dotm` 使用 `docx-preview` 做高保真页面渲染。默认链路会在主线程真实浏览器 DOM 中一次性完成 `docx-preview` 渲染，再执行宽度自适应、打印和导出适配，优先保证目录、制表符、页眉页脚、段落样式和继承关系稳定。Worker 和分批挂载仍保留为显式 opt-in 能力，适合业务方确认文件结构简单、且更看重大文件首屏出现速度的场景。
 
 ```vue
 <FileViewer
   url="/files/report.docx"
   :options="{
     docx: {
-      // 默认 true。只有遇到严格 CSP、旧浏览器或排查兼容问题时才建议关闭。
-      worker: true,
+      // 默认 false。开启后会在 Worker DOM 中生成 docx-preview HTML，适合结构简单的大文件。
+      worker: false,
       // 默认尝试当前部署 base 下的 vendor/docx/docx.worker.js；私有 CDN 或子路径部署可显式覆盖。
       workerUrl: '/file-viewer/vendor/docx/docx.worker.js',
-      // 默认 true。只控制 docx-preview HTML 的分批挂载，不启用第二套渲染器。
-      progressive: true,
+      // 默认 false。开启后按页面分批挂载 Worker 生成的 HTML。
+      progressive: false,
+      // 默认 false。仅当源文件缺少分页且允许预览层拆分超长 section 时开启。
+      visualPagination: false,
       // 默认 15000。Worker 超时后仍回到 docx-preview 原生主线程渲染，避免永久 loading。
       workerTimeout: 15000
     }
@@ -365,7 +368,7 @@ React / 纯 JS 接入时，搜索和定位仍建议由宿主 UI 调用组件或 
 />
 ```
 
-浏览器 Worker 不能直接操作真实页面 DOM，因此这里采用“Worker 构建 docx-preview HTML + 主线程分批挂载”的标准链路，而不是自研简化版 Word 渲染器。少量结构复杂的 Word 文件如果触发 Worker DOM 兼容边界，预览器会按 `workerTimeout` 超时回退到同一套 `docx-preview` 原生主线程渲染，避免永久停留在 loading。私有化部署时如果静态目录或 CDN 前缀特殊，请配置 `docx.workerUrl`；不希望走 Worker 时传 `worker: false` 即可。极端超大或结构异常的 Word 文件仍建议业务侧提供原文件下载，或在服务端转为 PDF/OFD 后再做稳定版式预览。
+浏览器 Worker 不能直接操作真实页面 DOM，因此 Worker 模式使用轻量 DOM 运行时生成 `docx-preview` HTML，再回到主线程挂载。这个模式可以降低主线程长任务，但目录、复杂制表符、页眉页脚、字段和样式继承会更容易触达 Worker DOM 兼容边界，所以默认关闭。私有化部署时如果确实开启 Worker，且静态目录或 CDN 前缀特殊，请配置 `docx.workerUrl`；结构复杂的 Word 文件建议保持默认主线程完整渲染，或由服务端转为 PDF/OFD 后再做稳定版式预览。
 
 ## 打印、导出和水印的交付行为
 

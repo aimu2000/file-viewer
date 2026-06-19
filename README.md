@@ -99,7 +99,7 @@ GitHub Release 会同步提供完整下载项:
 - **按需异步加载。** PDF、OFD、Typst、压缩包、邮件、OLB/DRA、CAD、地理数据、3D 模型、绘图、Office、EPUB、UMD、Markdown、代码高亮、HLS、HEIC、字体/数据资产渲染器都按需加载，重型解析依赖不会进入其他格式的首屏路径。
 - **预览器操作完整。** 内置下载原文件、打印完整渲染结果、导出渲染后 HTML、水印开关、水印 options、主题 options、搜索高亮、上一个 / 下一个命中、行级定位和 AI 友好文本切片；PDF 使用 PDF.js 原生搜索，Word / Markdown / 代码等文本类格式使用通用 DOM 搜索，避免污染 PDF 文本层、canvas 等特殊渲染结构；`theme` 支持 `light`、`dark`、`system`，默认跟随系统，浅色业务 UI 可显式锁定 `light`；打印按钮会按当前格式和渲染链路动态显隐，Word / PDF 使用专属完整页导出适配器，不依赖当前视口，适合合同、归档和审批类场景。
 - **集成控制更完整。** 提供加载/卸载生命周期钩子、原生事件回调和按钮前置校验机制，下载、打印、导出前可以接入权限验证、审计确认或业务二次弹窗。
-- **阅读体验更像产品。** `.doc`、`.docx`、PDF 都保留灰色工作台、白色纸张、居中阅读和自适应缩放；DOCX 支持可选静态 Web Worker 承载 `docx-preview` 的解析和 HTML 构建，并把同一份 docx-preview HTML 按页面渐进挂载，主线程只负责挂载、缩放和打印适配；PDF 兼容旋转页和页面 / 目录导航，Excel 会尽量还原图片和自动文本色，避免“内容能打开但不好读”的落差。
+- **阅读体验更像产品。** `.doc`、`.docx`、PDF 都保留灰色工作台、白色纸张、居中阅读和自适应缩放；DOCX 默认在真实浏览器 DOM 中完整执行 `docx-preview`，优先保证目录、制表符、页眉页脚和样式继承稳定，Worker / 渐进挂载作为显式 opt-in 能力保留；PDF 兼容旋转页和页面 / 目录导航，Excel 会尽量还原图片、自动文本色和可滚动的多 sheet 标签，避免“内容能打开但不好读”的落差。
 - **明暗主题有边界。** Demo 外壳、Markdown 和代码预览会适配系统暗色模式；PDF、Word、Excel 等带原始版式的内容保持独立纸张或表格背景，避免全局主题污染文档。
 - **Demo 更适合验收。** 示例文件按文档、表格、图纸、代码、图片等类型分组展示，点击样例即可打开并自动收起选择器。
 - **独立文档比对入口。** 生产 Demo 额外提供 `/compare.html`，左右并排预览两份文档，支持示例、URL、本地上传、交换、重置、同步滚动、聚焦文档搜索、行级定位和 PDF 工具栏隐藏，不污染主预览入口。
@@ -116,7 +116,7 @@ GitHub Release 会同步提供完整下载项:
 | Word | `docx`、`docm`、`dotx`、`dotm` | `docx-preview` + 可选静态 Worker，保留文档结构和版式；模板/宏格式按只读预览处理 | 新生成的 Word 文档、正式文档、Word 模板 |
 | Word | `doc`、`dot` | `msdoc-viewer` + Word 风格页面容器，增强 CFB 容错和表格布局 | 历史 `.doc` 老文档、Word 97-2003 模板 |
 | 兼容文档 | `rtf`、`odt` | `rtf.js` / ODF `content.xml` 兼容预览 | RTF 富文本、OpenDocument 文本文档 |
-| Excel | `xlsx`、`xltx` | `styled-exceljs` + 可选静态 Worker + 虚拟滚动，支持尺寸、合并、常见样式、自动文本色和 workbook drawing 图片；Worker 不可用时回退主线程解析；打印按钮按能力隐藏，避免只打印当前视口 | 需要保留表格结构和样式的业务、Excel 模板 |
+| Excel | `xlsx`、`xltx` | `styled-exceljs` + 虚拟滚动，支持尺寸、合并、常见样式、自动文本色和 workbook drawing 图片；默认主线程解析，静态 Worker 需显式开启；打印按钮按能力隐藏，避免只打印当前视口 | 需要保留表格结构和样式的业务、Excel 模板 |
 | Excel 兼容格式 | `xlsm`、`xlsb`、`xls`、`xlt`、`xltm`、`csv`、`ods`、`fods`、`numbers` | 统一解析，按格式可用信息渐进还原样式；同样遵循虚拟表格打印边界 | 老表格、轻量数据查看 |
 | PowerPoint | `pptx`、`pptm`、`potx`、`potm`、`ppsx`、`ppsm`、`odp` | 基于开源 `@aiden0z/pptx-renderer` 浏览幻灯片内容，使用懒加载和窗口化列表优化首屏；ODP 走 OpenDocument 幻灯片文本预览 | 汇报材料、课件、方案、演示模板 |
 | PDF | `pdf` | 基于 `pdfjs-dist` 预览，同源 URL 默认渐进读取；服务端支持 Range 时自动分片加载，支持缩放工具栏、旋转页、页侧边栏/目录树侧边栏切换、宽度自适应、完整打印和导出 HTML | 合同、票据、版式成品 |
@@ -287,7 +287,7 @@ docker run --rm -p 8080:80 flyfishdev/file-viewer:2.0.0
 - PPTX 渲染器会尽量还原常见组合图形、旋转/翻转、主题背景、图片裁剪和 EMF 矢量图片；复杂 Office 特效仍建议用真实业务文件做回归
 - OFD、Typst、压缩包、邮件、OLB/DRA、CAD、地理数据、3D 模型、绘图、EPUB、UMD、PDF、Office、Markdown、音视频、HLS、HEIC、字体/数据资产和代码高亮渲染器都按需异步加载，只有命中格式时才拉取对应代码块；Typst compiler / renderer WASM 可通过 `options.typst.compilerWasmUrl`、`options.typst.rendererWasmUrl` 指向自托管地址，默认仅在打开 `.typ` / `.typst` 时加载
 - `options.archive` 一般只需要配置 `cache`、`workerTimeoutMs` 和体积上限；预览器会先尝试当前部署 base 下的 `vendor/libarchive/worker-bundle.js`。手机 WebView、本地临时服务器、MIME 或 CSP 导致 Worker 初始化超时时，会继续降级到 ZIP/TAR/GZIP 兼容模式，避免压缩包一直停在 loading。只有静态目录、CDN 路径或 WASM 位置特殊时，才需要显式传 `archive.workerUrl` / `archive.wasmUrl`
-- `options.theme` 支持 `light`、`dark`、`system`，默认继续跟随系统；`options.docx.worker` 默认开启，会优先尝试 `options.docx.workerUrl` 或当前部署 base 下的 `vendor/docx/docx.worker.js`，让 DOCX 在 Worker 内用 `docx-preview` 构建 HTML；`options.spreadsheet.workerUrl` 可覆盖 Excel/XLSX 静态 Worker，默认路径是 `vendor/xlsx/sheet.worker.js`，Worker 不可用时会自动回退主线程解析；`options.pdf.workerUrl` 可覆盖 PDF.js Worker，适合内网、离线或 CSP 较严的私有化部署；`options.docx.progressive` 默认开启，把 docx-preview 页面按批次挂载以便先看到内容；CSP、低版本浏览器或静态 worker 路径不可用时可设为 `worker: false` 或依赖自动兜底回退原生主线程渲染；`options.watermark` 支持文字或图片水印；`options.toolbar` 可控制下载原文件、打印完整渲染结果、导出 HTML、统一缩放按钮和操作栏位置，`toolbar.zoom` 可单独控制缩放按钮显示，`toolbar.position` 支持 `auto`、`top`、`bottom-right`，PDF 默认悬浮到右下角以避开自身导航栏；统一缩放通过渲染器内部 provider 适配 PDF、Word、PPTX、Excel 虚拟表格、图片、CAD、OFD、Typst、Markdown、代码和绘图等链路，避免业务侧外层 CSS 缩放造成表格坐标或 canvas 交互偏移；`options.pdf.toolbar` 可隐藏 PDF 自身页码缩放工具栏；`options.search` 可控制搜索高亮、整词/大小写和命中数量；`options.ai` 可开启文本切片结构，返回行号、页码、锚点和 label 等溯源字段，便于业务侧做向量化、召回、AI 摘要、高亮回填和来源定位；`options.hooks` 可接收加载/卸载生命周期；`options.beforeOperation` 可在下载、打印、导出和缩放前做权限校验；打印按钮会结合当前文件类型、渲染完成状态和导出适配器动态显隐，Word / PDF 会生成完整页面，Excel 等虚拟表格会隐藏打印按钮，避免只打印当前视口或第一页
+- `options.theme` 支持 `light`、`dark`、`system`，默认继续跟随系统；DOCX 默认走真实浏览器 DOM 中的 `docx-preview` 完整渲染，优先保证目录、制表符、页眉页脚和样式继承稳定，`options.docx.worker`、`options.docx.progressive`、`options.docx.visualPagination` 都需要显式开启；Excel/XLSX 默认使用主线程解析，避免本地服务器、手机 WebView、MIME 或 CSP 导致 Worker 卡住，确实需要静态 Worker 时再传 `options.spreadsheet.worker: true` 和 `options.spreadsheet.workerUrl`；`options.pdf.workerUrl` 可覆盖 PDF.js Worker，适合内网、离线或 CSP 较严的私有化部署；`options.watermark` 支持文字或图片水印；`options.toolbar` 可控制下载原文件、打印完整渲染结果、导出 HTML、统一缩放按钮和操作栏位置，`toolbar.zoom` 可单独控制缩放按钮显示，`toolbar.position` 支持 `auto`、`top`、`bottom-right`，PDF 默认悬浮到右下角以避开自身导航栏；统一缩放通过渲染器内部 provider 适配 PDF、Word、PPTX、Excel 虚拟表格、图片、CAD、OFD、Typst、Markdown、代码和绘图等链路，避免业务侧外层 CSS 缩放造成表格坐标或 canvas 交互偏移；Excel 多 sheet 时标签栏按内容宽度展示并横向滚动，不会被平均压缩；`options.pdf.toolbar` 可隐藏 PDF 自身页码缩放工具栏；`options.search` 可控制搜索高亮、整词/大小写和命中数量；`options.ai` 可开启文本切片结构，返回行号、页码、锚点和 label 等溯源字段，便于业务侧做向量化、召回、AI 摘要、高亮回填和来源定位；`options.hooks` 可接收加载/卸载生命周期；`options.beforeOperation` 可在下载、打印、导出和缩放前做权限校验；打印按钮会结合当前文件类型、渲染完成状态和导出适配器动态显隐，Word / PDF 会生成完整页面，Excel 等虚拟表格会隐藏打印按钮，避免只打印当前视口或第一页
 
 ```ts
 const blob = await response.blob()
