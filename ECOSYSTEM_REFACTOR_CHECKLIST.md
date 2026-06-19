@@ -250,6 +250,7 @@
 - [x] `pnpm release:channels:preflight -- --skip-external` 已接入聚合发布门禁，本地结构、分支角色、README、包元数据和开源总仓边界可一次校验
 - [x] `pnpm audit:ecosystem-status:fast` 已接入快速生态审计，会缩短远端探测超时并输出下一步发布命令
 - [x] `pnpm verify:github-release-assets` 已接入 GitHub Release 资产校验，会逐项比对开源总仓 `artifacts/` 的文件名、大小和 sha256
+- [x] `pnpm verify:wrapper-github-content` 已接入 GitHub core/标准组件分仓内容校验，会先导出独立仓再与远端 `main` 源码树比较
 - [ ] `pnpm release:channels:preflight`（需要 npm 登录态和 Gitee API token 均已就绪）
 - [x] `pnpm audit:ecosystem-status`（只读审计 GitHub / Gitee / npm / Release 当前状态，`--strict` 可用于最终发布阻断）
 - [x] `pnpm verify:wrapper-public-remotes --host=github`
