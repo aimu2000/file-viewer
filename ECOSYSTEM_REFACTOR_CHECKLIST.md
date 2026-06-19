@@ -247,6 +247,8 @@
 - [x] `pnpm verify:ecosystem-tarballs`
 - [x] `node scripts/release-ecosystem-packages.mjs --publish --dry-run`（14 个包均通过，发布参数包含 `--no-git-checks --ignore-scripts`）
 - [x] `pnpm release:ecosystem:publish:preflight` 已接入正式发布链路，未登录时会在构建前以 `ENEEDAUTH` 明确失败
+- [x] `pnpm release:channels:preflight -- --skip-external` 已接入聚合发布门禁，本地结构、分支角色、README、包元数据和开源总仓边界可一次校验
+- [ ] `pnpm release:channels:preflight`（需要 npm 登录态和 Gitee API token 均已就绪）
 - [x] `pnpm audit:ecosystem-status`（只读审计 GitHub / Gitee / npm / Release 当前状态，`--strict` 可用于最终发布阻断）
 - [x] `pnpm verify:wrapper-public-remotes --host=github`
 - [ ] `pnpm verify:wrapper-public-remotes`
