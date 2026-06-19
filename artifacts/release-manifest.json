@@ -1,41 +1,409 @@
 {
-  "version": "1.0.26",
-  "package": "@flyfish-group/file-viewer3",
-  "generatedAt": "2026-06-16T03:25:20Z",
+  "version": "2.0.0",
+  "package": "@flyfish-group/file-viewer-workspace",
+  "generatedAt": "2026-06-19T10:14:45.268Z",
   "sourceBranch": "v3",
-  "sourceCommit": "6d56b12",
-  "packageAliases": {
-    "file-viewer3": {
-      "version": "1.0.26",
-      "aliasOf": "@flyfish-group/file-viewer3",
-      "tarball": "flyfish-group-file-viewer3-1.0.26.tgz",
-      "deduplicated": true
+  "sourceCommit": "cb53417",
+  "corePackage": {
+    "packageName": "@file-viewer/core",
+    "visibility": "private-source",
+    "sourceRepository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
+    "corePolicy": "framework-neutral-low-level-core-only",
+    "note": "Core source remains in the private Gitea repository and exposes low-level TypeScript contracts, controllers, operations, source loading, registry, search, zoom, print, export and format metadata. Public wrappers own their framework lifecycle and never depend on another wrapper implementation."
+  },
+  "ecosystemPackages": {
+    "@file-viewer/core": "2.0.0",
+    "@flyfish-group/file-viewer3": "2.0.0",
+    "file-viewer3": "2.0.0",
+    "@flyfish-group/file-viewer": "2.0.0",
+    "@flyfish-group/file-viewer-web": "2.0.0",
+    "@flyfish-group/file-viewer-react": "2.0.0",
+    "@file-viewer/vue3": "2.0.0",
+    "@file-viewer/vue2.7": "2.0.0",
+    "@file-viewer/vue2.6": "2.0.0",
+    "@file-viewer/react": "2.0.0",
+    "@file-viewer/react-legacy": "2.0.0",
+    "@file-viewer/web": "2.0.0",
+    "@file-viewer/jquery": "2.0.0",
+    "@file-viewer/svelte": "2.0.0"
+  },
+  "ecosystemArtifacts": [
+    {
+      "name": "@file-viewer/core",
+      "version": "2.0.0",
+      "kind": "core",
+      "framework": null,
+      "packageDir": "packages/core",
+      "tarball": "file-viewer-core-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "@flyfish-group/file-viewer3",
+      "version": "2.0.0",
+      "kind": "compatibility",
+      "framework": null,
+      "packageDir": "packages/compat/vue3-scoped",
+      "tarball": "flyfish-group-file-viewer3-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "file-viewer3",
+      "version": "2.0.0",
+      "kind": "compatibility",
+      "framework": null,
+      "packageDir": "packages/compat/vue3-unscoped",
+      "tarball": null,
+      "artifactIncluded": false,
+      "artifactDuplicateOf": "@flyfish-group/file-viewer3",
+      "artifactNote": "The public artifact repository keeps one Vue 3 compatibility tarball to avoid duplicate package bodies; the unscoped alias is still published to npm.",
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "@flyfish-group/file-viewer",
+      "version": "2.0.0",
+      "kind": "compatibility",
+      "framework": null,
+      "packageDir": "packages/compat/vue2.7",
+      "tarball": "flyfish-group-file-viewer-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "@flyfish-group/file-viewer-web",
+      "version": "2.0.0",
+      "kind": "compatibility",
+      "framework": null,
+      "packageDir": "packages/compat/web",
+      "tarball": "flyfish-group-file-viewer-web-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "@flyfish-group/file-viewer-react",
+      "version": "2.0.0",
+      "kind": "compatibility",
+      "framework": null,
+      "packageDir": "packages/compat/react",
+      "tarball": "flyfish-group-file-viewer-react-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": null,
+      "gitee": null,
+      "entryFormats": [],
+      "historicalPackages": []
+    },
+    {
+      "name": "@file-viewer/vue3",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "Vue 3",
+      "packageDir": "packages/wrappers/vue3",
+      "tarball": "file-viewer-vue3-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-vue3",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue3",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer3",
+        "file-viewer3"
+      ]
+    },
+    {
+      "name": "@file-viewer/vue2.7",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "Vue 2.7",
+      "packageDir": "packages/wrappers/vue2.7",
+      "tarball": "file-viewer-vue2.7-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-vue2.7",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue2.7",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer"
+      ]
+    },
+    {
+      "name": "@file-viewer/vue2.6",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "Vue 2.6",
+      "packageDir": "packages/wrappers/vue2.6",
+      "tarball": "file-viewer-vue2.6-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-vue2.6",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue2.6",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "name": "@file-viewer/react",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "React 18/19",
+      "packageDir": "packages/wrappers/react",
+      "tarball": "file-viewer-react-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-react",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-react",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer-react"
+      ]
+    },
+    {
+      "name": "@file-viewer/react-legacy",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "React 16.8/17",
+      "packageDir": "packages/wrappers/react-legacy",
+      "tarball": "file-viewer-react-legacy-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-react-legacy",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-react-legacy",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "name": "@file-viewer/web",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "Pure Web",
+      "packageDir": "packages/wrappers/web",
+      "tarball": "file-viewer-web-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-web",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-web",
+      "entryFormats": [
+        "esm",
+        "types",
+        "iife",
+        "viewer-assets",
+        "copy-assets-cli"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer-web"
+      ]
+    },
+    {
+      "name": "@file-viewer/jquery",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "jQuery",
+      "packageDir": "packages/wrappers/jquery",
+      "tarball": "file-viewer-jquery-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-jquery",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-jquery",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "name": "@file-viewer/svelte",
+      "version": "2.0.0",
+      "kind": "standard-wrapper",
+      "framework": "Svelte",
+      "packageDir": "packages/wrappers/svelte",
+      "tarball": "file-viewer-svelte-2.0.0.tgz",
+      "artifactIncluded": true,
+      "artifactDuplicateOf": null,
+      "artifactNote": null,
+      "github": "https://github.com/flyfish-dev/file-viewer-svelte",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-svelte",
+      "entryFormats": [
+        "svelte-component",
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
     }
-  },
-  "adapterPackages": {
-    "@flyfish-group/file-viewer-web": "1.0.25",
-    "@flyfish-group/file-viewer-react": "1.0.25"
-  },
-  "vue2Package": {
-    "name": "@flyfish-group/file-viewer",
-    "version": "1.0.25",
-    "tarball": "flyfish-group-file-viewer-1.0.25.tgz"
-  },
-  "publicRepo": "/Users/wangyu/IdeaProjects/file-viewer-public",
+  ],
+  "wrapperRepositories": [
+    {
+      "framework": "Vue 3",
+      "packageName": "@file-viewer/vue3",
+      "repository": "file-viewer-vue3",
+      "github": "https://github.com/flyfish-dev/file-viewer-vue3",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue3",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer3",
+        "file-viewer3"
+      ]
+    },
+    {
+      "framework": "Vue 2.7",
+      "packageName": "@file-viewer/vue2.7",
+      "repository": "file-viewer-vue2.7",
+      "github": "https://github.com/flyfish-dev/file-viewer-vue2.7",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue2.7",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer"
+      ]
+    },
+    {
+      "framework": "Vue 2.6",
+      "packageName": "@file-viewer/vue2.6",
+      "repository": "file-viewer-vue2.6",
+      "github": "https://github.com/flyfish-dev/file-viewer-vue2.6",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-vue2.6",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "framework": "React 18/19",
+      "packageName": "@file-viewer/react",
+      "repository": "file-viewer-react",
+      "github": "https://github.com/flyfish-dev/file-viewer-react",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-react",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer-react"
+      ]
+    },
+    {
+      "framework": "React 16.8/17",
+      "packageName": "@file-viewer/react-legacy",
+      "repository": "file-viewer-react-legacy",
+      "github": "https://github.com/flyfish-dev/file-viewer-react-legacy",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-react-legacy",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "framework": "Pure Web",
+      "packageName": "@file-viewer/web",
+      "repository": "file-viewer-web",
+      "github": "https://github.com/flyfish-dev/file-viewer-web",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-web",
+      "entryFormats": [
+        "esm",
+        "types",
+        "iife",
+        "viewer-assets",
+        "copy-assets-cli"
+      ],
+      "historicalPackages": [
+        "@flyfish-group/file-viewer-web"
+      ]
+    },
+    {
+      "framework": "jQuery",
+      "packageName": "@file-viewer/jquery",
+      "repository": "file-viewer-jquery",
+      "github": "https://github.com/flyfish-dev/file-viewer-jquery",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-jquery",
+      "entryFormats": [
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    },
+    {
+      "framework": "Svelte",
+      "packageName": "@file-viewer/svelte",
+      "repository": "file-viewer-svelte",
+      "github": "https://github.com/flyfish-dev/file-viewer-svelte",
+      "gitee": "https://gitee.com/flyfish-dev/file-viewer-svelte",
+      "entryFormats": [
+        "svelte-component",
+        "esm",
+        "types"
+      ],
+      "historicalPackages": []
+    }
+  ],
+  "vue2Package": null,
+  "publicRepo": "/tmp/file-viewer-public-v2-sync",
   "artifactOnly": true,
-  "layout": "expanded",
+  "layout": "slim",
   "allowedRoots": [
     "README.md",
     "README.en.md",
     "LICENSE",
     "package.json",
     "dist",
-    "demo",
-    "adapter-demo",
-    "docs",
-    "example",
     "artifacts"
   ],
-  "archiveOnlyRoots": [],
-  "slimMode": false
+  "archiveOnlyRoots": [
+    "demo",
+    "wrapper-demo",
+    "docs",
+    "example"
+  ],
+  "slimMode": true
 }
