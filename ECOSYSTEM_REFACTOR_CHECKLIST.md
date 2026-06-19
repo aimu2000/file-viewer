@@ -32,7 +32,7 @@
 - Component GitHub 仓库: core + 8 个标准组件包仓库均已创建并推送 `main`，`pnpm verify:wrapper-public-remotes --host=github` 通过。
 - Component Gitee 仓库: core + 8 个标准组件包仓库仍返回 404，`pnpm verify:wrapper-public-remotes --host=gitee` 失败；当前本机未配置 `FILE_VIEWER_GITEE_TOKEN` / `GITEE_TOKEN` / `GITEE_ACCESS_TOKEN` / `~/.config/flyfish/gitee-token`，待有效 Gitee 组织 token 后执行 `FILE_VIEWER_GITEE_TOKEN_FILE=<仓库外 token 文件> pnpm components:gitee:create` 和 `FILE_VIEWER_GITEE_TOKEN_FILE=<仓库外 token 文件> pnpm components:gitee:publish`。
 - Demo / 文档站: Demo 生产部署仍以 `viewer.flyfish.dev` 为准，最近一次 Cloudflare Pages 部署为 `https://7533352f.flyfish-file-viewer.pages.dev`；文档站已生成并部署最新开源总仓库口径，`doc.flyfish.dev` 当前由 Cloudflare Pages 生产分支 `v3` 承载，源码发布基线仍是私有 Gitea `main` 完整原始聚合仓。
-- npm 发布: `@file-viewer/*` 标准包均仍未发布；历史包当前仍为 `@flyfish-group/file-viewer3@1.0.26`、`file-viewer3@1.0.26`、`@flyfish-group/file-viewer@1.0.25`、`@flyfish-group/file-viewer-web@1.0.25`、`@flyfish-group/file-viewer-react@1.0.25`；`node scripts/release-ecosystem-packages.mjs --publish --dry-run` 已验证 14 个包会以 `--no-git-checks --ignore-scripts` 发布到 npm registry，当前机器 `npm whoami` 返回 `ENEEDAUTH`，待交互式登录/Passkey。
+- npm 发布: `@file-viewer/*` 标准包均仍未发布；历史包当前仍为 `@flyfish-group/file-viewer3@1.0.26`、`file-viewer3@1.0.26`、`@flyfish-group/file-viewer@1.0.25`、`@flyfish-group/file-viewer-web@1.0.25`、`@flyfish-group/file-viewer-react@1.0.25`；`node scripts/release-ecosystem-packages.mjs --publish --dry-run` 已验证 14 个包会以 `--no-git-checks --ignore-scripts` 发布到 npm registry，`release:ecosystem:publish` 已接入构建前 npm 登录 preflight，当前机器 `npm whoami` 返回 `ENEEDAUTH`，待交互式登录/Passkey。
 
 ## 总体不变量
 
@@ -246,6 +246,7 @@
 - [x] `pnpm verify:ecosystem-versions`
 - [x] `pnpm verify:ecosystem-tarballs`
 - [x] `node scripts/release-ecosystem-packages.mjs --publish --dry-run`（14 个包均通过，发布参数包含 `--no-git-checks --ignore-scripts`）
+- [x] `pnpm release:ecosystem:publish:preflight` 已接入正式发布链路，未登录时会在构建前以 `ENEEDAUTH` 明确失败
 - [x] `pnpm audit:ecosystem-status`（只读审计 GitHub / Gitee / npm / Release 当前状态，`--strict` 可用于最终发布阻断）
 - [x] `pnpm verify:wrapper-public-remotes --host=github`
 - [ ] `pnpm verify:wrapper-public-remotes`
