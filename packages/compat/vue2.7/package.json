@@ -1,0 +1,59 @@
+{
+  "name": "@flyfish-group/file-viewer",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Compatibility alias package for Flyfish File Viewer Vue 2.7",
+  "keywords": [
+    "file-viewer",
+    "document-preview",
+    "vue",
+    "vue2",
+    "vue2.7",
+    "office-preview"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer.git",
+    "directory": "packages/compat/vue2.7"
+  },
+  "homepage": "https://doc.flyfish.dev/",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer/issues"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "type-check": "node scripts/build.mjs"
+  },
+  "peerDependencies": {
+    "vue": ">=2.7 <3"
+  },
+  "dependencies": {
+    "@file-viewer/vue2.7": "workspace:^2.0.0"
+  },
+  "license": "Apache-2.0"
+}

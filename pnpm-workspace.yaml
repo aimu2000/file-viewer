@@ -1,0 +1,18 @@
+packages:
+  - packages/core
+  - packages/components/*
+  - packages/compat/*
+  - apps/*
+
+peerDependencyRules:
+  allowedVersions:
+    '@types/react': '>=17 <20'
+    react: '>=17 <20'
+    react-dom: '>=17 <20'
+
+allowBuilds:
+  '@parcel/watcher': true
+  canvas: true
+  core-js: true
+  es5-ext: true
+  esbuild: true

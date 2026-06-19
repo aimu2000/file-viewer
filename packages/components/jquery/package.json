@@ -1,0 +1,62 @@
+{
+  "name": "@file-viewer/jquery",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Standard jQuery component package for Flyfish File Viewer",
+  "keywords": [
+    "file-viewer",
+    "document-preview",
+    "jquery",
+    "native-viewer",
+    "office-preview"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-jquery.git",
+    "directory": "packages/components/jquery"
+  },
+  "homepage": "https://doc.flyfish.dev/",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-jquery/issues"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "jquery": ">=3 <5"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^4.0.1",
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

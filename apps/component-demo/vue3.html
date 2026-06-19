@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flyfish Viewer Vue 3 Demo</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>Vue 3 Component</h1>
+          <p>使用标准 <code>@file-viewer/vue3</code> 组件包 挂载同一个 native viewer。</p>
+        </div>
+        <nav class="topbar-actions" aria-label="Demo links">
+          <a href="/">Component demo</a>
+          <a href="/jquery.html">jQuery</a>
+          <a href="/svelte-action.html">Svelte action</a>
+          <a href="/manual-iife.html">Script tag</a>
+        </nav>
+      </header>
+      <section class="single-viewer-shell" aria-label="Vue 3 component preview">
+        <div id="vue3-viewer" class="viewer-host" data-testid="vue3-viewer-host"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/vue3-demo.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('FlyFish Viewer conversion guidance fixture'),'2;1');
+FILE_NAME('model.step','2026-05-22T00:00:00',('FlyFish'),('FlyFish'),'','','');
+FILE_SCHEMA(('AP214'));
+ENDSEC;
+DATA;
+ENDSEC;
+END-ISO-10303-21;

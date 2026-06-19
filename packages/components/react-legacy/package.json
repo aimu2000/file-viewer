@@ -1,0 +1,64 @@
+{
+  "name": "@file-viewer/react-legacy",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Standard React 16/17 legacy component package for Flyfish File Viewer",
+  "keywords": [
+    "file-viewer",
+    "document-preview",
+    "react",
+    "react-legacy",
+    "native-viewer",
+    "office-preview"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-react-legacy.git",
+    "directory": "packages/components/react-legacy"
+  },
+  "homepage": "https://doc.flyfish.dev/",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-react-legacy/issues"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": ">=16.8 <18"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "react": "^17.0.2",
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

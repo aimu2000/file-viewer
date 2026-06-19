@@ -1,0 +1,78 @@
+{
+  "name": "@file-viewer/svelte",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Standard Svelte component package for Flyfish File Viewer",
+  "keywords": [
+    "file-viewer",
+    "document-preview",
+    "svelte",
+    "sveltekit",
+    "native-viewer",
+    "office-preview"
+  ],
+  "svelte": "./src/FileViewer.svelte",
+  "main": "./src/FileViewer.svelte",
+  "module": "./src/FileViewer.svelte",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-svelte.git",
+    "directory": "packages/components/svelte"
+  },
+  "homepage": "https://doc.flyfish.dev/",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-svelte/issues"
+  },
+  "types": "./src/FileViewer.svelte.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/FileViewer.svelte.d.ts",
+      "svelte": "./src/FileViewer.svelte",
+      "import": "./src/FileViewer.svelte",
+      "default": "./src/FileViewer.svelte"
+    },
+    "./action": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src/FileViewer.svelte",
+    "src/FileViewer.svelte.d.ts",
+    "src/controller.ts",
+    "README.md",
+    "README.en.md"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "svelte": ">=3.59 <6"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.0"
+  },
+  "devDependencies": {
+    "svelte": "^5.46.0",
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

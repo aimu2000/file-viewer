@@ -1,0 +1,11 @@
+### Open a remote preview
+POST https://viewer.flyfish.dev/api/preview
+Content-Type: application/json
+
+{
+  "url": "https://example.com/report.pdf",
+  "options": {
+    "theme": "light",
+    "toolbar": { "position": "bottom-right" }
+  }
+}
