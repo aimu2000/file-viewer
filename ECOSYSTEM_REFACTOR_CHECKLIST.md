@@ -22,13 +22,13 @@
 
 ## 最新外部发布审计
 
-- 审计时间: `2026-06-19 21:33 CST`
-- 源码仓当前状态: 本地 `v3` 工作区干净，`origin/v3` 已对齐 `5081e11`，私有 Gitea 聚合仓推送完成。
-- 开源总仓库: GitHub `flyfish-dev/file-viewer` 已推送 `7066c3d0`，Gitee `flyfish-dev/file-viewer` 已推送 `98d7fe35`；两端 tree hash 均为 `8a3adc31d0dbe1fc88a5b8ff065f11483f39e721`，内容一致。
-- 开源总仓库 Release: GitHub Release `v2.0.0` 已创建，包含 18 个资产（core、标准组件包、兼容包、Demo、文档、lib dist 和 `release-manifest.json`）。
+- 实时审计命令: `pnpm audit:ecosystem-status`；最终发布阻断可使用 `node scripts/audit-ecosystem-status.mjs --strict`。
+- 源码仓当前状态: 私有 Gitea 聚合仓 `origin/v3` 已完成推送；具体提交以实时审计命令输出为准，避免 checklist 因自我更新产生哈希追尾。
+- 开源总仓库: GitHub `flyfish-dev/file-viewer` 与 Gitee `flyfish-dev/file-viewer` 已同步为同一文件树；具体提交和 tree hash 以实时审计命令输出为准。
+- 开源总仓库 Release: GitHub Release `v2.0.0` 已创建并维护 18 个资产（core、标准组件包、兼容包、Demo、文档、lib dist 和 `release-manifest.json`）。
 - Component GitHub 仓库: core + 8 个标准组件包仓库均已创建并推送 `main`，`pnpm verify:wrapper-public-remotes --host=github` 通过。
 - Component Gitee 仓库: core + 8 个标准组件包仓库仍返回 404，`pnpm verify:wrapper-public-remotes --host=gitee` 失败；当前环境没有可用 Gitee token，SSH 账号也不是 `flyfish-dev` 写权限，待有效 Gitee 组织权限后创建并推送。
-- Demo / 文档站: 历史 Cloudflare Pages 部署曾完成并指向正式域名；本次 `5081e11` / 开源总仓库定位更新后，`viewer.flyfish.dev` 与 `doc.flyfish.dev` 的最新重部署仍待执行。
+- Demo / 文档站: 历史 Cloudflare Pages 部署曾完成并指向正式域名；本次开源总仓库定位与治理文档更新后，`viewer.flyfish.dev` 与 `doc.flyfish.dev` 的最新重部署仍待执行。
 - npm 发布: `@file-viewer/*` 标准包均仍未发布；历史包当前仍为 `@flyfish-group/file-viewer3@1.0.26`、`file-viewer3@1.0.26`、`@flyfish-group/file-viewer@1.0.25`、`@flyfish-group/file-viewer-web@1.0.25`、`@flyfish-group/file-viewer-react@1.0.25`；当前机器 `npm whoami` 返回 `ENEEDAUTH`，待交互式登录/Passkey。
 
 ## 总体不变量
