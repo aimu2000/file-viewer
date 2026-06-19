@@ -1,9 +1,9 @@
 {
   "version": "2.0.0",
   "package": "@flyfish-group/file-viewer-workspace",
-  "generatedAt": "2026-06-19T13:08:06.819Z",
+  "generatedAt": "2026-06-19T13:42:37.303Z",
   "sourceBranch": "v3",
-  "sourceCommit": "5081e11",
+  "sourceCommit": "f47b64b",
   "corePackage": {
     "packageName": "@file-viewer/core",
     "visibility": "public-source",
@@ -401,6 +401,9 @@
   "allowedRoots": [
     "README.md",
     "README.en.md",
+    "BRANCHES.md",
+    "ECOSYSTEM_REFACTOR_CHECKLIST.md",
+    "WRAPPER_ECOSYSTEM.md",
     "LICENSE",
     "package.json",
     "pnpm-workspace.yaml",
