@@ -1,9 +1,9 @@
 {
   "version": "2.0.0",
   "package": "@flyfish-group/file-viewer-workspace",
-  "generatedAt": "2026-06-19T18:10:20.281Z",
+  "generatedAt": "2026-06-19T18:17:07.408Z",
   "sourceBranch": "main",
-  "sourceCommit": "4f2fe6e1",
+  "sourceCommit": "6712da38",
   "corePackage": {
     "packageName": "@file-viewer/core",
     "visibility": "public-source",

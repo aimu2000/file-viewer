@@ -282,8 +282,9 @@
 - [ ] 所有 `@file-viewer/*` npm 包均发布成功。
 - [ ] 所有历史兼容包和别名包均发布成功。
 - [x] 所有标准组件包的 README 中英文完整。
-- [ ] 开源总仓库包含最新全渠道构建产物。
+- [x] GitHub 开源总仓库包含最新全渠道构建产物、文档静态产物、混淆库产物、release manifest、release status 和 GitHub Release 下载物。
+- [~] Gitee 开源总仓库等待远端 push / 配额恢复后同步到与 GitHub 开源总仓库相同的文件树。
 - [ ] 文档站和 Demo 站均上线最新内容。
 - [x] 本地 smoke 已通过 `pnpm verify:migration-gates` 与 `pnpm verify:browser-smoke`，证明各生态体验与当前私有 `main` 发布基线一致。
 - [ ] 生产 smoke 证明 Demo、文档站、开源总仓下载物和 npm/Gitee 发布结果与当前私有 `main` 发布基线一致。
-- [ ] 发布记录能证明 npm、GitHub、Gitee、Gitea、Demo、文档站、开源总仓库的版本口径一致。
+- [~] 发布记录已经证明私有 Gitea `main`、GitHub 开源总仓库、GitHub Release、Demo 构建物和文档构建物的版本口径一致；npm/Gitee 外部发布完成后关闭剩余缺口。
