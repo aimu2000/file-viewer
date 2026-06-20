@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-20T01:41:49.460Z",
+  "generatedAt": "2026-06-20T01:50:25.968Z",
   "version": "2.0.1",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "881e525730ca51a62bb8b4644aa24c25e3388d1d",
+    "authoritativeCommit": "251971c69617f3dc71c2679d4e7de147bf7e8348",
     "localBranch": "v3",
-    "localCommit": "881e525730ca51a62bb8b4644aa24c25e3388d1d",
+    "localCommit": "251971c69617f3dc71c2679d4e7de147bf7e8348",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "v3",
-    "commit": "881e525730ca51a62bb8b4644aa24c25e3388d1d",
-    "shortCommit": "881e5257",
+    "commit": "251971c69617f3dc71c2679d4e7de147bf7e8348",
+    "shortCommit": "251971c6",
     "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "881e525730ca51a62bb8b4644aa24c25e3388d1d",
+    "hash": "251971c69617f3dc71c2679d4e7de147bf7e8348",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "70dd3a9b5889df0d4cf58615031776b6be7a91a3",
+      "hash": "ab63ed0cf1cdccd1663b5950029918695d24605e",
       "error": ""
     },
     "gitee": {
@@ -43,22 +43,22 @@
       "error": ""
     },
     "inSync": false,
-    "syncMode": "unchecked",
-    "treeChecked": false,
-    "referenceTree": "9262117afcc4e2845b87daaf3aa645bd19bf2a22",
-    "giteeTree": "",
-    "treeError": "local public repository a9f2a0536751 does not match GitHub 70dd3a9b5889",
+    "syncMode": "stale",
+    "treeChecked": true,
+    "referenceTree": "6fe8202d20bef0a10a706628363bd000dee3651d",
+    "giteeTree": "62b18f03808005d7045f6bcb1c078889de3cdff4",
+    "treeError": "",
     "reportHashNote": "This status report is generated before it is committed into the open-source main repository, so the observed open-source main hash can trail the metadata-only commit that carries this file. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": false,
+    "ok": true,
     "tag": "v2.0.1",
-    "url": "",
-    "assetCount": 0,
-    "hasManifest": false,
-    "hasStatus": false,
-    "hasSchema": false,
-    "error": "release not found"
+    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.0.1",
+    "assetCount": 20,
+    "hasManifest": true,
+    "hasStatus": true,
+    "hasSchema": true,
+    "error": ""
   },
   "componentRepositories": [
     {
@@ -325,8 +325,7 @@
     }
   ],
   "gaps": [
-    "open-source main Gitee repository 8ddb952be08d differs from GitHub 70dd3a9b5889 (local public repository a9f2a0536751 does not match GitHub 70dd3a9b5889)",
-    "GitHub Release v2.0.1 missing",
+    "open-source main Gitee repository tree 62b18f038080 differs from GitHub tree 6fe8202d20be",
     "core Gitee repository missing",
     "vue3 Gitee repository missing",
     "vue2.7 Gitee repository missing",
@@ -338,35 +337,25 @@
     "svelte Gitee repository missing"
   ],
   "gapSummary": {
-    "total": 11,
-    "externalBlockers": 11,
+    "total": 10,
+    "externalBlockers": 10,
     "localActionable": 0,
     "byChannel": {
-      "gitee": 10,
-      "github-release": 1
+      "gitee": 10
     },
     "externalBlockerChannels": [
-      "gitee",
-      "github-release"
+      "gitee"
     ],
     "localActionableChannels": []
   },
   "gapDetails": [
     {
-      "id": "gitee-open-source-main-gitee-repository-8ddb952be08d-differs-from-github-70dd3a9b5889-local-publ",
+      "id": "gitee-open-source-main-gitee-repository-tree-62b18f038080-differs-from-github-tree-6fe8202d20be",
       "channel": "gitee",
       "scope": "public-mirror",
       "externalBlocker": true,
-      "message": "open-source main Gitee repository 8ddb952be08d differs from GitHub 70dd3a9b5889 (local public repository a9f2a0536751 does not match GitHub 70dd3a9b5889)",
+      "message": "open-source main Gitee repository tree 62b18f038080 differs from GitHub tree 6fe8202d20be",
       "nextAction": "Run `pnpm public:gitee:snapshot -- --push --confirm-rewrite-history` to publish a shallow Gitee mirror with the same file tree."
-    },
-    {
-      "id": "github-release-github-release-v2.0.1-missing",
-      "channel": "github-release",
-      "scope": "release-assets",
-      "externalBlocker": true,
-      "message": "GitHub Release v2.0.1 missing",
-      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
     },
     {
       "id": "gitee-core-gitee-repository-missing",

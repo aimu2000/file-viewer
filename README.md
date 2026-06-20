@@ -8,11 +8,8 @@
 
 它不依赖后端转码服务，适合接入 OA、知识库、附件中心、流程系统和需要离线能力的业务场景。这个项目的目标很直接: 让文档预览不再像临时拼出来的功能，而是像一个可以放心交付、能独立演示、能持续维护的产品模块。
 
-- npm(Vue3 标准包): [@file-viewer/vue3](https://www.npmjs.com/package/@file-viewer/vue3)
-- npm(Vue3 兼容包): [@flyfish-group/file-viewer3](https://www.npmjs.com/package/@flyfish-group/file-viewer3)
-- npm(Vue2): [@flyfish-group/file-viewer](https://www.npmjs.com/package/@flyfish-group/file-viewer)
-- npm(React): [@flyfish-group/file-viewer-react](https://www.npmjs.com/package/@flyfish-group/file-viewer-react)
-- npm(纯 JS): [@flyfish-group/file-viewer-web](https://www.npmjs.com/package/@flyfish-group/file-viewer-web)
+- 标准 npm 包: `@file-viewer/core`、`@file-viewer/vue3`、`@file-viewer/vue2.7`、`@file-viewer/vue2.6`、`@file-viewer/react`、`@file-viewer/react-legacy`、`@file-viewer/web`、`@file-viewer/jquery`、`@file-viewer/svelte`
+- 历史兼容 npm 包: `@flyfish-group/file-viewer3`、`file-viewer3`、`@flyfish-group/file-viewer`、`@flyfish-group/file-viewer-react`、`@flyfish-group/file-viewer-web`
 - 官方网站: [file-viewer.app](https://file-viewer.app)
 - 官方文档: [doc.file-viewer.app](https://doc.file-viewer.app)
 - 在线 Demo: [demo.file-viewer.app](https://demo.file-viewer.app)
@@ -23,22 +20,46 @@
 - 开源总仓库(Gitee): [gitee.com/flyfish-dev/file-viewer](https://gitee.com/flyfish-dev/file-viewer)
 - 打赏与优先支持: [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)
 
-## 当前发布版本
+## 当前 npm 生态
 
-| 技术栈 | npm 包 | 最新版本 | 源码入口 | 说明 |
+当前 latest 版本是 `2.0.1`，共维护 14 个 npm 发布目标: 9 个标准包 + 5 个历史兼容 alias。新项目建议优先使用 `@file-viewer/*` 标准包名；旧项目继续使用 `@flyfish-group/*` 或 `file-viewer3` 时也会拿到同版本能力。
+
+| 场景 | 推荐 npm 包 | 历史兼容包 | 最新版本 | 说明 |
 | --- | --- | --- | --- | --- |
-| Core | `@file-viewer/core` | `2.0.1` | `packages/core` / `file-viewer-core` | 框架无关的格式矩阵、预览能力、事件和操作 API；私有 `main` 仍是完整原始聚合仓 |
-| Vue3 | `@file-viewer/vue3` / `@flyfish-group/file-viewer3` | `2.0.1` | `v3` | Vue3 原生组件包，代码已迁移到 `packages/components/vue3` 独立包线 |
-| Vue2.7 | `@file-viewer/vue2.7` / `@flyfish-group/file-viewer` | `2.0.1` | `v2` | Vue2 原生组件包，格式能力与 Vue3 保持一致 |
-| React 17 / 18 / 19 | `@file-viewer/react` / `@flyfish-group/file-viewer-react` | `2.0.1` | 标准组件包 | React 原生组件，复用共享 core native engine |
-| 纯 JS | `@file-viewer/web` / `@flyfish-group/file-viewer-web` | `2.0.1` | 标准组件包 | `mountViewer(container, options)` 原生 DOM 挂载和资源工具 |
+| Core 底座 | [`@file-viewer/core`](https://www.npmjs.com/package/@file-viewer/core) | 无 | `2.0.1` | 框架无关的格式矩阵、预览能力、资源加载、生命周期事件、搜索、缩放、打印、导出和操作 API |
+| Vue3 | [`@file-viewer/vue3`](https://www.npmjs.com/package/@file-viewer/vue3) | [`@flyfish-group/file-viewer3`](https://www.npmjs.com/package/@flyfish-group/file-viewer3)、[`file-viewer3`](https://www.npmjs.com/package/file-viewer3) | `2.0.1` | Vue3 原生组件、插件安装、props、事件、ref/controller 和完整类型 |
+| Vue2.7 | [`@file-viewer/vue2.7`](https://www.npmjs.com/package/@file-viewer/vue2.7) | [`@flyfish-group/file-viewer`](https://www.npmjs.com/package/@flyfish-group/file-viewer) | `2.0.1` | Vue2.7 原生组件，能力和 Vue3 保持一致 |
+| Vue2.6 | [`@file-viewer/vue2.6`](https://www.npmjs.com/package/@file-viewer/vue2.6) | 无 | `2.0.1` | Vue2.6 专线，面向仍停留在 Vue 2.6 的老项目 |
+| React 18/19 | [`@file-viewer/react`](https://www.npmjs.com/package/@file-viewer/react) | [`@flyfish-group/file-viewer-react`](https://www.npmjs.com/package/@flyfish-group/file-viewer-react) | `2.0.1` | React 原生组件和 hooks/controller，不通过 Vue 或 iframe 转接 |
+| React 16.8/17 | [`@file-viewer/react-legacy`](https://www.npmjs.com/package/@file-viewer/react-legacy) | 无 | `2.0.1` | 面向旧 React 项目的兼容组件包 |
+| 纯 Web / script 标签 | [`@file-viewer/web`](https://www.npmjs.com/package/@file-viewer/web) | [`@flyfish-group/file-viewer-web`](https://www.npmjs.com/package/@flyfish-group/file-viewer-web) | `2.0.1` | `mountViewer(container, options)`、IIFE、资源复制 CLI、Worker/WASM 自托管工具 |
+| jQuery | [`@file-viewer/jquery`](https://www.npmjs.com/package/@file-viewer/jquery) | 无 | `2.0.1` | jQuery 插件式接入，适合传统后台系统 |
+| Svelte | [`@file-viewer/svelte`](https://www.npmjs.com/package/@file-viewer/svelte) | 无 | `2.0.1` | Svelte 组件、action 和类型入口 |
+
+生态边界很清楚: `@file-viewer/core` 只负责底层预览能力和 API；各标准组件包只依赖 core 和自己的框架依赖，不嵌套其他框架实现；历史兼容包只负责旧包名继续可用，不建议新项目优先选择。
+
+常见安装方式:
+
+```bash
+pnpm add @file-viewer/vue3
+pnpm add @file-viewer/react
+pnpm add @file-viewer/web
+pnpm add @file-viewer/core
+```
 
 如果你在内网、离线环境，或者 npm 发布权限还没有完成配置，也可以直接使用开源总仓库 `artifacts/` 里的 release tarball。离线安装 React 包时请先安装同版本 web 包:
 
 ```bash
-npm install ./artifacts/flyfish-group-file-viewer3-2.0.1.tgz
 npm install ./artifacts/file-viewer-core-2.0.1.tgz
 npm install ./artifacts/file-viewer-vue3-2.0.1.tgz
+npm install ./artifacts/file-viewer-vue2.7-2.0.1.tgz
+npm install ./artifacts/file-viewer-vue2.6-2.0.1.tgz
+npm install ./artifacts/file-viewer-react-2.0.1.tgz
+npm install ./artifacts/file-viewer-react-legacy-2.0.1.tgz
+npm install ./artifacts/file-viewer-web-2.0.1.tgz
+npm install ./artifacts/file-viewer-jquery-2.0.1.tgz
+npm install ./artifacts/file-viewer-svelte-2.0.1.tgz
+npm install ./artifacts/flyfish-group-file-viewer3-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-web-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-react-2.0.1.tgz

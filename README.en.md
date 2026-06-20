@@ -8,11 +8,8 @@ Bring Word, Excel, PowerPoint, PDF, Typst, archives, email, audio/video, ebooks,
 
 The viewer does not require a backend conversion service. It is designed for OA systems, knowledge bases, attachment centers, workflow platforms, customer support portals, document approval flows, intranet systems, and offline-capable deployments where file preview should feel like a maintained product module rather than a temporary feature.
 
-- npm for Vue 3 standard package: [@file-viewer/vue3](https://www.npmjs.com/package/@file-viewer/vue3)
-- npm for Vue 3 compatibility package: [@flyfish-group/file-viewer3](https://www.npmjs.com/package/@flyfish-group/file-viewer3)
-- npm for Vue 2.7: [@flyfish-group/file-viewer](https://www.npmjs.com/package/@flyfish-group/file-viewer)
-- npm for React: [@flyfish-group/file-viewer-react](https://www.npmjs.com/package/@flyfish-group/file-viewer-react)
-- npm for vanilla JavaScript: [@flyfish-group/file-viewer-web](https://www.npmjs.com/package/@flyfish-group/file-viewer-web)
+- Standard npm packages: `@file-viewer/core`, `@file-viewer/vue3`, `@file-viewer/vue2.7`, `@file-viewer/vue2.6`, `@file-viewer/react`, `@file-viewer/react-legacy`, `@file-viewer/web`, `@file-viewer/jquery`, `@file-viewer/svelte`
+- Historical compatibility packages: `@flyfish-group/file-viewer3`, `file-viewer3`, `@flyfish-group/file-viewer`, `@flyfish-group/file-viewer-react`, `@flyfish-group/file-viewer-web`
 - Official website: [file-viewer.app](https://file-viewer.app)
 - Official documentation: [doc.file-viewer.app](https://doc.file-viewer.app)
 - Online demo: [demo.file-viewer.app](https://demo.file-viewer.app)
@@ -22,22 +19,46 @@ The viewer does not require a backend conversion service. It is designed for OA 
 - Gitee open-source main mirror: [gitee.com/flyfish-dev/file-viewer](https://gitee.com/flyfish-dev/file-viewer)
 - Sponsorship and priority support: [https://dev.flyfish.group/shop](https://dev.flyfish.group/shop)
 
-## Current Packages
+## Current npm Ecosystem
 
-| Stack | Package | Version | Source entry | Notes |
+The current latest version is `2.0.1`. The ecosystem publishes 14 npm targets: 9 standard packages and 5 historical aliases. New integrations should prefer the `@file-viewer/*` standard package names; existing applications using `@flyfish-group/*` or `file-viewer3` continue to receive the same versioned capability set.
+
+| Scenario | Recommended package | Historical alias | Latest | Notes |
 | --- | --- | --- | --- | --- |
-| Core | `@file-viewer/core` | `2.0.1` | `packages/core` / `file-viewer-core` | Framework-neutral format matrix, preview capabilities, events, and operation APIs. Private Gitea `main` remains the complete original aggregate workspace. |
-| Vue 3 | `@file-viewer/vue3` / `@flyfish-group/file-viewer3` | `2.0.1` | `v3` | Native Vue 3 component package now maintained from the independent `packages/components/vue3` package line |
-| Vue 2.7 | `@file-viewer/vue2.7` / `@flyfish-group/file-viewer` | `2.0.1` | `v2` | Native Vue 2 package with the same format coverage and API semantics |
-| React 17 / 18 / 19 | `@file-viewer/react` / `@flyfish-group/file-viewer-react` | `2.0.1` | component package | Native React component backed by the shared core |
-| Vanilla JavaScript | `@file-viewer/web` / `@flyfish-group/file-viewer-web` | `2.0.1` | component package | `mountViewer(container, options)` native DOM mounting and asset tooling |
+| Core foundation | [`@file-viewer/core`](https://www.npmjs.com/package/@file-viewer/core) | none | `2.0.1` | Framework-neutral format matrix, preview capability, source loading, lifecycle events, search, zoom, print, export, and operation APIs |
+| Vue 3 | [`@file-viewer/vue3`](https://www.npmjs.com/package/@file-viewer/vue3) | [`@flyfish-group/file-viewer3`](https://www.npmjs.com/package/@flyfish-group/file-viewer3), [`file-viewer3`](https://www.npmjs.com/package/file-viewer3) | `2.0.1` | Native Vue 3 component, plugin installation, props, events, refs/controllers, and complete types |
+| Vue 2.7 | [`@file-viewer/vue2.7`](https://www.npmjs.com/package/@file-viewer/vue2.7) | [`@flyfish-group/file-viewer`](https://www.npmjs.com/package/@flyfish-group/file-viewer) | `2.0.1` | Native Vue 2.7 component with the same capability set as Vue 3 |
+| Vue 2.6 | [`@file-viewer/vue2.6`](https://www.npmjs.com/package/@file-viewer/vue2.6) | none | `2.0.1` | Dedicated line for applications that still run Vue 2.6 |
+| React 18/19 | [`@file-viewer/react`](https://www.npmjs.com/package/@file-viewer/react) | [`@flyfish-group/file-viewer-react`](https://www.npmjs.com/package/@flyfish-group/file-viewer-react) | `2.0.1` | Native React component and hooks/controller, without Vue or iframe indirection |
+| React 16.8/17 | [`@file-viewer/react-legacy`](https://www.npmjs.com/package/@file-viewer/react-legacy) | none | `2.0.1` | Compatibility component package for older React projects |
+| Pure Web / script tag | [`@file-viewer/web`](https://www.npmjs.com/package/@file-viewer/web) | [`@flyfish-group/file-viewer-web`](https://www.npmjs.com/package/@flyfish-group/file-viewer-web) | `2.0.1` | `mountViewer(container, options)`, IIFE, asset copy CLI, and Worker/WASM self-hosting tools |
+| jQuery | [`@file-viewer/jquery`](https://www.npmjs.com/package/@file-viewer/jquery) | none | `2.0.1` | jQuery-style plugin integration for traditional admin systems |
+| Svelte | [`@file-viewer/svelte`](https://www.npmjs.com/package/@file-viewer/svelte) | none | `2.0.1` | Svelte component, action, and type entrypoints |
+
+The boundary is intentional: `@file-viewer/core` owns low-level preview capability and APIs; every standard component package depends only on core plus its own ecosystem dependencies; historical aliases keep old package names working and are not the recommended first choice for new projects.
+
+Common installs:
+
+```bash
+pnpm add @file-viewer/vue3
+pnpm add @file-viewer/react
+pnpm add @file-viewer/web
+pnpm add @file-viewer/core
+```
 
 For intranet or offline environments, the open-source main repository also ships release tarballs under `artifacts/`:
 
 ```bash
-npm install ./artifacts/flyfish-group-file-viewer3-2.0.1.tgz
 npm install ./artifacts/file-viewer-core-2.0.1.tgz
 npm install ./artifacts/file-viewer-vue3-2.0.1.tgz
+npm install ./artifacts/file-viewer-vue2.7-2.0.1.tgz
+npm install ./artifacts/file-viewer-vue2.6-2.0.1.tgz
+npm install ./artifacts/file-viewer-react-2.0.1.tgz
+npm install ./artifacts/file-viewer-react-legacy-2.0.1.tgz
+npm install ./artifacts/file-viewer-web-2.0.1.tgz
+npm install ./artifacts/file-viewer-jquery-2.0.1.tgz
+npm install ./artifacts/file-viewer-svelte-2.0.1.tgz
+npm install ./artifacts/flyfish-group-file-viewer3-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-web-2.0.1.tgz
 npm install ./artifacts/flyfish-group-file-viewer-react-2.0.1.tgz
