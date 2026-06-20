@@ -112,7 +112,7 @@
 - [x] 移除 `temporary-v3-renderer-host-until-core-renderer-migration` 过渡策略。
 - [x] 撤回 core 中偏 Web 的 `mountViewer` 下沉，改为各标准组件包自带本地 controller。
 - [x] 将旧 v3 拆出的 `createViewer`、renderer registry、异步 loader、DOM provider registry、print layout 和浏览器资源解析合并回 `@file-viewer/core` 的 browser/renderers 分层。
-- [ ] 保留 `documentDom` 中的锚点/滚动定位、DOM search controller、DOM zoom controller、浏览器下载/打印/导出执行器作为 core browser 能力，但拆目录、拆文件，避免污染 headless 契约入口。
+- [x] `documentDom` 保留稳定兼容门面，内部已拆为 `documentDom/anchors.ts`、`documentDom/scroll.ts`、`documentDom/providers.ts`；锚点/滚动定位、DOM search provider、DOM zoom provider 继续作为 core browser 能力，打印/导出/下载执行器保持在 `printLayout.ts`、`export.ts`、`viewerOperations.ts` 等专责模块，避免污染 headless 契约入口。
 - [~] DOM search / zoom provider registry 已归入 `@file-viewer/core/browser` 方向，后续不得作为独立核心入口。
 - [~] DOM print layout helper 已归入 `@file-viewer/core/browser/printLayout` 方向。
 - [~] 浏览器 `document.baseURI` / `location.href` 默认读取已归入 `@file-viewer/core/browser/assets` 方向，headless asset/source loading 继续只接受显式 `documentBaseUrl` / `pageHref`。

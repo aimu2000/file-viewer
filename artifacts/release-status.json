@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-19T19:16:53.165Z",
+  "generatedAt": "2026-06-20T00:10:45.153Z",
   "version": "2.0.0",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "e58753910bc28beb31ae0aa02f89f3636d41da63",
+    "authoritativeCommit": "24fbc9e2d5baef451a2db8b517cc8f41c8845041",
     "localBranch": "v3",
-    "localCommit": "e58753910bc28beb31ae0aa02f89f3636d41da63",
+    "localCommit": "24fbc9e2d5baef451a2db8b517cc8f41c8845041",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "v3",
-    "commit": "e58753910bc28beb31ae0aa02f89f3636d41da63",
-    "shortCommit": "e5875391",
+    "commit": "24fbc9e2d5baef451a2db8b517cc8f41c8845041",
+    "shortCommit": "24fbc9e2",
     "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "e58753910bc28beb31ae0aa02f89f3636d41da63",
+    "hash": "24fbc9e2d5baef451a2db8b517cc8f41c8845041",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "9133be71b992dcace4377e7af1b2be5c9f312fd9",
+      "hash": "07ded658498e2deabf3ca81cab49b80460051f42",
       "error": ""
     },
     "gitee": {
@@ -63,7 +63,7 @@
         "url": "https://github.com/flyfish-dev/file-viewer-core",
         "branch": "main",
         "ok": true,
-        "hash": "f5e22ff101c2a7646c2d1bba396fc70443414d17",
+        "hash": "49790a75f78a74bde37aa82ed08fa9129c6a0eff",
         "error": ""
       },
       "gitee": {
@@ -320,7 +320,7 @@
     }
   ],
   "gaps": [
-    "open-source main Gitee repository 8ddb952be08d differs from GitHub 9133be71b992",
+    "open-source main Gitee repository 8ddb952be08d differs from GitHub 07ded658498e",
     "core Gitee repository missing",
     "vue3 Gitee repository missing",
     "vue2.7 Gitee repository missing",
@@ -361,11 +361,11 @@
   },
   "gapDetails": [
     {
-      "id": "gitee-open-source-main-gitee-repository-8ddb952be08d-differs-from-github-9133be71b992",
+      "id": "gitee-open-source-main-gitee-repository-8ddb952be08d-differs-from-github-07ded658498e",
       "channel": "gitee",
       "scope": "public-mirror",
       "externalBlocker": true,
-      "message": "open-source main Gitee repository 8ddb952be08d differs from GitHub 9133be71b992",
+      "message": "open-source main Gitee repository 8ddb952be08d differs from GitHub 07ded658498e",
       "nextAction": "Provide a Gitee organization token or wait for the mirror remote/quota to recover, then publish the mirror."
     },
     {
