@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-20T16:40:29.461Z",
+  "generatedAt": "2026-06-20T17:14:30.226Z",
   "version": "2.0.8",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "b4e5c2e5ddd2187458d4ba5eafac4574ba848e0a",
+    "authoritativeCommit": "bec3fce39c7c1b977691c9c904c10ad475e161b6",
     "localBranch": "v3",
-    "localCommit": "b4e5c2e5ddd2187458d4ba5eafac4574ba848e0a",
+    "localCommit": "bec3fce39c7c1b977691c9c904c10ad475e161b6",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "v3",
-    "commit": "b4e5c2e5ddd2187458d4ba5eafac4574ba848e0a",
-    "shortCommit": "b4e5c2e5",
-    "dirty": true
+    "commit": "bec3fce39c7c1b977691c9c904c10ad475e161b6",
+    "shortCommit": "bec3fce3",
+    "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "b4e5c2e5ddd2187458d4ba5eafac4574ba848e0a",
+    "hash": "bec3fce39c7c1b977691c9c904c10ad475e161b6",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "0dc4c372b825a2a1efdae162c18d62cf7e9f4610",
+      "hash": "5dbd89f730b7f7aa4de3a5e6c72dac334bc4e764",
       "error": ""
     },
     "gitee": {
@@ -43,22 +43,22 @@
       "error": ""
     },
     "inSync": false,
-    "syncMode": "unchecked",
-    "treeChecked": false,
-    "referenceTree": "5234198c7a859c534c0145b93eef33d2a1c2e61e",
-    "giteeTree": "",
-    "treeError": "local public repository fafa992077f9 does not match GitHub 0dc4c372b825",
+    "syncMode": "stale",
+    "treeChecked": true,
+    "referenceTree": "15e3c8911ee6a9d9f8139dc356fafe4c773562ad",
+    "giteeTree": "62b18f03808005d7045f6bcb1c078889de3cdff4",
+    "treeError": "",
     "reportHashNote": "This status report is generated before it is committed into the open-source main repository, so the observed open-source main hash can trail the metadata-only commit that carries this file. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": false,
+    "ok": true,
     "tag": "v2.0.8",
-    "url": "",
-    "assetCount": 0,
-    "hasManifest": false,
-    "hasStatus": false,
-    "hasSchema": false,
-    "error": "release not found"
+    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.0.8",
+    "assetCount": 21,
+    "hasManifest": true,
+    "hasStatus": true,
+    "hasSchema": true,
+    "error": ""
   },
   "componentRepositories": [
     {
@@ -331,43 +331,16 @@
       "error": ""
     }
   ],
-  "gaps": [
-    "local source worktree has uncommitted changes",
-    "GitHub Release v2.0.8 missing"
-  ],
+  "gaps": [],
   "gapSummary": {
-    "total": 2,
-    "externalBlockers": 1,
-    "localActionable": 1,
-    "byChannel": {
-      "source-worktree": 1,
-      "github-release": 1
-    },
-    "externalBlockerChannels": [
-      "github-release"
-    ],
-    "localActionableChannels": [
-      "source-worktree"
-    ]
+    "total": 0,
+    "externalBlockers": 0,
+    "localActionable": 0,
+    "byChannel": {},
+    "externalBlockerChannels": [],
+    "localActionableChannels": []
   },
-  "gapDetails": [
-    {
-      "id": "source-worktree-local-source-worktree-has-uncommitted-changes",
-      "channel": "source-worktree",
-      "scope": "local",
-      "externalBlocker": false,
-      "message": "local source worktree has uncommitted changes",
-      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
-    },
-    {
-      "id": "github-release-github-release-v2.0.8-missing",
-      "channel": "github-release",
-      "scope": "release-assets",
-      "externalBlocker": true,
-      "message": "GitHub Release v2.0.8 missing",
-      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
-    }
-  ],
+  "gapDetails": [],
   "nextActions": [
     "Run `npm login` / passkey in an interactive terminal, then `pnpm release:ecosystem:publish`.",
     "After npm publish, run `pnpm verify:npm-registry-release`."
