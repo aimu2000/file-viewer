@@ -32,7 +32,7 @@
 - Component GitHub 仓库: core + 8 个标准组件包仓库均已创建并推送 `main`，`pnpm verify:wrapper-public-remotes --host=github` 通过。
 - Component Gitee 仓库: 不纳入本次验收。core + 8 个标准组件包 Gitee 仓库仍返回 404，临时旧 token 预检返回 `401 Unauthorized: Access token does not exist`；后续拿到有效组织 token 后再执行 `components:gitee:*`。
 - Demo / 文档站: Demo 与文档站已按 Cloudflare Pages production branch `v3` 重新部署；`file-viewer.app`、`doc.file-viewer.app` 和 `viewer.flyfish.dev` 均返回 200，`doc.file-viewer.app` 已确认是最新文档口径。`demo.file-viewer.app` 已通过 Cloudflare Pages API 添加到 `flyfish-file-viewer` 项目且状态为 `active`，但当前公网 DNS 仍解析到 `198.18.1.185`，curl 仍 TLS 握手失败；当前 OAuth token 查询 DNS 记录返回 403，需在 DNS 托管处修正记录后再关闭 demo 主域名 smoke 缺口。
-- Docker Hub: `docker manifest inspect flyfishdev/file-viewer:2.0.1` 返回 `no such manifest`；本机 Docker daemon 当前不可连接，无法在本机完成 `linux/amd64` / `linux/arm64` 镜像构建和推送。
+- Docker Hub: `flyfishdev/file-viewer:2.0.1` 与 `flyfishdev/file-viewer:latest` 已通过 `docker buildx imagetools inspect` 校验为同一 OCI index `sha256:64886b2d8bab3f4e4530a2b3951320338564351799562d7ff6d9acfa8d3283c5`，包含 `linux/amd64` 与 `linux/arm64`。
 - npm 发布: `@file-viewer/*` 标准包、`@flyfish-group/*` 历史兼容包和 `file-viewer3` 非 scoped alias 已通过交互式 passkey 发布到 npm registry，目标版本为 `2.0.1`；`pnpm verify:npm-registry-release -- --registry https://registry.npmjs.org/` 已拉回 14 个 release tarball 并完成包体校验。
 
 ## 总体不变量
@@ -223,7 +223,7 @@
 - [x] 开源总仓库包含最新全渠道构建产物、viewer assets、Demo、component demo、文档静态产物、示例文件、tarball、release manifest、开源源码和更新历史。
 - [x] 开源总仓库包含 core 和标准组件包源码，同时保留混淆压缩后的成品。
 - [x] GitHub 开源总仓库已同步最新内容。
-- [ ] Docker 镜像按需发布 `linux/amd64` 和 `linux/arm64`。（Docker Hub `flyfishdev/file-viewer:2.0.1` 暂无 manifest；本机 Docker daemon 未运行）
+- [x] Docker 镜像按需发布 `linux/amd64` 和 `linux/arm64`。（Docker Hub `flyfishdev/file-viewer:2.0.1` / `latest` 已发布并校验 OCI index）
 
 后续事项（非本次验收）:
 
@@ -274,7 +274,7 @@
 - [x] `node scripts/sync-public-main.mjs --public-repo-dir ../file-viewer-public --vue2-tarball .release/file-viewer-v2-2.0.1/ecosystem/flyfish-group-file-viewer-2.0.1.tgz`
 - [x] `pnpm test`
 - [x] 本地 smoke 已通过 `pnpm verify:migration-gates` 与 `pnpm verify:browser-smoke`，证明各生态体验与当前私有 `main` 发布基线一致。
-- [ ] 生产 smoke 证明 Demo、文档站、开源总仓下载物和 npm 发布结果与当前私有 `main` 发布基线一致。（GitHub Release、npm、文档主域名与 Demo 旧域名已通过；Docker Hub 和 `demo.file-viewer.app` DNS 仍待完成）
+- [ ] 生产 smoke 证明 Demo、文档站、开源总仓下载物和 npm 发布结果与当前私有 `main` 发布基线一致。（GitHub Release、npm、Docker Hub、文档主域名与 Demo 旧域名已通过；`demo.file-viewer.app` DNS 仍待完成）
 
 ## 完成审计标准
 
@@ -287,7 +287,7 @@
 - [x] GitHub 开源总仓库包含最新全渠道构建产物、文档静态产物、混淆库产物、release manifest、release status 和 GitHub Release 下载物。
 - [ ] 文档站和 Demo 站均上线最新内容。（文档主域名已最新；Demo 已部署到 `viewer.flyfish.dev` 和 Pages production，`demo.file-viewer.app` Pages 域名已 active 但 DNS 仍指向 `198.18.1.185`）
 - [x] 本地 smoke 已通过 `pnpm verify:migration-gates` 与 `pnpm verify:browser-smoke`，证明各生态体验与当前私有 `main` 发布基线一致。
-- [ ] 生产 smoke 证明 Demo、文档站、开源总仓下载物和 npm 发布结果与当前私有 `main` 发布基线一致。（当前剩余缺口为 Docker Hub 镜像和 `demo.file-viewer.app` DNS）
+- [ ] 生产 smoke 证明 Demo、文档站、开源总仓下载物和 npm 发布结果与当前私有 `main` 发布基线一致。（当前剩余缺口为 `demo.file-viewer.app` DNS）
 - [x] 发布记录已经证明私有 Gitea `main`、GitHub 开源总仓库、GitHub Release、Demo 构建物和文档构建物的版本口径一致，且 npm registry 已发布并校验到 `2.0.1`。
 
 后续事项（非本次验收）:
