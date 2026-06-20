@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-20T00:25:17.294Z",
+  "generatedAt": "2026-06-20T00:27:50.544Z",
   "version": "2.0.0",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "d7a81d7e07e11da6498f1002dfe5d9ff45954ec2",
+      "hash": "d6a93c0f3db21e42fa20b040884195186b01cd08",
       "error": ""
     },
     "gitee": {
@@ -320,7 +320,7 @@
     }
   ],
   "gaps": [
-    "open-source main Gitee repository 8ddb952be08d differs from GitHub d7a81d7e07e1",
+    "open-source main Gitee repository 8ddb952be08d differs from GitHub d6a93c0f3db2",
     "core Gitee repository missing",
     "vue3 Gitee repository missing",
     "vue2.7 Gitee repository missing",
@@ -361,11 +361,11 @@
   },
   "gapDetails": [
     {
-      "id": "gitee-open-source-main-gitee-repository-8ddb952be08d-differs-from-github-d7a81d7e07e1",
+      "id": "gitee-open-source-main-gitee-repository-8ddb952be08d-differs-from-github-d6a93c0f3db2",
       "channel": "gitee",
       "scope": "public-mirror",
       "externalBlocker": true,
-      "message": "open-source main Gitee repository 8ddb952be08d differs from GitHub d7a81d7e07e1",
+      "message": "open-source main Gitee repository 8ddb952be08d differs from GitHub d6a93c0f3db2",
       "nextAction": "Run `pnpm public:gitee:snapshot -- --push --confirm-rewrite-history` to publish a shallow Gitee mirror with the same file tree."
     },
     {
