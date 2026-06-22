@@ -20,9 +20,9 @@
 
 <img src="/_media/support/community-qr.png" alt="Flyfish Viewer 用户交流群二维码" style="width: 260px;" />
 
-### 微信
+### 微信赞赏
 
-<img src="/_media/donate-wx.jpg" alt="微信收款码" style="width: 360px;" />
+<img src="/_media/donate-wx.jpg" alt="微信赞赏码" style="width: 320px;" />
 
 ### 支付宝
 

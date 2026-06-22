@@ -207,9 +207,9 @@ Flyfish Viewer 会持续保持 Apache-2.0 开源。开源版适合通用 Web 预
 - 商业版 Demo: [office.flyfish.dev](https://office.flyfish.dev/)
 - 飞鱼开源工作室: [flyfish.dev](https://flyfish.dev/)
 
-| 微信赞赏码 | 微信支付 | 支付宝收款码 | 微信公众号 / 客服微信二维码 | 用户交流群 |
-| --- | --- | --- | --- | --- |
-| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="微信赞赏码" /> | <img src="docs/_media/support/wechat-pay.jpg" width="150" alt="微信支付赞助码" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="支付宝收款码" /> | <img src="docs/_media/support/wechat-mp.png" width="190" alt="飞鱼开源 WorkShop 微信公众号与客服微信入口" /> | <img src="docs/_media/support/community-qr.png" width="150" alt="Flyfish Viewer 用户交流群二维码" /> |
+| 微信赞赏码 | 支付宝收款码 | 微信公众号二维码 | 用户交流群 |
+| --- | --- | --- | --- |
+| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="微信赞赏码" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="支付宝收款码" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="飞鱼开源 WorkShop 微信公众号二维码" /> | <img src="docs/_media/support/community-qr.png" width="150" alt="Flyfish Viewer 用户交流群二维码" /> |
 
 商业版来自 Flyfish Office 产品线，面向严肃企业场景提供自研原生 Office 文档引擎，重点解决 Word、Excel、PowerPoint 在复杂版式、大文件、分页布局、高保真渲染和稳定性能上的更高要求。开源版会继续维护，商业支持主要用于更快响应、私有化评估和定制交付。
 

@@ -217,9 +217,9 @@ Flyfish Viewer remains Apache-2.0 open source. The open-source edition is design
 - Commercial demo: [office.flyfish.dev](https://office.flyfish.dev/)
 - Flyfish Open Source Studio: [flyfish.dev](https://flyfish.dev/)
 
-| WeChat reward | WeChat Pay | Alipay collection | Official account / customer support | Community group |
-| --- | --- | --- | --- | --- |
-| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/wechat-pay.jpg" width="150" alt="WeChat Pay sponsorship QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="190" alt="Flyfish Open Source WorkShop official account and customer support entry" /> | <img src="docs/_media/support/community-qr.png" width="150" alt="Flyfish Viewer community group QR code" /> |
+| WeChat reward | Alipay collection | Official account QR code | Community group |
+| --- | --- | --- | --- |
+| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="Flyfish Open Source WorkShop official account QR code" /> | <img src="docs/_media/support/community-qr.png" width="150" alt="Flyfish Viewer community group QR code" /> |
 
 The commercial edition comes from the Flyfish Office product line. It provides a self-developed native Office document engine for serious enterprise Word, Excel, and PowerPoint scenarios, with stronger fidelity for complex layout, large files, pagination, high-quality rendering, and stable performance. The open-source edition will continue to evolve; commercial support is mainly for faster maintainer response, private deployment evaluation, and custom delivery.
 
