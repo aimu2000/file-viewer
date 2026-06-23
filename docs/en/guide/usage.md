@@ -11,7 +11,7 @@
 | Option area | Purpose |
 | --- | --- |
 | `theme` | `light`, `dark`, `auto`, or renderer-specific theme behavior |
-| `toolbar` | Position, visibility, floating mode, operation grouping, and custom action handling |
+| `toolbar` | Position, visibility, floating mode, operation grouping, key-based items, permission gates, and custom action handling |
 | `watermark` | Text or image watermark source, opacity, spacing, rotation, and toggle behavior |
 | `search` | Document search, highlighted matches, next/previous navigation, and focus handling |
 | `zoom` | Unified zoom in, zoom out, reset, fit-to-width, and renderer-specific adapters |
@@ -25,16 +25,25 @@
 
 ```ts
 const options = {
-  async beforeOperation(operation, context) {
-    if (operation === 'download') {
+  async beforeOperation(context) {
+    if (context.operation === 'download') {
       return await checkPermission(context.source)
     }
     return true
+  },
+  toolbar: {
+    position: 'bottom-right',
+    items: {
+      'zoom-reset': false
+    },
+    permissions: {
+      print: canPrint
+    }
   }
 }
 ```
 
-Returning `false` cancels the operation. Returning `true` continues.
+Built-in operation keys are `download`, `print`, `export-html`, `zoom-in`, `zoom-out`, and `zoom-reset`. `toolbar.items` only controls the built-in toolbar UI, so teams can replace selected buttons with their own native controls. `toolbar.permissions` is a hard gate: a `false` value blocks both the built-in toolbar and direct controller / ref API calls before custom `beforeOperation` hooks run. Returning `false` from any guard cancels the operation.
 
 ## Lifecycle Hooks
 
@@ -69,3 +78,4 @@ Framework packages expose the same operation model with ecosystem-native customi
 
 Toolbar buttons should call viewer operations rather than wrapping the rendered content with outer CSS transforms. This keeps spreadsheet coordinates, PDF text layers, CAD canvases, and mobile gestures aligned.
 
+PDF default assets are resolved from the site root (`/vendor/pdf/...`) so Vue Router, React Router, and other deep routes do not accidentally request `vendor/pdf/pdf.worker.mjs` from the current page path. Use absolute `pdf.workerUrl`, `pdf.cMapUrl`, `pdf.wasmUrl`, and `pdf.standardFontDataUrl` when deploying under a sub-path or a dedicated static asset domain.

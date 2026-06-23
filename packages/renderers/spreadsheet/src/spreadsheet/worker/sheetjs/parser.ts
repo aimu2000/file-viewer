@@ -3,6 +3,24 @@ import { read, utils } from 'styled-exceljs';
 import SheetJsModel from './SheetJsModel.js';
 import type { SheetDefinition } from '../type.js';
 
+interface DrawingMarkerLike {
+  row?: number;
+  col?: number;
+}
+
+interface DrawingImageLike {
+  anchor?: {
+    from?: DrawingMarkerLike;
+    to?: DrawingMarkerLike;
+  };
+}
+
+interface WorksheetWithDrawings {
+  '!drawings'?: {
+    images?: DrawingImageLike[];
+  };
+}
+
 export interface SpreadsheetParserContext {
   workbook: WorkBook | null;
   sheets: SheetDefinition[];
@@ -44,6 +62,22 @@ const toErrorResponse = (
   },
 });
 
+const getDrawingBounds = (worksheet: WorksheetWithDrawings | undefined) => {
+  const images = worksheet?.['!drawings']?.images || [];
+  return images.reduce((bounds, image) => {
+    const anchor = image.anchor;
+    const row = Number(anchor?.to?.row ?? anchor?.from?.row);
+    const col = Number(anchor?.to?.col ?? anchor?.from?.col);
+    return {
+      rowCount: Number.isFinite(row) ? Math.max(bounds.rowCount, row + 1) : bounds.rowCount,
+      colCount: Number.isFinite(col) ? Math.max(bounds.colCount, col + 1) : bounds.colCount,
+    };
+  }, {
+    rowCount: 0,
+    colCount: 0,
+  });
+};
+
 const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerResponse[] => {
   const workbook = context.workbook;
   if (!workbook?.SheetNames) {
@@ -54,16 +88,17 @@ const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerRespon
   context.sheets = workbook.SheetNames.reduce<SheetDefinition[]>((result, name, sourceIndex) => {
     const worksheet = workbook.Sheets[name];
     const ref = worksheet?.['!ref'];
-    if (!ref) {
+    const drawingBounds = getDrawingBounds(worksheet as WorksheetWithDrawings | undefined);
+    if (!ref && !drawingBounds.rowCount && !drawingBounds.colCount) {
       return result;
     }
-    const range = utils.decode_range(ref);
+    const range = ref ? utils.decode_range(ref) : utils.decode_range('A1');
     result.push({
       id: result.length,
       name,
       hidden: !!workbookSheets[sourceIndex]?.Hidden,
-      rowCount: range.e.r + 1,
-      colCount: range.e.c + 1,
+      rowCount: Math.max(range.e.r + 1, drawingBounds.rowCount),
+      colCount: Math.max(range.e.c + 1, drawingBounds.colCount),
     });
     return result;
   }, []);

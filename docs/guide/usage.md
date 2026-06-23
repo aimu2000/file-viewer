@@ -191,7 +191,7 @@ const options = {
 | `theme` | 预览器主题，支持 `light`、`dark`、`system`。默认 `system`，继续跟随浏览器 `prefers-color-scheme`；浅色业务系统建议显式传 `light`，避免操作系统深色模式把预览区、工具栏或支持主题切换的渲染器自动切成深色 |
 | `builtinRenderers` | 内置渲染器集合，支持 `all`、`lite`、`none`。`lite` 只注册图片等 core 原生低成本链路；音视频请通过 `@file-viewer/renderer-media` 装配，代码、文本和 Markdown 请通过 `@file-viewer/renderer-text` 装配，EPUB / UMD 请通过 `@file-viewer/renderer-epub` 装配，也可以按产品形态使用 `@file-viewer/preset-lite`、`@file-viewer/preset-office`、`@file-viewer/preset-engineering` 或 `@file-viewer/preset-all`；`none` 适合只通过 `renderers` / renderer preset 显式装配业务需要的格式 |
 | `renderers` / `rendererMode` | 按需 renderer package 或 preset 装配入口。`rendererMode: 'replace'` 从空 registry 开始，`extend` 会在当前内置集合上追加；新项目要压安装体积时，建议用 `builtinRenderers: 'none'` 或 `lite` 再传入需要的 renderer |
-| `toolbar` | `true`、`false` 或对象；声明是否允许下载原文件、打印完整渲染结果、导出渲染后 HTML 和显示统一缩放按钮。传 `false` 会隐藏内置工具栏，但 ref / controller 上的下载、打印、导出、缩放 API 仍可用于自定义业务工具栏。`toolbar.zoom` 可单独关闭缩放按钮；真实缩放能力由各渲染器 provider 决定，Excel 等虚拟表格会通过内部列宽、行高和字体重排适配缩放，不会被外层 CSS 强行缩放。`toolbar.position` 支持 `auto`、`top`、`bottom-right`，默认 `auto`，PDF 会自动悬浮到右下角以避开自身导航栏，其他格式保持顶部。打印按钮还会结合当前文件类型、渲染完成状态和导出适配器动态显隐，Excel 等虚拟表格链路会隐藏打印按钮 |
+| `toolbar` | `true`、`false` 或对象；声明是否显示下载原文件、打印完整渲染结果、导出渲染后 HTML 和统一缩放按钮。传 `false` 会隐藏内置工具栏，但 ref / controller 上的下载、打印、导出、缩放 API 仍可用于自定义业务工具栏。`toolbar.items` 可按 `download`、`print`、`export-html`、`zoom-in`、`zoom-out`、`zoom-reset` 精确控制内置按钮显隐；`toolbar.permissions` 使用同一套 key 做强权限控制，设为 `false` 时内置按钮和外部 API 调用都会被拦截。`toolbar.zoom` 可单独关闭缩放按钮组；真实缩放能力由各渲染器 provider 决定，Excel 等虚拟表格会通过内部列宽、行高和字体重排适配缩放，不会被外层 CSS 强行缩放。`toolbar.position` 支持 `auto`、`top`、`bottom-right`，默认 `auto`，PDF 会自动悬浮到右下角以避开自身导航栏，其他格式保持顶部。打印按钮还会结合当前文件类型、渲染完成状态和导出适配器动态显隐，Excel 等虚拟表格链路会隐藏打印按钮 |
 | `watermark` | `true`、文字配置或图片配置；支持 `text`、`image`、`opacity`、`rotate`、`gapX/gapY`、`width/height`、字体和颜色 |
 | `search` | `true`、`false` 或对象；控制搜索能力。对象支持 `caseSensitive`、`wholeWord`、`maxMatches`、`debounce`、`className` 和 `activeClassName`。Word、Markdown、代码等文本类格式使用通用 DOM 高亮，PDF 等特殊格式可以走渲染器原生搜索提供器，避免污染文本层或 canvas |
 | `ai` | AI 友好结构配置；预览器不绑定云端模型，只提供 `getDocumentTextChunks()` 所需的文本切片、行号、页码、锚点和 label 上下文，业务侧可用于向量化、溯源、来源定位、召回高亮和审计 |
@@ -216,10 +216,10 @@ const options = {
 | `pdf.thumbnails` | 页面列表是否显示真实页面缩略图，默认 `false`；开启后只对可见页懒渲染缩略图，避免大 PDF 一次性生成所有 canvas |
 | `pdf.rangeChunkSize` | PDF.js Range 请求分片大小，默认 64KB；仅在文件服务支持 Range 时生效 |
 | `pdf.withCredentials` | PDF.js URL 读取是否携带浏览器凭据，默认 `false` |
-| `pdf.workerUrl` | 自托管 PDF.js Worker 地址。默认相对 viewer 入口加载 `vendor/pdf/pdf.worker.mjs`，适合内网和离线部署 |
-| `pdf.cMapUrl` | PDF.js CMap 目录，默认相对 viewer 入口加载 `vendor/pdf/cmaps/` |
-| `pdf.wasmUrl` | PDF.js WASM 目录，默认相对 viewer 入口加载 `vendor/pdf/wasm/` |
-| `pdf.standardFontDataUrl` | PDF.js standard fonts 目录，默认相对 viewer 入口加载 `vendor/pdf/standard_fonts/` |
+| `pdf.workerUrl` | 自托管 PDF.js Worker 地址。默认从站点根路径加载 `/vendor/pdf/pdf.worker.mjs`，避免 Vue Router / React Router 深层路由把 worker 解析到错误目录；子路径或独立静态域部署时请显式传入绝对 URL |
+| `pdf.cMapUrl` | PDF.js CMap 目录，默认从站点根路径加载 `/vendor/pdf/cmaps/` |
+| `pdf.wasmUrl` | PDF.js WASM 目录，默认从站点根路径加载 `/vendor/pdf/wasm/` |
+| `pdf.standardFontDataUrl` | PDF.js standard fonts 目录，默认从站点根路径加载 `/vendor/pdf/standard_fonts/` |
 | `cad.wasmPath` | LibreDWG WASM 资源目录，默认相对 viewer 入口加载 `wasm/cad/`。私有化部署或子路径部署时可以显式传绝对 URL |
 | `cad.workerUrl` | DWG Worker 地址，默认相对 viewer 入口加载 `wasm/cad/dwg-worker.js`。如果网关或构建系统改写静态资源路径，应显式覆盖 |
 | `cad.dwfWasmUrl` | DWF/DWFx/XPS native renderer 的 raster fallback WASM，默认相对 viewer 入口加载 `wasm/cad/dwfv-render.wasm` |
@@ -280,6 +280,12 @@ const options = {
     download: true,
     print: true,
     exportHtml: true,
+    items: {
+      'zoom-reset': false
+    },
+    permissions: {
+      print: canPrint
+    },
     beforeDownload(context) {
       return confirm(`下载 ${context.filename}?`)
     }
@@ -287,7 +293,7 @@ const options = {
 }
 ```
 
-内置操作当前包括 `download`、`print`、`export-html`、`zoom-in`、`zoom-out` 和 `zoom-reset`。`options.beforeOperation` 是全局前置钩子，`toolbar.beforeOperation` 会在工具栏层统一执行，`toolbar.beforeDownload` / `toolbar.beforePrint` / `toolbar.beforeExportHtml` 可以对单个按钮做精确控制。任意钩子返回 `false` 都会取消本次操作。预览器还会在文件切换、渲染完成和能力变化时抛出 `operation-availability-change`，宿主可以用它同步外部下载、打印、HTML 和缩放按钮；缩放后的最终比例会通过 `zoom-change` 回传，适合 DOCX / PPTX 这类下一帧重排后才拿到有效比例的格式。
+内置操作当前包括 `download`、`print`、`export-html`、`zoom-in`、`zoom-out` 和 `zoom-reset`。`toolbar.items` 只控制内置工具栏展示，适合把默认按钮交给业务 UI 接管；`toolbar.permissions` 是强权限门禁，会在 `options.beforeOperation` 之前执行，外部自定义按钮调用 controller API 时同样生效。`options.beforeOperation` 是全局前置钩子，`toolbar.beforeOperation` 会在工具栏层统一执行，`toolbar.beforeDownload` / `toolbar.beforePrint` / `toolbar.beforeExportHtml` 可以对单个按钮做精确控制。任意权限项为 `false` 或任意钩子返回 `false` 都会取消本次操作。预览器还会在文件切换、渲染完成和能力变化时抛出 `operation-availability-change`，宿主可以用它同步外部下载、打印、HTML 和缩放按钮；缩放后的最终比例会通过 `zoom-change` 回传，适合 DOCX / PPTX 这类下一帧重排后才拿到有效比例的格式。
 
 自定义工具栏不要在预览器外层套 `transform: scale()`。这会破坏虚拟表格、canvas、PDF 文本层或 CAD 交互坐标。请通过组件 ref 调用标准缩放 API：
 

@@ -15,6 +15,8 @@ export type FileViewerLifecyclePhase = 'load-start' | 'load-complete' | 'unload-
 
 export type FileViewerOperationType = 'download' | 'print' | 'export-html' | 'zoom-in' | 'zoom-out' | 'zoom-reset';
 
+export type FileViewerToolbarActionMap = Partial<Record<FileViewerOperationType, boolean>>;
+
 export type FileViewerRenderStateKind = 'idle' | 'loading' | 'ready' | 'empty' | 'unsupported' | 'error';
 
 export type FileViewerRendererCategory =
@@ -56,6 +58,10 @@ export interface FileViewerToolbarOptions {
   print?: boolean;
   exportHtml?: boolean;
   zoom?: boolean;
+  /** Controls which built-in toolbar actions are displayed without disabling controller APIs. */
+  items?: FileViewerToolbarActionMap;
+  /** Hard operation permission map. False values block both built-in toolbar and public API calls. */
+  permissions?: FileViewerToolbarActionMap;
   position?: FileViewerToolbarPosition;
   beforeOperation?: FileViewerBeforeOperation;
   beforeDownload?: FileViewerBeforeOperation;

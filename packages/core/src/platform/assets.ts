@@ -363,6 +363,32 @@ export const resolveFileViewerAssetUrl = (
   return options.trimTrailingSlash ? resolved.replace(/\/+$/, '') : resolved;
 };
 
+const getFileViewerDocumentOriginBaseUrl = (documentBaseUrl?: string) => {
+  try {
+    const parsed = new URL(documentBaseUrl || DEFAULT_FILE_VIEWER_DOCUMENT_BASE_URL, DEFAULT_FILE_VIEWER_DOCUMENT_BASE_URL);
+    if (parsed.origin && parsed.origin !== 'null') {
+      return `${parsed.origin}/`;
+    }
+  } catch {
+    // Keep the resolver deterministic in non-browser tests and unusual URL schemes.
+  }
+  return DEFAULT_FILE_VIEWER_DOCUMENT_BASE_URL;
+};
+
+const resolveFileViewerRootDefaultAssetUrl = (
+  value: string | URL | undefined,
+  fallback: string,
+  options: ResolveFileViewerAssetUrlOptions = {}
+) => {
+  if (value !== undefined && value !== null && String(value).trim()) {
+    return resolveFileViewerAssetUrl(value, fallback, options);
+  }
+  return resolveFileViewerAssetUrl(undefined, fallback, {
+    ...options,
+    baseUrl: getFileViewerDocumentOriginBaseUrl(options.documentBaseUrl),
+  });
+};
+
 export const resolveFileViewerArchiveWorkerUrl = (
   options?: Pick<FileViewerArchiveOptions, 'workerUrl'> | null,
   baseUrl?: string
@@ -403,16 +429,16 @@ export const resolveFileViewerPdfAssetUrls = (
   documentBaseUrl?: string
 ): ResolvedFileViewerPdfAssetUrls => {
   return {
-    workerUrl: resolveFileViewerAssetUrl(options?.workerUrl, DEFAULT_FILE_VIEWER_PDF_WORKER_PATH, {
+    workerUrl: resolveFileViewerRootDefaultAssetUrl(options?.workerUrl, DEFAULT_FILE_VIEWER_PDF_WORKER_PATH, {
       documentBaseUrl,
     }),
-    cMapUrl: resolveFileViewerAssetUrl(options?.cMapUrl, DEFAULT_FILE_VIEWER_PDF_CMAP_PATH, {
+    cMapUrl: resolveFileViewerRootDefaultAssetUrl(options?.cMapUrl, DEFAULT_FILE_VIEWER_PDF_CMAP_PATH, {
       documentBaseUrl,
     }),
-    wasmUrl: resolveFileViewerAssetUrl(options?.wasmUrl, DEFAULT_FILE_VIEWER_PDF_WASM_PATH, {
+    wasmUrl: resolveFileViewerRootDefaultAssetUrl(options?.wasmUrl, DEFAULT_FILE_VIEWER_PDF_WASM_PATH, {
       documentBaseUrl,
     }),
-    standardFontDataUrl: resolveFileViewerAssetUrl(
+    standardFontDataUrl: resolveFileViewerRootDefaultAssetUrl(
       options?.standardFontDataUrl,
       DEFAULT_FILE_VIEWER_PDF_STANDARD_FONT_PATH,
       { documentBaseUrl }
