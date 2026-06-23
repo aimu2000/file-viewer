@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'v
 import type { ComponentPublicInstance } from 'vue'
 import { ChevronDown, ChevronUp, Search, X } from '@lucide/vue'
 import { FileViewer } from '@file-viewer/vue3'
+import { allRenderers } from '@file-viewer/preset-all'
 import type {
   FileViewerFileRef as FileRef,
   FileViewerLifecycleContext,
@@ -82,6 +83,7 @@ const activeSearchState = computed(() => {
 })
 
 const viewerOptions = computed<FileViewerOptions>(() => ({
+  renderers: allRenderers,
   toolbar: false,
   archive: {
     cache: true

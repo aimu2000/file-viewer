@@ -1,0 +1,74 @@
+{
+  "name": "@file-viewer/renderer-text",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Standalone code, text, Markdown, patch diff, and Git bundle renderer plugin for Flyfish File Viewer.",
+  "keywords": [
+    "file-viewer",
+    "renderer",
+    "text",
+    "code",
+    "markdown",
+    "patch",
+    "git-bundle",
+    "highlight.js",
+    "document-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-renderer-text.git",
+    "directory": "packages/renderers/text"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/on-demand-renderers",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-renderer-text/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.11",
+    "diff2html": "^3.4.56",
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.5",
+    "pako": "^2.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

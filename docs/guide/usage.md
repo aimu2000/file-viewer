@@ -37,7 +37,7 @@ Vanilla JS / Pure Web、React、jQuery 和 Svelte 标准组件包允许直接传
 - 当 `file` 被清空后，如果 `url` 仍然存在，会自动回退到 `url`
 - 组件默认撑满父容器，因此父容器必须有稳定高度
 - 扩展名匹配会自动转成小写，所以 `PDF`、`DocX` 这类大小写差异不会影响命中
-- OFD、Typst、压缩包、邮件、OLB/DRA、CAD、地理数据、3D 模型、绘图、EPUB、UMD、PDF、Office、Markdown、音视频、HLS、HEIC、字体/数据资产和代码高亮等渲染器均按需异步加载，只有命中文件类型时才拉取对应代码块
+- OFD、Typst、XMind、压缩包、邮件、OLB/DRA/GDS/OASIS、CAD、地理数据、3D 模型、绘图、EPUB、UMD、PDF、Office、Markdown、音视频、HLS、HEIC、字体/数据资产和代码高亮等渲染器均按需异步加载，只有命中文件类型时才拉取对应代码块
 - PPTX 属于浏览器端近似渲染链路，当前由独立开源的 `@file-viewer/pptx` 原生引擎承接，已增强组合图形、主题背景、图片裁剪和 EMF 矢量图片；如果业务材料大量使用复杂动画或专有 Office 特效，建议把真实样本加入上线前回归。
 - `options` 可以配置内置操作栏、水印、压缩包 Worker、缓存和体积上限。
 
@@ -143,6 +143,7 @@ import { ref } from 'vue'
 const url = ref('/example/archive.zip')
 const options = {
   theme: 'light',
+  builtinRenderers: 'all',
   toolbar: {
     position: 'bottom-right',
     download: true,
@@ -188,6 +189,8 @@ const options = {
 | 选项 | 说明 |
 | --- | --- |
 | `theme` | 预览器主题，支持 `light`、`dark`、`system`。默认 `system`，继续跟随浏览器 `prefers-color-scheme`；浅色业务系统建议显式传 `light`，避免操作系统深色模式把预览区、工具栏或支持主题切换的渲染器自动切成深色 |
+| `builtinRenderers` | 内置渲染器集合，支持 `all`、`lite`、`none`。`lite` 只注册图片等 core 原生低成本链路；音视频请通过 `@file-viewer/renderer-media` 装配，代码、文本和 Markdown 请通过 `@file-viewer/renderer-text` 装配，EPUB / UMD 请通过 `@file-viewer/renderer-ebook` 装配，也可以按产品形态使用 `@file-viewer/preset-lite`、`@file-viewer/preset-office`、`@file-viewer/preset-engineering` 或 `@file-viewer/preset-all`；`none` 适合只通过 `renderers` / renderer preset 显式装配业务需要的格式 |
+| `renderers` / `rendererMode` | 按需 renderer package 或 preset 装配入口。`rendererMode: 'replace'` 从空 registry 开始，`extend` 会在当前内置集合上追加；新项目要压安装体积时，建议用 `builtinRenderers: 'none'` 或 `lite` 再传入需要的 renderer |
 | `toolbar` | `true`、`false` 或对象；声明是否允许下载原文件、打印完整渲染结果、导出渲染后 HTML 和显示统一缩放按钮。传 `false` 会隐藏内置工具栏，但 ref / controller 上的下载、打印、导出、缩放 API 仍可用于自定义业务工具栏。`toolbar.zoom` 可单独关闭缩放按钮；真实缩放能力由各渲染器 provider 决定，Excel 等虚拟表格会通过内部列宽、行高和字体重排适配缩放，不会被外层 CSS 强行缩放。`toolbar.position` 支持 `auto`、`top`、`bottom-right`，默认 `auto`，PDF 会自动悬浮到右下角以避开自身导航栏，其他格式保持顶部。打印按钮还会结合当前文件类型、渲染完成状态和导出适配器动态显隐，Excel 等虚拟表格链路会隐藏打印按钮 |
 | `watermark` | `true`、文字配置或图片配置；支持 `text`、`image`、`opacity`、`rotate`、`gapX/gapY`、`width/height`、字体和颜色 |
 | `search` | `true`、`false` 或对象；控制搜索能力。对象支持 `caseSensitive`、`wholeWord`、`maxMatches`、`debounce`、`className` 和 `activeClassName`。Word、Markdown、代码等文本类格式使用通用 DOM 高亮，PDF 等特殊格式可以走渲染器原生搜索提供器，避免污染文本层或 canvas |
@@ -198,14 +201,15 @@ const options = {
 | `archive.cache` | 是否使用 IndexedDB 缓存已解压的压缩包内文件 |
 | `archive.maxArchiveSize` | 单个压缩包允许读取目录的最大体积，默认 320MB |
 | `archive.maxEntryPreviewSize` | 压缩包内单文件允许预览的最大体积，默认 64MB |
-| `docx.worker` | 是否启用 `@file-viewer/docx` Worker 解析，默认 `true`。仅在 CSP 或宿主环境禁用 Worker 时设为 `false` |
+| `docx.worker` | 是否启用 `@file-viewer/renderer-word` 内部的 `@file-viewer/docx` Worker 解析，默认 `true`。仅在 CSP 或宿主环境禁用 Worker 时设为 `false` |
 | `docx.workerUrl` | 自定义 DOCX Worker 地址，默认尝试当前部署 base 下的 `vendor/docx/docx.worker.js` |
 | `docx.workerJsZipUrl` | 自定义 DOCX Worker 内加载的 JSZip 地址，默认尝试当前部署 base 下的 `vendor/docx/jszip.min.js` |
 | `docx.progressive` | 是否启用异步分批渲染，默认按批次让出主线程，提升大文档首屏和滚动响应 |
 | `docx.visualPagination` | 是否启用页式预览和预览层兜底分页，默认 `false`。默认 DOCX 使用连续流式阅读，避免复杂目录、表格和长段落被分页拆坏；只有业务明确需要页式效果时再设为 `true` |
-| `docx.workerTimeout` | DOCX Worker 超时时间，默认 120000ms，超时后由 `@file-viewer/docx` 自动回退 |
-| `spreadsheet.worker` | 是否启用表格静态 Worker 尝试，默认 `false`；默认使用同一套 `styled-exceljs` 主线程解析以避开本地服务器、手机 WebView、MIME 或 CSP 导致的 Worker 卡住问题 |
+| `docx.workerTimeout` | DOCX Worker 超时时间，默认 120000ms，超时后由 `@file-viewer/renderer-word` 内部 DOCX 引擎自动回退 |
+| `spreadsheet.worker` | 是否启用表格静态 Worker 尝试，默认 `false`；`@file-viewer/renderer-spreadsheet` 默认使用同一套 `styled-exceljs` 主线程解析以避开本地服务器、手机 WebView、MIME 或 CSP 导致的 Worker 卡住问题 |
 | `spreadsheet.workerUrl` | 自定义 Excel/XLSX Worker 地址，默认尝试当前部署 base 下的 `vendor/xlsx/sheet.worker.js` |
+| `spreadsheet.resizableColumns` | 是否允许用户在 Excel / CSV / ODS 等表格预览中拖拽表头边界调整列宽，默认 `false` 以保持历史兼容；Demo 默认开启，便于查看被截断的长文本 |
 | `pdf.streaming` | PDF URL 渐进读取策略，默认 `same-origin`；设为 `true` 时跨域也尝试 URL 直连读取，设为 `false` 时完全回到 Blob 下载后预览 |
 | `pdf.toolbar` | 是否显示 PDF 渲染器自己的页码、缩放和旋转工具栏。独立预览建议显示；左右文档比对等紧凑场景可设为 `false`，让 PDF 与其他格式的正文区域对齐 |
 | `pdf.navigation` / `pdf.defaultNavigationVisible` | 是否启用左侧导航窗格以及初始是否展开。导航窗格支持页面列表和目录树切换 |
@@ -355,7 +359,7 @@ Vanilla JS / Pure Web、React、jQuery 和 Svelte 接入时，搜索和定位仍
 
 ## DOCX 流式阅读
 
-`.docx`、`.docm`、`.dotx`、`.dotm` 使用自研 `@file-viewer/docx` 做高可读流式渲染。默认链路会用 Worker 完成 ZIP/XML 解析，再在真实浏览器 DOM 中连续输出正文、目录字段缓存、页眉页脚、段落样式和制表符规则，最后执行宽度自适应、打印和导出适配。默认不分页，优先保证复杂目录、长表格、中文公文和正式文档的连续阅读稳定性。
+`.docx`、`.docm`、`.dotx`、`.dotm` 由 `@file-viewer/renderer-word` 按需装配，并在命中格式时加载自研 `@file-viewer/docx` 做高可读流式渲染。默认链路会用 Worker 完成 ZIP/XML 解析，再在真实浏览器 DOM 中连续输出正文、目录字段缓存、页眉页脚、段落样式和制表符规则，最后执行宽度自适应、打印和导出适配。默认不分页，优先保证复杂目录、长表格、中文公文和正式文档的连续阅读稳定性。
 
 ```vue
 <FileViewer
@@ -390,7 +394,7 @@ Vanilla JS / Pure Web、React、jQuery 和 Svelte 接入时，搜索和定位仍
 - 打印会生成只包含预览内容和水印的独立打印窗口，不带 Demo 侧边栏、示例选择器或操作工具条。
 - PDF 打印和导出 HTML 使用 PDF 专属导出适配器逐页生成完整页面，和当前滚动位置、当前可见页、导航窗格显隐状态都解耦，避免只输出当前页或被滚动容器截断。
 - Word 打印和导出会清理预览阶段的缩放、绝对定位、滚动容器和 Demo 全局布局样式，把 `.docx` / `.doc` 还原成完整白色文档内容，避免只打印当前视口或第一页。
-- 图片、Markdown、代码、PPTX、OFD、CAD、绘图、UMD、OLB/DRA 等可以稳定克隆当前渲染结果的格式会保留打印按钮；Excel 当前使用 `styled-exceljs` + `e-virt-table` 虚拟渲染，完整工作表不会一次性存在于 DOM 中，因此表格、压缩包、邮件、EPUB、音视频、3D / 模型等更适合交互查看或原文件下载的格式会隐藏打印按钮。
+- 图片、Markdown、代码、PPTX、OFD、CAD、绘图、XMind、UMD、OLB/DRA/GDS/OASIS 等可以稳定克隆当前渲染结果的格式会保留打印按钮；Excel 当前使用 `styled-exceljs` + `e-virt-table` 虚拟渲染，完整工作表不会一次性存在于 DOM 中，因此表格、压缩包、邮件、EPUB、音视频、3D / 模型等更适合交互查看或原文件下载的格式会隐藏打印按钮。
 - 导出 HTML 会尽量克隆当前渲染结果，并把 canvas 转成图片，保证图纸、绘图、文档和代码在离线 HTML 中仍有可读内容。
 - 水印会同时参与预览、打印和 HTML 导出。文字水印适合内部资料、审批流和归档场景；图片水印适合品牌 Logo 或业务系统标识。
 
@@ -433,23 +437,25 @@ async function useLocal(blob: Blob) {
 
 预览器依赖文件扩展名选择渲染器，所以无论你传入的是 URL 还是二进制结果，文件名都应该尽量带上正确扩展名。
 
-### OFD、Typst、压缩包、邮件、EDA、CAD、3D 模型、绘图和电子书怎么接
+### OFD、Typst、XMind、压缩包、邮件、EDA、CAD、3D 模型、绘图和电子书怎么接
 
 `.ofd` 会使用 `DLTech21/ofd.js` 仓库源码在浏览器端解析，避开 npm dist 的授权 wasm 分支。CAD 文件会使用 `@flyfish-dev/cad-viewer`：`dwg` 通过 Worker + LibreDWG WASM 解析，`dxf` 使用 JavaScript parser，`dwf` / `dwfx` / `xps` 通过 native `dwf-viewer` 渲染 W2D/W3D/XPS 图形。私有化部署时请确认 viewer assets 目录下的 `wasm/cad/libredwg-web.js`、`wasm/cad/libredwg-web.wasm`、`wasm/cad/dwfv-render.wasm` 和 `wasm/cad/dwg-worker.js` 可访问；路径不同可通过 `options.cad.wasmPath` / `options.cad.workerUrl` / `options.cad.dwfWasmUrl` 覆盖。
 
 `.typ` / `.typst` 会直接读取源文件并加载 Typst WASM 编译和 SVG 渲染链路，组件会按 Typst 输出的页面元数据拆页显示。当前更适合单文件 Typst 文档；如果文档依赖外部图片、字体或拆分源码，建议用压缩包保留项目结构。
 
+`.xmind` 会使用 `@file-viewer/renderer-mindmap` + `@ljheee/xmind-parser` 解析 XMind 8 XML 和 XMind 2020+ JSON 文件包，并展示多 sheet、节点、标签、备注、链接、标记、目录侧栏。画布交互由轻量 `@panzoom/panzoom` 承接，支持拖拽平移、移动端双指缩放、适配画布、搜索和缩放。它是只读预览能力，不会修改脑图文件；需要编辑、协作批注或复杂布局重排时仍建议回到专业脑图软件。
+
 `.zip`、`.7z`、`.rar`、`.tar`、`.gz`、`.xz`、`.cab`、`.iso`、`.jar`、`.apk`、`.cbz`、`.cbr` 等压缩包会使用 `libarchive.js` Worker 读取目录。内部文件在点击后按需解压，并继续交给对应格式预览器。私有化部署一般不需要手动配置 `archive.workerUrl`；如果静态目录或资源前缀特殊，可把 `worker-bundle.js` 与同目录的 `libarchive.wasm` 发布出来后配置 `options.archive.workerUrl`。当手机 WebView、本地临时服务器、MIME 或 CSP 导致 Worker 初始化失败时，组件会自动切换到 ZIP/TAR/GZIP 兼容模式，避免停留在 loading。
 
 `.eml` 使用 `postal-mime`，`.msg` 使用 `@kenjiuno/msgreader`。邮件正文会在隔离沙箱文档中展示，附件可以下载，也可以继续在线预览。
 
-`.olb` 与 `.dra` 使用 `cfb` 做 OrCAD / Allegro 常见复合文档结构预览。组件会展示结构树、流类型、元件符号、封装、Padstack、属性、可读字符串和诊断信息；它适合附件初筛和内容确认，不替代专业 EDA 软件里的封装编辑、规则校核和电气验证。
+`.olb` 与 `.dra` 使用 `@file-viewer/renderer-eda` + `cfb` 做 OrCAD / Allegro 常见复合文档结构预览。标准 `.gds` 会读取 GDSII 记录流，提取库名、structure、boundary、path、文本和引用，并生成可滚动 SVG 版图预览；项目内可读 `.oas` / `.oasis` 文本夹具会输出 SVG 版图，真实 SEMI 二进制 OASIS 当前做安全结构索引、可读字符串和诊断信息。EDA 链路适合附件初筛和内容确认，不替代专业 EDA 软件里的封装编辑、版图编辑、DRC/LVS、规则校核和电气验证；完整 OASIS / Cadence 几何预览后续更适合拆成独立 WASM 按需包持续维护。
 
-3D 模型使用 Three.js，支持 `glb/gltf/obj/stl/ply/fbx/dae/3ds/3mf/amf/usd/usda/usdc/usdz/kmz/pcd/wrl/vrml/xyz/vtk/vtp`。如果模型有外部贴图、材质或 `.bin`，远程 `url` 预览会按原始文件目录继续加载；本地上传时更推荐使用单文件 `.glb`。`step/stp/iges/igs/ifc/3dm` 会给出需要 CAD/BIM/WASM 几何内核的原因和转换建议。
+3D 模型使用 `@file-viewer/renderer-3d` + Three.js loaders，支持 `glb/gltf/obj/stl/ply/fbx/dae/3ds/3mf/amf/usd/usda/usdc/usdz/kmz/pcd/wrl/vrml/xyz/vtk/vtp`。如果模型有外部贴图、材质或 `.bin`，远程 `url` 预览会按原始文件目录继续加载；本地上传时更推荐使用单文件 `.glb`。`step/stp/iges/igs/ifc/3dm/brep` 会通过 `@file-viewer/geometry-engine` 做轻量签名识别，并给出需要 CAD/BIM/WASM 几何内核的原因和转换建议；当前调研路线是 STEP / IGES / BREP 使用 OpenCascade WASM，IFC 使用 `web-ifc` / `web-ifc-three`，3DM 使用 `rhino3dm`，后续继续在独立几何包中分层接入，避免拖慢普通预览首屏。
 
 ### 地理数据怎么接
 
-`geojson` 会直接按 GeoJSON 读取；`kml` 和 `gpx` 会按需加载 `@tmcw/togeojson` 转换；`shp` 会按需加载 `shpjs`。内置预览是离线 SVG 地图，不依赖在线瓦片服务，适合内网附件中心快速确认点线面、轨迹和边界。大量要素、投影转换或空间分析仍建议在业务 GIS 模块中处理。
+`geojson` 会直接按 GeoJSON 读取；`kml` 和 `gpx` 会由 `@file-viewer/renderer-geo` 按需加载 `@tmcw/togeojson` 转换；`shp` 会由同一个 renderer 包按需加载 `shpjs`。内置预览是离线 SVG 地图，不依赖在线瓦片服务，适合内网附件中心快速确认点线面、轨迹和边界。大量要素、投影转换或空间分析仍建议在业务 GIS 模块中处理。
 
 `.excalidraw` 会使用官方 `@excalidraw/excalidraw` 的 `exportToSvg` 生成只读 SVG 预览；`.drawio` / `.dio` 默认使用随 viewer assets 分发的官方 diagrams.net `GraphViewer` 离线预览。静态路径特殊时可通过 `options.drawing.viewerScriptUrl` 指定自托管 `viewer-static.min.js`，组件会把同目录下的 styles、shapes、stencils、img、mxgraph 和 math 资源用于离线渲染；官方 viewer 异常时会回退内置 SVG。
 
@@ -459,15 +465,15 @@ async function useLocal(blob: Blob) {
 
 ### 音频怎么接
 
-`.mp3`、`.mpeg`、`.wav`、`.ogg`、`.oga`、`.opus`、`.m4a`、`.aac`、`.flac`、`.weba` 会走浏览器原生 `<audio>` 播放器。不同浏览器对音频编码支持不完全一致，如果要保证最稳的跨端体验，建议优先输出 MP3 或 OGG。`.midi` / `.mid` 会按需加载 `@tonejs/midi`，展示轨道、时长、PPQ 和音符摘要。
+`.mp3`、`.mpeg`、`.wav`、`.ogg`、`.oga`、`.opus`、`.m4a`、`.aac`、`.flac`、`.weba` 由 `@file-viewer/renderer-media` 走浏览器原生 `<audio>` 播放器。不同浏览器对音频编码支持不完全一致，如果要保证最稳的跨端体验，建议优先输出 MP3 或 OGG。`.midi` / `.mid` 命中时才按需加载 `@tonejs/midi`，展示轨道、时长、PPQ 和音符摘要。
 
 ### 视频和 HLS 怎么接
 
-`.mp4` 和 `.webm` 使用浏览器原生 `<video>` 播放器。`.m3u8` 优先使用浏览器原生 HLS 能力，不支持时再按需加载 `hls.js`。如果传入本地上传的 M3U8 文件，清单里引用的 TS/MP4 分片必须是浏览器可访问的绝对或相对 URL，否则只能展示清单加载失败。
+`.mp4` 和 `.webm` 由 `@file-viewer/renderer-media` 使用浏览器原生 `<video>` 播放器。`.m3u8` 优先使用浏览器原生 HLS 能力，不支持时再按需加载 `hls.js`。如果传入本地上传的 M3U8 文件，清单里引用的 TS/MP4 分片必须是浏览器可访问的绝对或相对 URL，否则只能展示清单加载失败。
 
 ### 字体、设计资产和数据文件怎么接
 
-字体文件 `ttf/otf/woff/woff2` 会用 FontFace 临时注册到预览容器并展示样张。`psd` 会按需加载 `ag-psd` 展示尺寸、图层和预览图；`ai` 如果是 PDF-backed 文件会进入 PDF 预览，否则展示安全摘要；`eps` 不执行 PostScript，仅展示文本摘要。`sqlite`、`parquet`、`avro`、`wasm` 和 `webarchive` 都走 core 共享结构预览链路，目标是快速判断文件内容，不替代数据库客户端或专业分析工具。SQLite 默认从 viewer assets 加载 `wasm/data/sql-wasm.wasm`；私有化部署路径特殊时，可以通过 `options.data.sqlWasmUrl` 或 `window.__FLYFISH_DATA_SQL_WASM_URL__` 指定自托管地址。
+字体文件 `ttf/otf/woff/woff2` 会用 FontFace 临时注册到预览容器并展示样张。`psd` 会按需加载 `ag-psd` 展示尺寸、图层和预览图；`ai` 如果是 PDF-backed 文件会进入 PDF 预览，否则展示安全摘要；`eps` 不执行 PostScript，仅展示文本摘要。`sqlite`、`parquet`、`avro`、`wasm` 和 `webarchive` 都走 `@file-viewer/renderer-data` 独立结构预览链路，目标是快速判断文件内容，不替代数据库客户端或专业分析工具。SQLite 默认从 viewer assets 加载 `wasm/data/sql-wasm.wasm`；私有化部署路径特殊时，可以通过 `options.data.sqlWasmUrl` 或 `window.__FLYFISH_DATA_SQL_WASM_URL__` 指定自托管地址。
 
 ### `html` 会被当网页渲染吗
 

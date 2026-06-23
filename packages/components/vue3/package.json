@@ -10,7 +10,11 @@
     "document-preview",
     "vue3",
     "office-preview",
-    "pdf-viewer"
+    "pdf-viewer",
+    "document-viewer",
+    "file-preview",
+    "self-hosted",
+    "vue"
   ],
   "publishConfig": {
     "access": "public",
@@ -28,6 +32,10 @@
   "homepage": "https://doc.file-viewer.app/",
   "bugs": {
     "url": "https://github.com/flyfish-dev/file-viewer-vue3/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
   },
   "scripts": {
     "build": "vite build --mode lib && node scripts/build.mjs",

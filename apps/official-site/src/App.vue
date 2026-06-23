@@ -104,6 +104,7 @@ const commercialUrl = 'https://product.flyfish.group/'
 const commercialDemoUrl = 'https://office.flyfish.dev/'
 
 const locale = ref<Locale>('zh')
+const localeStorageKey = 'flyfish-file-viewer-site-locale'
 const heroCanvas = ref<HTMLCanvasElement | null>(null)
 const demoReveal = ref<HTMLElement | null>(null)
 const quickStartSection = ref<HTMLElement | null>(null)
@@ -131,15 +132,15 @@ const copy = {
       eyebrow: '浏览器原生文件预览超级组件',
       title: '把复杂文件，变成产品里的即时体验。',
       subtitle:
-        'Flyfish File Viewer 以纯 TypeScript core 为底座，把 Office、PDF、OFD、CAD、压缩包、邮件、电子书、代码、媒体、3D 与数据资产带进浏览器。Vanilla JS / Pure Web、Vue、React、jQuery、Svelte 等标准组件保持同一套参数、事件、搜索、缩放、打印、导出、水印与私有化部署体验。',
+        'Flyfish File Viewer 以纯 TypeScript core 为底座，把 Office、PDF、OFD、Typst、XMind、CAD、EDA、压缩包、邮件、电子书、Mermaid、PlantUML、Git patch/bundle、PSD 图层、代码、媒体、3D 与数据资产带进浏览器。XMind 与绘图类格式支持拖拽平移和缩放，标准 GDSII 支持 SVG 版图预览；Vanilla JS / Pure Web、Vue、React、jQuery、Svelte 等标准组件保持同一套参数、事件、搜索、缩放、打印、导出、水印与私有化部署体验，并可通过 lite / office / engineering / all preset 按产品形态装配。',
       primary: '立即体验',
       secondary: '阅读文档',
       commercial: '了解商业版',
-      proof: ['194+ 扩展名', '按需异步加载', '多框架原生组件', 'Apache-2.0 开源']
+      proof: ['206 个扩展名', '24 条预览链路', '多框架原生组件', 'Apache-2.0 开源']
     },
     matrixTitle: '覆盖广，不等于粗糙。每条链路都面向真实业务。',
     matrixIntro:
-      '格式识别、资源加载、Worker/WASM、主题、水印、搜索、缩放、打印和导出都由预览器内部统一适配；PPTX 已由独立开源的 @file-viewer/pptx 原生引擎承接，业务侧只需要把文件交给组件。',
+      '格式识别、资源加载、Worker/WASM、主题、水印、搜索、缩放、打印和导出都由预览器内部统一适配；PPTX 已由独立开源的 @file-viewer/pptx 原生引擎承接，业务侧可以选 preset-lite、preset-office、preset-engineering 或单 renderer 精确裁剪。',
     formatsTitle: '支持矩阵',
     solutionsTitle: '适合长期运行在企业系统里',
     solutionsIntro:
@@ -179,15 +180,15 @@ const copy = {
       eyebrow: 'Browser-native file preview super component',
       title: 'Turn complex files into instant product experiences.',
       subtitle:
-        'Flyfish File Viewer uses a framework-neutral TypeScript core to bring Office, PDF, OFD, CAD, archives, email, ebooks, code, media, 3D models, and data assets into the browser. Vanilla JavaScript / Pure Web, Vue, React, jQuery, and Svelte components share the same options, events, search, zoom, print, export, watermark, and self-hosted deployment model.',
+        'Flyfish File Viewer uses a framework-neutral TypeScript core to bring Office, PDF, OFD, Typst, XMind, CAD, EDA, archives, email, ebooks, Mermaid, PlantUML, Git patch/bundle, PSD layers, code, media, 3D models, and data assets into the browser. XMind and diagram formats support drag panning and zooming, standard GDSII gets an SVG layout preview, and Vanilla JavaScript / Pure Web, Vue, React, jQuery, and Svelte components share the same options, events, search, zoom, print, export, watermark, and self-hosted deployment model with lite / office / engineering / all presets.',
       primary: 'Try the Demo',
       secondary: 'Read the Docs',
       commercial: 'Commercial Edition',
-      proof: ['194+ extensions', 'Lazy renderer loading', 'Native component packages', 'Apache-2.0 open source']
+      proof: ['206 extensions', '24 preview pipelines', 'Native component packages', 'Apache-2.0 open source']
     },
     matrixTitle: 'Broad coverage, without treating fidelity as optional.',
     matrixIntro:
-      'Format detection, assets, Worker/WASM loading, themes, watermarking, search, zoom, print, and export are adapted inside the viewer. PPTX is now handled by the standalone open-source @file-viewer/pptx native engine, so applications can hand over the file and keep moving.',
+      'Format detection, assets, Worker/WASM loading, themes, watermarking, search, zoom, print, and export are adapted inside the viewer. PPTX is handled by the standalone open-source @file-viewer/pptx native engine, and applications can choose preset-lite, preset-office, preset-engineering, or exact single-renderer cuts.',
     formatsTitle: 'Format matrix',
     solutionsTitle: 'Built for long-running enterprise workspaces',
     solutionsIntro:
@@ -217,15 +218,15 @@ const copy = {
 const metrics = computed<MetricItem[]>(() =>
   isZh.value
     ? [
-        { title: '文件扩展名', value: '194+', detail: '覆盖业务附件、工程资产、媒体与数据文件', tone: 'green' },
-        { title: '预览链路', value: '23', detail: '按格式异步加载，避免首屏被拖慢', tone: 'blue' },
-        { title: '生态组件', value: '8+', detail: 'Vanilla JS、Vue、React、jQuery、Svelte 全线可用', tone: 'violet' },
+        { title: '文件扩展名', value: '206', detail: '覆盖业务附件、脑图、工程资产、绘图、媒体与数据文件', tone: 'green' },
+        { title: '预览链路', value: '24', detail: '按格式异步加载，避免首屏被拖慢', tone: 'blue' },
+        { title: 'Preset 层级', value: '4', detail: 'lite、office、engineering、all 按产品形态装配', tone: 'violet' },
         { title: '分发形态', value: '4', detail: 'npm、Release、Docker、静态资源私有化', tone: 'amber' }
       ]
     : [
-        { title: 'Extensions', value: '194+', detail: 'Business attachments, engineering files, media, and data assets', tone: 'green' },
-        { title: 'Pipelines', value: '23', detail: 'Lazy renderer loading by matched file type', tone: 'blue' },
-        { title: 'Components', value: '8+', detail: 'Vanilla JS, Vue, React, jQuery, and Svelte packages', tone: 'violet' },
+        { title: 'Extensions', value: '206', detail: 'Business attachments, mind maps, engineering files, diagrams, media, and data assets', tone: 'green' },
+        { title: 'Pipelines', value: '24', detail: 'Lazy renderer loading by matched file type', tone: 'blue' },
+        { title: 'Preset tiers', value: '4', detail: 'lite, office, engineering, and all product-shaped bundles', tone: 'violet' },
         { title: 'Delivery paths', value: '4', detail: 'npm, GitHub Release, Docker, and static self-hosting', tone: 'amber' }
       ]
 )
@@ -242,8 +243,8 @@ const formatGroups = computed<FormatGroup[]>(() =>
         },
         {
           label: '工程与设计资产',
-          count: 'CAD / EDA / 3D / Drawings',
-          examples: 'dwg、dxf、dwf、dwfx、olb、dra、step、stl、excalidraw、drawio',
+          count: 'CAD / EDA / 3D / Mind Maps',
+          examples: 'dwg、dxf、dwf、dwfx、olb、dra、gds、oas、oasis、xmind、step、stl、excalidraw、drawio',
           icon: Layers3,
           tone: 'cyan'
         },
@@ -272,8 +273,8 @@ const formatGroups = computed<FormatGroup[]>(() =>
         },
         {
           label: 'Engineering and design assets',
-          count: 'CAD / EDA / 3D / Drawings',
-          examples: 'dwg, dxf, dwf, dwfx, olb, dra, step, stl, excalidraw, drawio',
+          count: 'CAD / EDA / 3D / Mind maps',
+          examples: 'dwg, dxf, dwf, dwfx, olb, dra, gds, oas, oasis, xmind, step, stl, excalidraw, drawio',
           icon: Layers3,
           tone: 'cyan'
         },
@@ -368,13 +369,13 @@ const capabilities = computed<Capability[]>(() =>
         { title: '统一搜索与定位', detail: 'Ctrl/Command + F 调出浮层搜索，命中高亮、上一条/下一条和行级/页级定位可复用。', icon: SearchCheck },
         { title: '高保真打印导出', detail: 'PDF、Word、Markdown、图片等按渲染链路动态启用打印与 HTML 导出，避免只打印当前视口。', icon: Download },
         { title: '主题与水印', detail: 'light、dark、system 可控，文字/图片水印通过 options 统一注入。', icon: PanelTop },
-        { title: '低耦合组件生态', detail: 'Vanilla JS、Vue、React、jQuery、Svelte 组件均只依赖 core，不互相嵌套实现。', icon: Boxes }
+        { title: '分层按需装配', detail: 'preset-lite、preset-office、preset-engineering 和 preset-all 覆盖不同产品形态，极致裁剪时再安装单个 renderer。', icon: Boxes }
       ]
     : [
         { title: 'Unified search and anchors', detail: 'Ctrl/Command + F opens focused search with highlights, next/previous navigation, and reusable page/line anchors.', icon: SearchCheck },
         { title: 'High-fidelity print and export', detail: 'PDF, Word, Markdown, images, and other printable renderers expose print and HTML export only when the output is trustworthy.', icon: Download },
         { title: 'Theme and watermark options', detail: 'light, dark, and system themes are controlled by options; text and image watermarks use one contract.', icon: PanelTop },
-        { title: 'Decoupled component ecosystem', detail: 'Vanilla JavaScript, Vue, React, jQuery, and Svelte packages depend only on core and do not nest framework implementations.', icon: Boxes }
+        { title: 'Tiered on-demand assembly', detail: 'preset-lite, preset-office, preset-engineering, and preset-all cover product-shaped bundles; install single renderers only for exact custom cuts.', icon: Boxes }
       ]
 )
 
@@ -385,7 +386,7 @@ const portalLinks = computed<LinkItem[]>(() =>
         { label: '官方文档', href: docsUrl, note: 'doc.file-viewer.app，接入、格式、部署与 API', icon: BookOpen, featured: true },
         { label: '文档比对', href: compareUrl, note: '左右并排预览、同步滚动、搜索定位', icon: PanelTop, featured: true },
         { label: 'GitHub 开源总仓', href: githubUrl, note: '源码、Release 下载、构建产物和 issue', icon: GitHubMark, featured: true },
-        { label: 'npm 生态包', href: 'https://www.npmjs.com/search?q=%40file-viewer', note: '@file-viewer/* 标准组件与兼容包', icon: PackageCheck },
+        { label: 'npm 生态包', href: 'https://www.npmjs.com/search?q=%40file-viewer', note: 'core、renderer、preset 与标准组件包', icon: PackageCheck },
         { label: 'Docker 部署', href: dockerDocsUrl, note: 'amd64 / arm64 一键部署文档与示例', icon: Cloud },
         { label: '商业版引擎', href: commercialUrl, note: '自研原生 Office 引擎，高还原与极致性能', icon: Gem },
         { label: '飞鱼小铺', href: shopUrl, note: '打赏项目，并获得优先技术支持', icon: HandCoins },
@@ -396,7 +397,7 @@ const portalLinks = computed<LinkItem[]>(() =>
         { label: 'Documentation', href: docsUrl, note: 'doc.file-viewer.app for integration, formats, deployment, and APIs', icon: BookOpen, featured: true },
         { label: 'Compare demo', href: compareUrl, note: 'Side-by-side preview with sync scroll, search, and anchors', icon: PanelTop, featured: true },
         { label: 'GitHub monorepo', href: githubUrl, note: 'Source, releases, artifacts, and issues', icon: GitHubMark, featured: true },
-        { label: 'npm packages', href: 'https://www.npmjs.com/search?q=%40file-viewer', note: '@file-viewer/* standard components and compatibility aliases', icon: PackageCheck },
+        { label: 'npm packages', href: 'https://www.npmjs.com/search?q=%40file-viewer', note: 'core, renderer, preset, and standard component packages', icon: PackageCheck },
         { label: 'Docker deployment', href: dockerDocsUrl, note: 'amd64 / arm64 deployment for docs and examples', icon: Cloud },
         { label: 'Commercial engine', href: commercialUrl, note: 'Native Office engine for high fidelity and extreme performance', icon: Gem },
         { label: 'Support shop', href: shopUrl, note: 'Sponsor the project and receive priority technical support', icon: HandCoins },
@@ -406,6 +407,10 @@ const portalLinks = computed<LinkItem[]>(() =>
 
 const ecosystem = [
   '@file-viewer/core',
+  '@file-viewer/preset-lite',
+  '@file-viewer/preset-office',
+  '@file-viewer/preset-engineering',
+  '@file-viewer/preset-all',
   '@file-viewer/web',
   '@file-viewer/vue3',
   '@file-viewer/vue2.7',
@@ -639,8 +644,21 @@ const qrItems = computed<QrItem[]>(() =>
 
 const currentCopy = computed(() => copy[locale.value])
 
+function resolveInitialLocale(): Locale {
+  const stored = window.localStorage.getItem(localeStorageKey)
+  if (stored === 'zh' || stored === 'en') {
+    return stored
+  }
+
+  const languages = navigator.languages?.length
+    ? navigator.languages
+    : [navigator.language].filter(Boolean)
+  return languages.some(language => language.toLowerCase().startsWith('zh')) ? 'zh' : 'en'
+}
+
 function toggleLocale() {
   locale.value = isZh.value ? 'en' : 'zh'
+  window.localStorage.setItem(localeStorageKey, locale.value)
 }
 
 function selectQuickStart(index: number) {
@@ -949,6 +967,7 @@ let demoRevealObserver: IntersectionObserver | undefined
 let quickStartObserver: IntersectionObserver | undefined
 
 onMounted(async () => {
+  locale.value = resolveInitialLocale()
   await nextTick()
   if (window.location.hash === '#ecosystem') {
     quickStartSectionActive.value = true

@@ -2,6 +2,64 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## 当前主线 XMind、EDA 版图与表格列宽体验补齐
+
+- 新增 PSD 高保真图层预览，`@file-viewer/renderer-data` 在命中 `.psd` 时才按需加载 `ag-psd`，支持图层选择显隐、画布重绘、统一缩放、主题隔离和 HTML 导出边界说明
+- 新增 Mermaid / PlantUML 绘图预览，`@file-viewer/renderer-drawing` 在命中 `.mermaid` / `.mmd` / `.plantuml` / `.puml` 时才分别加载官方 Mermaid renderer、`plantuml-encoder` 与 Panzoom；PlantUML 默认离线源码预览，需要完整服务端 SVG 时可通过 `options.drawing.plantumlServerUrl` 指向自托管服务
+- 新增 Git patch 和 Git bundle 预览，`@file-viewer/renderer-text` 对 `.patch` 按需加载 `diff2html` 输出左右比对，对 `.bundle` / `.bdl` 解析 refs、提交历史、文件树和可读 blob 内容，并在浏览器端还原常规 OFS_DELTA / REF_DELTA 对象
+- UMD 电子书从 core 迁移到 `@file-viewer/renderer-ebook`，与 EPUB 共用电子书 renderer 包；`@file-viewer/core` 运行时依赖归零，`pako` 仅在打开 UMD / Git bundle 等相关 renderer chunk 时加载
+- 支持格式矩阵更新为 206 个扩展名、24 条预览链路；Demo 新增 PSD、Mermaid、PlantUML、patch 和 git bundle 示例，Vite 插件、bundle budget、组件 README 与文档站口径同步
+- XMind 画布交互切换为轻量成熟的 `@panzoom/panzoom`，保留 `@ljheee/xmind-parser` 的 XMind 8 XML / XMind 2020+ JSON 解析链路，拖拽平移、节点起手拖拽、移动端双指缩放、滚轮锚点缩放、键盘平移、适配画布和 toolbar 状态同步由统一 Panzoom 状态驱动；浏览器 smoke 已加入真实鼠标拖拽断言
+- `@file-viewer/eda-layout` 新增 OASIS 可读文本夹具解析，OAS/OASIS demo 不再只是结构提示，能够在浏览器里输出 SVG 版图；真实 SEMI 二进制 OASIS 仍保持安全结构索引、可读字符串、实体候选和诊断边界，后续完整几何继续走独立 WASM/增量渲染内核路线
+
+- 新增 `@file-viewer/renderer-presentation` 独立 renderer 包，基于 `@file-viewer/pptx` 提供 PPTX / PPTM / POTX / POTM / PPSX / PPSM 按需预览、缩放、打印和 HTML 导出；`@file-viewer/preset-all` 与 `@file-viewer/vite-plugin` 已优先聚合该包，ODP 继续走 OpenDocument 兼容链路
+- `@file-viewer/core` 移除 `@file-viewer/pptx` 直接依赖和内置 PPTX handler，PowerPoint 完整预览统一通过 `@file-viewer/renderer-presentation` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 37 降到 36
+- 新增 `@file-viewer/renderer-word` 独立 renderer 包，承接 DOCX / DOCM / DOTX / DOTM、DOC / DOT、RTF 和 ODT 预览链路；`@file-viewer/core` 移除 `@file-viewer/docx`、`msdoc-viewer`、`rtf.js`、`linkedom` 和 `@xmldom/xmldom` 直接依赖，Word 完整预览统一通过 `@file-viewer/renderer-word` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 36 降到 31
+- XMind 已从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `@ljheee/xmind-parser`；完整脑图预览统一由 `@file-viewer/renderer-mindmap` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 31 降到 30
+- 地理数据已从 core 兼容入口中移出，`@file-viewer/core` 不再默认安装 `@tmcw/togeojson` 和 `shpjs`；GeoJSON / KML / GPX / SHP 预览统一由 `@file-viewer/renderer-geo` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 30 降到 28
+- HEIC / HEIF 转换能力已从 core 轻量图片入口中移出，`@file-viewer/core` 不再默认安装 `heic2any`；普通图片仍保留浏览器原生预览，HEIC / HEIF 和完整图片链路统一由 `@file-viewer/renderer-image` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 28 降到 27
+- Vue3 原生组件渲染桥接层改为按当前 `options.renderers`、`options.rendererMode` 和 `options.builtinRenderers` 创建临时 renderer registry，`@file-viewer/preset-all` / 独立 renderer 包会在组件路径真实生效，避免 XMind、Geo、HEIC 等已从 core 移出的格式在 Demo 中误显示“不支持”
+- 新增 `@file-viewer/renderer-drawing` 独立 renderer 包，覆盖 Draw.io / diagrams.net 离线 viewer、Excalidraw 官方 SVG 导出、rough.js 兜底、统一缩放、打印和 HTML 导出，并由 `@file-viewer/preset-all` 与 `@file-viewer/vite-plugin` 自动聚合
+- 新增 `@file-viewer/renderer-3d` 独立 renderer 包，基于 Three.js loaders 承接 GLTF/GLB、OBJ、STL、PLY、FBX、DAE、3DS、3MF、USD/USDZ、点云和 VTK 等 WebGL 预览，并由 `@file-viewer/preset-all` 与 `@file-viewer/vite-plugin` 自动聚合
+- 新增 `@file-viewer/renderer-data` 独立 renderer 包，承接字体、PSD、AI/EPS、SQLite、Parquet、Avro、WASM 和 WebArchive 的安全结构预览，SQLite WASM 由 `@file-viewer/vite-plugin` 复制到离线 assets
+- 新增 `@file-viewer/renderer-eda` 独立 renderer 包，承接 OLB、DRA、GDSII、OASIS 结构预览；标准 GDSII 可用纯前端记录解析生成 SVG 快速版图，大元素集会自动切到 WebGL canvas，OASIS / Cadence 高保真几何继续按独立 WASM 内核路线维护
+- 新增 `@file-viewer/eda-layout` 与 `@file-viewer/eda-orcad` 两个 EDA engine package；GDSII/OASIS 版图底层能力、OrCAD/Allegro 二进制检查能力从 UI renderer 中拆出，GDSII WebGL typed-array 批次已有独立门禁，后续 OASIS WASM 或逐步 TS 移植可以独立发布、独立回归
+- 复核 XMind、GDSII/OASIS、OLB/DRA 等新增复杂格式的公开生态与 WASM/手写解析路线，明确 GDSII 是当前正式快速预览，OASIS 文本夹具可真实出图，真实二进制 OASIS/OLB/DRA 仍属于结构预览和后续独立 WASM 内核路线；同时把 XMind `pan` 写入 smoke matrix 显式断言，真实浏览器 smoke 已覆盖 Pointer 与真实鼠标拖拽路径
+- 按需渲染架构计划补齐为可执行路线图，明确轻 core、独立 renderer、preset 编排、Vite 插件自动装配、renderer 交付契约、core 依赖预算和终态验收门禁；新增 `verify:core-dependency-budget`、`verify:renderer-contracts`、`verify:renderer-assets`、`verify:install-budget` 与 `verify:bundle-budget`，后续以清理 core 直接重依赖和守住首屏入口体积为 2.x 主治理线
+- 支持格式矩阵保持 206 个扩展名、24 条预览链路，新增 XMind 脑图、Mermaid / PlantUML、Git patch / bundle 和 PSD 图层预览，并将 EDA 安全结构索引扩展到 GDSII / OASIS 版图文件；`brep` 进入 3D 工程模型入口
+- `.xmind` 基于 `@ljheee/xmind-parser` 离线解析 XMind 8 XML 与 XMind 2020+ JSON 包结构，支持多 sheet、节点、标签、备注、链接、标记、图片、目录树、Panzoom 拖拽平移、移动端双指缩放、适配画布、搜索、缩放、打印和 HTML 导出
+- 优化 XMind 画布平移体验，使用 Panzoom 替代脆弱的手写输入状态机，支持移动端 pinch zoom、Ctrl/Command 滚轮锚点缩放、键盘方向键平移和双击适配视图，拖拽中禁用链接命中并禁用浏览器原生拖图/拖链接，边界约束改为画布式保留可见边缘
+- XMind 浏览器 smoke 已增加 Pointer、节点起手、滚轮平移和真实鼠标拖拽断言
+- XMind 平移、目录定位和键盘方向键移动后会同步通知统一缩放 toolbar，外部 `resetZoom()` / `getZoomState()` 能正确感知“已平移但比例未变化”的状态
+- XMind 官方 Demo 样例已通过真实浏览器回归：`.xmind` 能由 `@file-viewer/renderer-mindmap` 正常接管，拖拽后画布 transform 发生平移变化，证明组件层 preset 装配和 renderer 内部 pan 交互同时生效；浏览器冒烟脚本也会对 `.xmind` 执行 PointerEvent 拖拽断言
+- XMind 增加 ResizeObserver 视口适配策略：首次打开和宿主容器尺寸变化会自动适配画布，用户手动拖拽、滚轮或缩放后保留当前视角，只做安全边界校正，避免脑图在移动端、嵌入容器和响应式布局中“拖不动”或 resize 后视角丢失
+- 代码与 Markdown 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `highlight.js` 和 `marked`；完整文本预览统一由 `@file-viewer/renderer-text` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 27 降到 25，Phase 3 依赖预算从 10 降到 8
+- 音视频预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `hls.js` 和 `@tonejs/midi`；MP3/WAV/OGG/MIDI/MP4/WEBM/HLS 完整媒体能力统一由 `@file-viewer/renderer-media` 或 `@file-viewer/preset-all` 装配，core 直接渲染依赖从 25 降到 23，Phase 3 依赖预算从 8 降到 6
+- 3D 模型与绘图预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `three`、`@excalidraw/excalidraw` 和 `roughjs`；GLB/GLTF/STL/OBJ/FBX/DAE/3MF/VTK 等模型由 `@file-viewer/renderer-3d` 装配，Draw.io / Excalidraw / Mermaid / PlantUML 由 `@file-viewer/renderer-drawing` 装配，core 直接渲染依赖从 23 降到 20，Phase 3 依赖预算从 6 降到 3
+- 压缩包、邮件和 EPUB 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `libarchive.js`、`postal-mime`、`@kenjiuno/msgreader` 和 `epubjs`；Archive / Email / EPUB 完整能力统一由 `@file-viewer/renderer-archive`、`@file-viewer/renderer-email`、`@file-viewer/renderer-ebook` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 20 降到 16，Phase 3 依赖预算从 3 降到 0
+- 数据资产与 EDA 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `ag-psd`、`sql.js`、`hyparquet`、`avsc` 和 `cfb`；PSD / SQLite / Parquet / Avro / OLB / DRA / GDSII / OASIS 完整能力统一由 `@file-viewer/renderer-data`、`@file-viewer/renderer-eda` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 16 降到 11，Phase 4 依赖预算归零
+- PDF 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `pdfjs-dist`；PDF 页面渲染、导航、目录、搜索、缩放、打印和导出统一由 `@file-viewer/renderer-pdf` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 11 降到 10，Phase 2 依赖预算从 10 降到 9
+- OFD 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `jszip`、`ofd-xml-parser` 和 DLTech21/ofd.js vendor；OFD 页面渲染、缩放、打印和导出统一由 `@file-viewer/renderer-ofd` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 10 降到 8，Phase 2 依赖预算从 9 降到 7
+- Typst 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `@myriaddreamin/typst.ts`、`@myriaddreamin/typst-ts-renderer` 和 `@myriaddreamin/typst-ts-web-compiler`；Typst 源文件编译、按页 SVG 渲染、缩放、打印和导出统一由 `@file-viewer/renderer-typst` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 8 降到 5，Phase 2 依赖预算从 7 降到 4
+- CAD 预览从 core 兼容入口中彻底移出，`@file-viewer/core` 不再默认安装 `@flyfish-dev/cad-viewer`；DWG / DXF / DWF / DWFx / XPS 完整预览统一由 `@file-viewer/renderer-cad` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 5 降到 4，Phase 2 依赖预算从 4 降到 3
+- Spreadsheet 预览从 core 兼容入口中彻底移出，新增 `@file-viewer/renderer-spreadsheet` 独立 renderer 包承接 XLSX / XLSM / XLSB / XLS / CSV / ODS / FODS / Numbers 等表格格式；`@file-viewer/core` 不再默认安装 `styled-exceljs`、`e-virt-table` 和 `tinycolor2`，完整表格能力统一由 `@file-viewer/renderer-spreadsheet` 或 `@file-viewer/preset-all` 装配，core 直接运行时依赖从 4 降到 1，Phase 2 依赖预算从 3 降到 0
+- `.gds` 新增标准 GDSII 记录解析、SVG 版图预览和大元素集 WebGL canvas，能够展示 structure、boundary、path、text、reference、层信息和坐标边界；`.oas`、`.oasis` 文本夹具可生成 SVG 版图，真实 SEMI 二进制 OASIS 保持纯前端安全结构索引、可读字符串、实体候选、二进制线索和诊断，避免把专业 EDA 文件误当普通文本或空白二进制
+- 邮件预览迁移为 `@file-viewer/renderer-email` 独立 renderer 包，继续支持 EML / MSG / MBOX、正文/头信息切换、附件下载和附件嵌套预览，并由 `@file-viewer/preset-all` 自动聚合
+- OFD 预览迁移为 `@file-viewer/renderer-ofd` 独立 renderer 包，继续基于 `DLTech21/ofd.js` 的纯前端源码链路解析和页面渲染，vendor 随包离线分发，并由 `@file-viewer/preset-all` 与 `@file-viewer/vite-plugin` 自动聚合
+- EPUB 预览迁移为 `@file-viewer/renderer-ebook` 独立 renderer 包，继续使用 `epubjs` 提供目录、滚动阅读、章节跳转和阅读进度，并由 `@file-viewer/preset-all` 自动聚合
+- 代码与 Markdown 预览迁移为 `@file-viewer/renderer-text` 独立 renderer 包，继续使用按语言动态加载的 `highlight.js` 和 `marked`，并由 `@file-viewer/preset-all` 自动聚合
+- 图片预览迁移为 `@file-viewer/renderer-image` 独立 renderer 包，普通图片继续使用浏览器原生解码，HEIC / HEIF 只在命中格式时按需加载 `heic2any`，并由 `@file-viewer/preset-all` 自动聚合
+- 音视频预览迁移为 `@file-viewer/renderer-media` 独立 renderer 包，MP4 / WebM / 常见音频继续使用原生控件，HLS 和 MIDI 只在命中格式时按需加载 `hls.js` / `@tonejs/midi`，并由 `@file-viewer/preset-all` 自动聚合
+- 地理数据预览迁移为 `@file-viewer/renderer-geo` 独立 renderer 包，GeoJSON 直接读取，KML / GPX 按需加载 `@tmcw/togeojson`，SHP 按需加载 `shpjs`，并由 `@file-viewer/preset-all` 自动聚合
+- 新增 `@file-viewer/vite-plugin` 工程化入口，支持按 `formats` 自动生成 `virtual:file-viewer-renderers`、renderer chunk 分组、缺失 renderer 提示，并复制 PDF/CAD/Typst/Archive 离线 worker/WASM/vendor 资源和部署 manifest
+- `@file-viewer/vite-plugin` 新增 `scan: true` 源码 hint 自动装配能力，可从 `fileViewerFormats` / `fileViewerRenderers` / `data-file-viewer-formats` / 上传 `accept` 声明提取格式并选择对应 renderer；新增 `verify:vite-plugin-auto-scan` 防止自动化装配链路回退
+- 新增 `@file-viewer/preset-lite`、`@file-viewer/preset-office` 和 `@file-viewer/preset-engineering` 三个标准 preset 包；`@file-viewer/vite-plugin` 支持 `preset: 'lite' | 'office' | 'engineering' | 'all'`，会导入对应 `@file-viewer/preset-*` 包，并可继续用 `formats` 补充 preset 外 renderer，兼容 pnpm 严格依赖模型
+- `verify:renderer-standalone-smoke` 从 PDF-only 升级为全独立 renderer plugin 门禁，使用本地 tarball 构造隔离业务项目，安装 core、Vite 插件、19 个 renderer plugin 以及本地依赖闭包，逐个验证 renderer 注册、handler 挂载、Vite selection 映射和 virtual module 不误引入无关 renderer 包
+- 标准组件 README 与开源总仓 README 新增“工程级按需 renderer 装配”双语片段，统一说明 `@file-viewer/vite-plugin`、`virtual:file-viewer-renderers`、`builtinRenderers:'none'`、`rendererMode:'replace'`、`scan:true`、`copyAssets:true` 和 `@file-viewer/preset-all` 的推荐使用边界，并由 `verify:ecosystem-readmes` 纳入自动校验
+- STEP / IGES / IFC / 3DM / BREP 等重型工程格式完成浏览器 WASM 路线调研，并新增 `@file-viewer/geometry-engine` 独立边界包维护签名识别、推荐内核和转换说明；OpenCascade、web-ifc、rhino3dm 等重 WASM 不进入 core 首屏链路
+- 表格预览新增 `options.spreadsheet.resizableColumns` 开关，默认关闭以保持历史交互兼容；官方 Demo 默认开启，方便客户拖拽表头边界查看被截断的长文本
+- Demo 新增 `mindmap.xmind`、`layout.gds`、`layout.oas`、`layout.oasis` 示例，并将样例选择器补充为脑图与绘图、邮件与 EDA 等更清晰分组
+
 ## `v2.0.11` Vanilla JS 原生组件增强版
 
 - 全生态包版本同步推进到 `2.0.11`，Demo、官网、文档站、组件 README、开源总仓库和 npm 发布统一使用最新 Vanilla JS 入口
@@ -78,7 +136,7 @@
 ### `v1.0.25` 移动端压缩包与表格体验修复版本
 
 - Vue3 包 `@flyfish-group/file-viewer3@1.0.25`、Vue2 包 `@flyfish-group/file-viewer@1.0.25`、React 包 `@flyfish-group/file-viewer-react@1.0.25` 和纯 JS 包 `@flyfish-group/file-viewer-web@1.0.25` 继续保持连续版本
-- 压缩包预览迁移为 core 共享 archive renderer，并保留 Worker 探测、初始化超时、静态 Worker/WASM 路径和 ZIP/TAR/GZIP 兼容模式；手机 WebView、本地临时服务器、MIME 或 CSP 导致 `libarchive.js` Worker 卡住时，会自动降级，避免一直停留在 loading
+- 压缩包预览迁移为 `@file-viewer/renderer-archive` 独立 renderer，并保留 Worker 探测、初始化超时、静态 Worker/WASM 路径和 ZIP/TAR/GZIP 兼容模式；手机 WebView、本地临时服务器、MIME 或 CSP 导致 `libarchive.js` Worker 卡住时，会自动降级，避免一直停留在 loading
 - `options.archive` 新增 `wasmUrl` 和 `workerTimeoutMs` 说明；普通私有化部署不再需要写死 `workerUrl`，只有静态目录或 WASM 路径特殊时才需要显式指定
 - 移动端 Excel / XLS 预览把工作表名称移到表格上方的横向可滚动标签栏，当前工作表自动滚入可见区域，解决手机上 sheet 名称藏在底部角落、需要技巧才能看到的问题
 - Excel / XLS 多 sheet 场景下，工作表标签改为按内容宽度展示并横向滚动，避免按整体宽度平均压缩导致 sheet 名称完全看不清

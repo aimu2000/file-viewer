@@ -27,6 +27,7 @@ export type FileViewerRendererCategory =
   | 'model'
   | 'geo'
   | 'drawing'
+  | 'mindmap'
   | 'ebook'
   | 'image'
   | 'markdown'
@@ -109,6 +110,8 @@ export interface FileViewerDocxOptions {
 export interface FileViewerSpreadsheetOptions {
   worker?: boolean;
   workerUrl?: string;
+  /** 允许用户在 Excel / CSV / ODS 预览中拖拽表头边界调整列宽，默认关闭以保持历史行为。 */
+  resizableColumns?: boolean;
 }
 
 export type FileRenderExportMode = 'export' | 'print';
@@ -205,6 +208,19 @@ export interface FileViewerDrawingOptions {
    * built-in SVG fallback over the official diagrams.net viewer runtime.
    */
   preferOfficial?: boolean;
+  /**
+   * PlantUML SVG endpoint. When omitted, the renderer stays fully offline and
+   * shows an SVG source preview. When provided, the renderer appends the
+   * encoded PlantUML payload to this base URL. Self-host this endpoint for
+   * intranet preview.
+   *
+   * Example: `/plantuml/svg/`.
+   */
+  plantumlServerUrl?: string;
+  /**
+   * Request timeout for server-rendered PlantUML SVG.
+   */
+  plantumlTimeoutMs?: number;
 }
 
 export type FileViewerCadRenderer = 'auto' | 'webgl' | 'canvas2d';
@@ -238,6 +254,9 @@ export interface FileViewerCadOptions {
   canvasOptions?: Record<string, unknown>;
 }
 
+export type FileViewerRendererMode = 'extend' | 'replace';
+export type FileViewerBuiltinRendererPreset = 'all' | 'lite' | 'none';
+
 export interface FileViewerSearchOptions {
   enabled?: boolean;
   caseSensitive?: boolean;
@@ -258,6 +277,24 @@ export interface FileViewerAiOptions {
 
 export interface FileViewerOptions {
   theme?: FileViewerThemeMode;
+  /**
+   * Optional renderer plugins or presets installed into this viewer instance.
+   *
+   * `extend` mode keeps the bundled renderer matrix and appends custom
+   * renderers. `replace` mode starts from an empty registry so applications can
+   * build a truly lightweight viewer from selected renderer packages.
+   */
+  rendererMode?: FileViewerRendererMode;
+  /**
+   * Controls which built-in browser renderers are registered before custom
+   * plugins are installed.
+   *
+   * `all` preserves the historical full matrix, `lite` keeps only low-cost
+   * web-native previewers, and `none` starts from an empty registry while still
+   * allowing renderer plugins or presets to be installed through `renderers`.
+   */
+  builtinRenderers?: FileViewerBuiltinRendererPreset;
+  renderers?: FileViewerRendererPluginInput;
   watermark?: boolean | FileViewerWatermarkOptions;
   toolbar?: boolean | FileViewerToolbarOptions;
   search?: boolean | FileViewerSearchOptions;
@@ -556,6 +593,58 @@ export interface RendererRegistry {
   list(): RendererDefinition[];
   listExtensions(): string[];
 }
+
+export type FileViewerRendererPluginAssetKind =
+  | 'worker'
+  | 'wasm'
+  | 'script'
+  | 'style'
+  | 'font'
+  | 'vendor'
+  | 'data';
+
+export interface FileViewerRendererPluginAssetEntry {
+  id: string;
+  kind: FileViewerRendererPluginAssetKind;
+  source: string;
+  optional?: boolean;
+}
+
+export interface FileViewerRendererPluginAssetManifest {
+  packageName: string;
+  rendererId: string;
+  assets: readonly FileViewerRendererPluginAssetEntry[];
+}
+
+export interface FileViewerRendererHandlerRegistration<Handler = FileRenderHandler> {
+  rendererId: string;
+  handler: Handler;
+}
+
+export interface FileViewerRendererInstallContext<Handler = FileRenderHandler> {
+  registry: RendererRegistry;
+  registerHandler?: (registration: FileViewerRendererHandlerRegistration<Handler>) => void;
+}
+
+export interface FileViewerRendererPlugin<Handler = FileRenderHandler> {
+  id: string;
+  label?: string;
+  definitions?: readonly RendererDefinition[];
+  handlers?: readonly FileViewerRendererHandlerRegistration<Handler>[];
+  assets?: readonly FileViewerRendererPluginAssetManifest[];
+  install?: (context: FileViewerRendererInstallContext<Handler>) => void | Promise<void>;
+}
+
+export interface FileViewerRendererPreset<Handler = FileRenderHandler> {
+  id: string;
+  label?: string;
+  renderers: readonly FileViewerRendererPlugin<Handler>[];
+}
+
+export type FileViewerRendererPluginInput<Handler = FileRenderHandler> =
+  | FileViewerRendererPlugin<Handler>
+  | FileViewerRendererPreset<Handler>
+  | readonly FileViewerRendererPluginInput<Handler>[];
 
 export interface FileViewerInstance {
   readonly container: HTMLElement;

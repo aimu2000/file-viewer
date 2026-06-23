@@ -1,0 +1,67 @@
+{
+  "name": "@file-viewer/geometry-engine",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Framework-neutral geometry kernel boundary package for STEP, IGES, IFC, 3DM, and BREP preview routes in Flyfish File Viewer.",
+  "keywords": [
+    "file-viewer",
+    "geometry",
+    "cad",
+    "bim",
+    "step",
+    "iges",
+    "ifc",
+    "3dm",
+    "wasm",
+    "document-preview",
+    "file-preview",
+    "self-hosted"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/geometry-engine.git",
+    "directory": "packages/renderers/geometry-engine"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/format-fidelity",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/geometry-engine/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

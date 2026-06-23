@@ -18,7 +18,7 @@
 | 在线 Demo | [demo.file-viewer.app](https://demo.file-viewer.app) | 可直接体验完整预览器，用于快速验证能力 |
 | 文档比对 Demo | [demo.file-viewer.app/compare.html](https://demo.file-viewer.app/compare.html) | 独立入口，支持左右并排预览、上传、URL、交换、重置、同步滚动、聚焦搜索和行级定位 |
 | Docker 镜像发布目标 | `flyfishdev/file-viewer:latest` | 可一键部署的 nginx 静态镜像，发布时支持 `linux/amd64` 和 `linux/arm64` |
-| npm 标准生态 | [生态组件总览](/guide/ecosystem) | `@file-viewer/core`、`@file-viewer/pptx`、Vanilla JS / Pure Web、Vue3、Vue2.7、Vue2.6、React、React Legacy、jQuery、Svelte 全线标准包 |
+| npm 标准生态 | [生态组件总览](/guide/ecosystem) | `@file-viewer/core`、独立 renderer、preset、`@file-viewer/pptx` 原生引擎、Vanilla JS / Pure Web、Vue3、Vue2.7、Vue2.6、React、React Legacy、jQuery、Svelte 全线标准包 |
 | 自托管静态资源 | `file-viewer/assets/*`、`file-viewer/vendor/*`、`file-viewer/wasm/*` | Worker、WASM、示例文件和重型渲染器资源，按需自托管 |
 | GitHub 开源总仓库 | [github.com/flyfish-dev/file-viewer](https://github.com/flyfish-dev/file-viewer) | 一站式入口: README、LICENSE、主 Demo 源码、core、标准组件包、兼容包、文档源码、构建产物、示例和 release tarball |
 | Gitee 开源总仓库 | [gitee.com/flyfish-dev/file-viewer](https://gitee.com/flyfish-dev/file-viewer) | 国内镜像目标，使用干净历史控制仓库体积；如远端配额阻塞，以 GitHub 开源总仓库和 release 为准 |
@@ -32,6 +32,17 @@
 | --- | --- | --- |
 | Core 底座 | `@file-viewer/core` | 无 |
 | PPTX 原生引擎 | `@file-viewer/pptx` | 无 |
+| Word renderer | `@file-viewer/renderer-word` | 无 |
+| 演示文稿 renderer | `@file-viewer/renderer-presentation` | 无 |
+| 绘图 renderer | `@file-viewer/renderer-drawing` | 无 |
+| 3D 模型 renderer | `@file-viewer/renderer-3d` | 无 |
+| 数据资产 renderer | `@file-viewer/renderer-data` | 无 |
+| EDA renderer | `@file-viewer/renderer-eda` | 无 |
+| 轻量 renderer preset | `@file-viewer/preset-lite` | 无 |
+| Office renderer preset | `@file-viewer/preset-office` | 无 |
+| 工程 renderer preset | `@file-viewer/preset-engineering` | 无 |
+| 全量 renderer preset | `@file-viewer/preset-all` | 无 |
+| Vite 按需装配插件 | `@file-viewer/vite-plugin` | 无 |
 | Vanilla JS / Pure Web / script 标签 | `@file-viewer/web` | `@flyfish-group/file-viewer-web` |
 | Vue3 | `@file-viewer/vue3` | `@flyfish-group/file-viewer3`、`file-viewer3` |
 | Vue2.7 | `@file-viewer/vue2.7` | `@flyfish-group/file-viewer` |
@@ -50,6 +61,8 @@ pnpm add @file-viewer/vue2.7
 pnpm add @file-viewer/react
 pnpm add @file-viewer/jquery
 pnpm add @file-viewer/svelte
+pnpm add @file-viewer/renderer-word
+pnpm add @file-viewer/preset-office
 ```
 
 Vanilla JS / Pure Web:
@@ -122,12 +135,16 @@ npm install ./artifacts/file-viewer-react-legacy-*.tgz
 npm install ./artifacts/file-viewer-web-*.tgz
 npm install ./artifacts/file-viewer-jquery-*.tgz
 npm install ./artifacts/file-viewer-svelte-*.tgz
+npm install ./artifacts/file-viewer-renderer-word-*.tgz
+npm install ./artifacts/file-viewer-renderer-presentation-*.tgz
+npm install ./artifacts/file-viewer-preset-all-*.tgz
+npm install ./artifacts/file-viewer-pptx-*.tgz
 npm install ./artifacts/flyfish-group-file-viewer-*.tgz
 npm install ./artifacts/flyfish-group-file-viewer-web-*.tgz
 npm install ./artifacts/flyfish-group-file-viewer-react-*.tgz
 ```
 
-Core、PPTX、Vanilla JS / Pure Web、Vue3、Vue2.7、Vue2.6、React、React Legacy、jQuery、Svelte 和历史兼容 tarball 都会随开源总仓库一起生成。`file-viewer3` 非 scoped 兼容包仍会同步发布到 npm，但它和 `@flyfish-group/file-viewer3` 包体重复，开源总仓库下载区只保留 `flyfish-group-file-viewer3-*.tgz` 这一份 Vue3 兼容 tarball。React tarball 依赖 web viewer 包，离线安装时请按 npm 依赖关系一起放入本地源或依次安装。
+Core、独立 renderer、preset、PPTX 原生引擎、Vanilla JS / Pure Web、Vue3、Vue2.7、Vue2.6、React、React Legacy、jQuery、Svelte 和历史兼容 tarball 都会随开源总仓库一起生成。`file-viewer3` 非 scoped 兼容包仍会同步发布到 npm，但它和 `@flyfish-group/file-viewer3` 包体重复，开源总仓库下载区只保留 `flyfish-group-file-viewer3-*.tgz` 这一份 Vue3 兼容 tarball。React tarball 依赖 web viewer 包，离线安装时请按 npm 依赖关系一起放入本地源或依次安装。
 
 纯离线部署时，除了 npm tarball，也要把 viewer assets 一起发布到业务静态目录。运行 `file-viewer-copy-assets` 会复制 PDF.js worker/CMap/WASM/standard fonts、CAD WASM、Typst WASM、SQLite WASM、压缩包 worker 和 Office worker，并生成 `flyfish-viewer-assets.json` 供验收。运行时默认不会访问公共 CDN 或第三方在线静态资源；路径特殊时通过各格式的 `options.*Url` 指向自托管地址。
 
@@ -190,7 +207,7 @@ pnpm release:ecosystem:publish:dry-run
 pnpm release:ecosystem:publish
 ```
 
-`release:ecosystem:pack` 会先构建 core、PPTX 原生引擎、标准组件包和历史兼容包，再统一打包 15 个 npm 目标。发布前请确认 tarball 中包含必要的 viewer assets、`dist/*`、README / README.en.md，且没有 `.DS_Store`。
+`release:ecosystem:pack` 会先构建 core、独立 renderer、preset、PPTX 原生引擎、标准组件包和历史兼容包，再统一打包当前 35 个 npm 目标。发布前请确认 tarball 中包含必要的 viewer assets、`dist/*`、README / README.en.md，且没有 `.DS_Store`。
 
 开源总仓库使用私有 Gitea `main` 完整聚合仓生成，发布前执行:
 

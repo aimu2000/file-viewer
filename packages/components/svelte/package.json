@@ -10,7 +10,10 @@
     "svelte",
     "sveltekit",
     "native-viewer",
-    "office-preview"
+    "office-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted"
   ],
   "svelte": "./src/FileViewer.svelte",
   "main": "./dist/index.js",
@@ -31,6 +34,10 @@
   "homepage": "https://doc.file-viewer.app/",
   "bugs": {
     "url": "https://github.com/flyfish-dev/file-viewer-svelte/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
   },
   "types": "./src/FileViewer.svelte.d.ts",
   "exports": {

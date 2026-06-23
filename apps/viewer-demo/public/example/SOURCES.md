@@ -1,6 +1,6 @@
 # Public Sample Sources
 
-本目录中的 PDF、DOCX、PPTX、CAD、OpenDocument、3D 模型、绘图、音视频、EPUB 和 MSG 示例文件使用项目方提供的真实资料、可追溯的公开样本或项目内最小夹具；RTF、FODS、地理数据、MIDI、SQLite、WASM、UMD、EML、MBOX、OLB、DRA 和压缩包示例文件由项目内生成，用于固定回归对应结构。后续替换这些文件时，请优先选择许可清楚、可直接访问 raw 文件的公开仓库、国际组织公开文档或项目方明确授权的资料，并同步更新本文件与 `README.md`。
+本目录中的 PDF、DOCX、PPTX、CAD、OpenDocument、3D 模型、绘图、音视频、EPUB 和 MSG 示例文件使用项目方提供的真实资料、可追溯的公开样本或项目内最小夹具；RTF、FODS、地理数据、MIDI、SQLite、WASM、UMD、EML、MBOX、XMind、Mermaid、PlantUML、PSD、Git patch、Git bundle、OLB、DRA、GDS、OAS/OASIS 和压缩包示例文件由项目内生成，用于固定回归对应结构。后续替换这些文件时，请优先选择许可清楚、可直接访问 raw 文件的公开仓库、国际组织公开文档或项目方明确授权的资料，并同步更新本文件与 `README.md`。
 
 | Local file | Source | License | Purpose |
 | --- | --- | --- | --- |
@@ -14,6 +14,9 @@
 | `samples/autodesk/house.dwfx` | `https://github.com/Developer-Autodesk/viewer-javascript-tutorial/blob/master/Sample%20files/House.dwfx` | MIT | Official Autodesk Viewer tutorial DWFx sample for native DWFx/XPS rendering, multi-page structure and CAD viewport smoke tests |
 | `samples/autodesk/robot-arm.dwfx` | `https://github.com/Developer-Autodesk/viewer-javascript-tutorial/blob/master/Sample%20files/RobotArm1.dwfx` | MIT | Official Autodesk Viewer tutorial DWFx sample for W2D/W3D native rendering and assembly drawing smoke tests |
 | `model.gltf` / `model.obj` / `model.stl` / `model.ply` / `model.step` | Project-generated minimal fixtures | Apache-2.0 | Three.js model rendering and engineering-format fallback smoke tests |
+| `mindmap.xmind` | Project-generated with `@ljheee/xmind-parser` | Apache-2.0 | XMind 2020+ package fixture for sheet tabs, tree layout, labels, notes, links, search, zoom, print and HTML export smoke tests |
+| `architecture.mermaid` | Project-authored Mermaid fixture | Apache-2.0 | Mermaid architecture and flowchart route for official renderer, theme and Panzoom smoke tests |
+| `sequence.plantuml` | Project-authored PlantUML fixture | Apache-2.0 | PlantUML sequence route for encoder, configurable SVG endpoint, theme shell and Panzoom smoke tests |
 | `flow.excalidraw` | `https://github.com/neo4j-labs/agent-memory/blob/main/docs/assets/images/diagrams/excalidraw/poleo-model.excalidraw` | Apache-2.0 | Real Excalidraw scene for official restore/export smoke tests |
 | `process.drawio` | `https://github.com/jgraph/drawio-diagrams/blob/dev/blog/data-flow.drawio` | Apache-2.0 | Official draw.io sample for diagrams.net viewer smoke tests |
 | `book.umd` | 项目内生成的最小 UMD 文本电子书 fixture | Apache-2.0 | UMD ebook metadata, table-of-contents and zlib text smoke tests |
@@ -28,7 +31,10 @@
 | `sample.eml` | Project-generated MIME email fixture | Apache-2.0 | EML headers, text/html body, attachment download and attachment preview smoke tests |
 | `sample.msg` | `https://github.com/HiraokaHyperTools/msgreader/blob/master/test/A%20memo.msg` | MIT | Outlook MSG parsing smoke test through @kenjiuno/msgreader |
 | `sample.mbox` | Project-generated MBOX email archive fixture | Apache-2.0 | MBOX message detection and first-message preview smoke tests |
-| `sample.olb` / `sample.dra` | Project-generated CFB EDA fixtures | Apache-2.0 | OLB/DRA structure tree, entity, property and readable-string smoke tests |
+| `sample.olb` / `sample.dra` / `layout.gds` / `layout.oas` / `layout.oasis` | Project-generated EDA / layout fixtures | Apache-2.0 | OLB/DRA structure tree plus GDSII/OASIS readable-string, layer, cell, entity and diagnostic smoke tests |
+| `design.psd` | Project-generated layered PSD fixture using `ag-psd` | Apache-2.0 | PSD layer list, visibility toggles, canvas redraw and zoom smoke tests |
+| `change.patch` | Project-authored git patch fixture | Apache-2.0 | Side-by-side diff view, file list, syntax color and zoom smoke tests |
+| `repository.bundle` | Project-generated git bundle fixture from a tiny local repository | Apache-2.0 | Git bundle refs, commit history, tree and readable blob preview smoke tests |
 | `data.jsonc` / `data.json5` / `notebook.ipynb` / `config.toml` / `service.proto` / `infrastructure.hcl` / `formula.tex` / `graph.gv` / `request.http` / `component.react` / `code.rb` / `code.swift` / `Main.kt` | Project-authored source/config fixtures | Apache-2.0 | Expanded highlight.js language mapping smoke tests |
 | `melody.mid` / `sample.sqlite` / `module.wasm` / `icon.ico` | Project-generated or favicon-derived fixtures | Apache-2.0 | MIDI, SQLite, WASM and ICO smoke tests |
 | `audio.mp3` | `https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3` | CC0 | Small MP3 sample for native audio playback smoke tests |
@@ -46,6 +52,10 @@
 - `ppt.pptx` 来自 `hcp4715/R4Psy` 的 CC-BY-4.0 中文课程课件，覆盖多页幻灯片、图片资源、主题样式、组合元素和富文本排版。
 - `pdf.pdf` 是项目方提供的 13 页真实技术说明 PDF，覆盖缩放、页侧边栏、树形导航、打印、导出和暗色外壳隔离回归。
 - `model.gltf`、`model.obj`、`model.stl`、`model.ply` 和 `model.step` 是最小 3D fixture，用于验证 Three.js 预览和工程格式转换提示。
+- `mindmap.xmind` 由项目内使用 `@ljheee/xmind-parser` 生成，覆盖 XMind 2020+ 多 sheet、节点、标签、备注、链接、标记、目录、缩放、搜索、打印和 HTML 导出链路。
+- `architecture.mermaid` 和 `sequence.plantuml` 是项目内绘制的最小但完整的架构图/时序图样例，用于验证 Mermaid 官方 renderer、PlantUML SVG 服务、主题容器、拖拽平移和统一缩放。
+- `design.psd` 由项目内使用 `ag-psd` 生成，覆盖多图层、图层显隐、重绘、透明背景和缩放链路。
+- `change.patch` 用于验证 `diff2html` 左右比对视图；`repository.bundle` 用于验证浏览器端 Git bundle header、refs、commit/tree/blob 解析和 delta pack 边界提示。
 - `flow.excalidraw` 先经过 `@excalidraw/excalidraw` 的官方 `restore`，再用 `exportToSvg` 输出只读预览，以兼容公开样例中常见的精简字段。
 - `process.drawio` 由 diagrams.net 官方 `GraphViewer` 解析，组件不自行实现 draw.io 方言解析。
 - `audio.mp3` 与 `audio.ogg` 只用于验证浏览器原生音频播放能力；不同浏览器对编码的支持存在差异。
@@ -57,7 +67,7 @@
 - `sample.eml` 是标准 MIME fixture，用于验证 EML 头信息、HTML/文本正文和附件链路。
 - `sample.msg` 来自 `HiraokaHyperTools/msgreader` 测试样例，用于验证 Outlook MSG 解析。
 - `sample.mbox` 是项目内生成的邮件归档 fixture，用于验证 MBOX 归档识别和首封邮件预览。
-- `sample.olb` 与 `sample.dra` 是项目内生成的 CFB 夹具，用于验证 OLB / DRA 结构树、对象候选、属性和可读字符串索引。
+- `sample.olb` 与 `sample.dra` 是项目内生成的 CFB 夹具，用于验证 OLB / DRA 结构树、对象候选、属性和可读字符串索引；`layout.gds`、`layout.oas` 和 `layout.oasis` 用于验证 GDSII / OASIS 版图结构退化预览、实体候选和诊断信息。
 - `document.odt`、`excel.ods` 和 `slides.odp` 均来自 The Document Foundation Wiki 的真实公开 OpenDocument 文件，用于验证 ODT 正文、ODS 工作表和 ODP 幻灯片包结构读取；`excel.fods` 是标准 Flat ODS XML 夹具，用于验证平面 OpenDocument 表格入口。
 - `sample.rtf` 是项目内生成的兼容文档 fixture，用于验证 RTFJS 读取。
 - `map.geojson`、`route.kml` 和 `track.gpx` 是项目内生成的轻量地理数据 fixture，用于验证 GeoJSON/KML/GPX 标准化和离线 SVG 地图预览。

@@ -1,0 +1,68 @@
+{
+  "name": "@file-viewer/renderer-ofd",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Standalone OFD renderer plugin for Flyfish File Viewer powered by DLTech21/ofd.js.",
+  "keywords": [
+    "file-viewer",
+    "renderer",
+    "ofd",
+    "document-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-renderer-ofd.git",
+    "directory": "packages/renderers/ofd"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/on-demand-renderers",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-renderer-ofd/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "vendor",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.11",
+    "jszip": "^3.10.1",
+    "ofd-xml-parser": "^0.0.6"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

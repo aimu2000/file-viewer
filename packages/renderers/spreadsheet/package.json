@@ -1,0 +1,85 @@
+{
+  "name": "@file-viewer/renderer-spreadsheet",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Standalone spreadsheet renderer plugin for Flyfish File Viewer powered by styled-exceljs and e-virt-table.",
+  "keywords": [
+    "file-viewer",
+    "renderer",
+    "spreadsheet",
+    "excel",
+    "xlsx",
+    "xls",
+    "csv",
+    "ods",
+    "document-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted",
+    "office-viewer"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-renderer-spreadsheet.git",
+    "directory": "packages/renderers/spreadsheet"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/on-demand-renderers",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-renderer-spreadsheet/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./worker/sheetjs": {
+      "types": "./dist/spreadsheet/worker/sheetjs/index.d.ts",
+      "import": "./dist/spreadsheet/worker/sheetjs/index.js",
+      "default": "./dist/spreadsheet/worker/sheetjs/index.js"
+    },
+    "./worker/sheetjs/sheet.worker": {
+      "types": "./dist/spreadsheet/worker/sheetjs/sheet.worker.d.ts",
+      "import": "./dist/spreadsheet/worker/sheetjs/sheet.worker.js",
+      "default": "./dist/spreadsheet/worker/sheetjs/sheet.worker.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.11",
+    "e-virt-table": "^1.3.26",
+    "styled-exceljs": "0.21.1",
+    "tinycolor2": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/tinycolor2": "^1.4.6",
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

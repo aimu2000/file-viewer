@@ -41,6 +41,7 @@ export default defineConfig(ctx => {
   }
 
   if (ctx.mode !== 'lib') {
+    alias['@file-viewer/core/assets'] = fileURLToPath(new URL('../../packages/core/src/assets.ts', import.meta.url))
     alias['@file-viewer/core'] = fileURLToPath(new URL('../../packages/core/src/index.ts', import.meta.url))
   }
 

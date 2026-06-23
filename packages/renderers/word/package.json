@@ -1,0 +1,74 @@
+{
+  "name": "@file-viewer/renderer-word",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Standalone Word and compatible document renderer plugin for Flyfish File Viewer powered by @file-viewer/docx, msdoc-viewer, and RTF/ODF parsing.",
+  "keywords": [
+    "file-viewer",
+    "renderer",
+    "word",
+    "docx",
+    "doc",
+    "rtf",
+    "odt",
+    "document-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted",
+    "office-viewer"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-renderer-word.git",
+    "directory": "packages/renderers/word"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/on-demand-renderers",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-renderer-word/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.11",
+    "@file-viewer/docx": "^0.3.12",
+    "jszip": "^3.10.1",
+    "msdoc-viewer": "^0.2.0",
+    "rtf.js": "^3.0.9"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

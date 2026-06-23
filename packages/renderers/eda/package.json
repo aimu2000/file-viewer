@@ -1,0 +1,73 @@
+{
+  "name": "@file-viewer/renderer-eda",
+  "version": "2.0.11",
+  "private": false,
+  "type": "module",
+  "description": "Standalone EDA renderer plugin for Flyfish File Viewer with OLB, DRA, GDSII, and OASIS structure preview.",
+  "keywords": [
+    "file-viewer",
+    "renderer",
+    "eda",
+    "gds",
+    "gdsii",
+    "oasis",
+    "olb",
+    "dra",
+    "document-preview",
+    "document-viewer",
+    "file-preview",
+    "self-hosted"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-renderer-eda.git",
+    "directory": "packages/renderers/eda"
+  },
+  "homepage": "https://doc.file-viewer.app/guide/format-fidelity",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-renderer-eda/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:^2.0.11",
+    "@file-viewer/eda-layout": "workspace:^2.0.11",
+    "@file-viewer/eda-orcad": "workspace:^2.0.11",
+    "cfb": "^1.2.2"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "license": "Apache-2.0"
+}

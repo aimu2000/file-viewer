@@ -1,11 +1,111 @@
 import { defineConfig } from 'vitepress'
 
+const githubSocialLink = {
+  icon: {
+    svg: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>'
+  },
+  link: 'https://github.com/flyfish-dev/file-viewer'
+}
+
+const enNav = [
+  { text: 'Docs', link: '/en/guide/' },
+  { text: 'Quickstart', link: '/en/guide/quickstart' },
+  { text: 'Ecosystem', link: '/en/guide/ecosystem' },
+  { text: 'Formats', link: '/en/guide/formats' },
+  {
+    text: 'Resources',
+    items: [
+      { text: 'Live Demo', link: 'https://demo.file-viewer.app' },
+      { text: 'Compare Demo', link: 'https://demo.file-viewer.app/compare.html' },
+      { text: 'npm Core', link: 'https://www.npmjs.com/package/@file-viewer/core' },
+      { text: 'npm Web Component', link: 'https://www.npmjs.com/package/@file-viewer/web' },
+      { text: 'npm Vue 3', link: 'https://www.npmjs.com/package/@file-viewer/vue3' },
+      { text: 'npm React', link: 'https://www.npmjs.com/package/@file-viewer/react' },
+      { text: 'npm Svelte', link: 'https://www.npmjs.com/package/@file-viewer/svelte' },
+      { text: 'GitHub Repository', link: 'https://github.com/flyfish-dev/file-viewer' },
+      { text: 'Sponsor / Priority Support', link: 'https://dev.flyfish.group/shop' }
+    ]
+  }
+]
+
+const enSidebar = {
+  '/en/guide/': [
+    {
+      text: 'Start Here',
+      items: [
+        { text: 'Docs Home', link: '/en/guide/' },
+        { text: 'Quickstart', link: '/en/guide/quickstart' },
+        { text: 'Ecosystem Packages', link: '/en/guide/ecosystem' },
+        { text: 'Supported Formats', link: '/en/guide/formats' },
+        { text: 'Distribution', link: '/en/guide/distribution' }
+      ]
+    }
+  ]
+}
+
+const enSearch = {
+  provider: 'local' as const,
+  options: {
+    locales: {
+      root: {
+        translations: {
+          button: {
+            buttonText: 'Search docs',
+            buttonAriaLabel: 'Search docs'
+          },
+          modal: {
+            displayDetails: 'Display details',
+            resetButtonTitle: 'Reset search',
+            backButtonTitle: 'Back',
+            noResultsText: 'No results found',
+            footer: {
+              selectText: 'select',
+              navigateText: 'navigate',
+              closeText: 'close'
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Flyfish Viewer',
-  description: '纯前端多格式文件预览组件，覆盖 194 个扩展名和 Vanilla JS / Pure Web、Vue3、Vue2.7/2.6、React、jQuery、Svelte 原生接入方式',
+  description: '纯前端多格式文件预览组件，覆盖 206 个扩展名和 Vanilla JS / Pure Web、Vue3、Vue2.7/2.6、React、jQuery、Svelte 原生接入方式',
   cleanUrls: true,
   lastUpdated: true,
+  locales: {
+    root: {
+      label: '简体中文',
+      lang: 'zh-CN'
+    },
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      link: '/en/',
+      title: 'Flyfish Viewer',
+      description: 'Offline-first frontend file preview for Office, PDF, CAD, archives, email, EPUB, 3D, code, media, and more.',
+      themeConfig: {
+        logo: '/_media/logo.svg',
+        nav: enNav,
+        sidebar: enSidebar,
+        outline: { level: [2, 3], label: 'On This Page' },
+        docFooter: {
+          prev: 'Previous page',
+          next: 'Next page'
+        },
+        lastUpdatedText: 'Last updated',
+        search: enSearch,
+        socialLinks: [githubSocialLink],
+        footer: {
+          message: 'Released under the Apache-2.0 License.',
+          copyright: 'Copyright © 2026 Flyfish Viewer'
+        }
+      }
+    }
+  },
   head: [
     ['meta', { name: 'theme-color', content: '#1d6fd6' }],
     ['meta', { property: 'og:title', content: 'Flyfish Viewer' }],
@@ -66,6 +166,8 @@ export default defineConfig({
           text: '能力与边界',
           items: [
             { text: '支持格式', link: '/guide/formats' },
+            { text: '格式完整度', link: '/guide/format-fidelity' },
+            { text: '按需渲染架构', link: '/guide/on-demand-renderers' },
             { text: '常见问题', link: '/guide/faq' }
           ]
         },
@@ -119,12 +221,7 @@ export default defineConfig({
       }
     },
     socialLinks: [
-      {
-        icon: {
-          svg: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>'
-        },
-        link: 'https://github.com/flyfish-dev/file-viewer'
-      }
+      githubSocialLink
     ],
     footer: {
       message: 'Released under the Apache-2.0 License.',

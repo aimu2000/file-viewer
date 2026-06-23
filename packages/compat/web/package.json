@@ -9,7 +9,12 @@
     "document-preview",
     "vanilla-js",
     "native-viewer",
-    "web"
+    "web",
+    "document-viewer",
+    "file-preview",
+    "self-hosted",
+    "web-component",
+    "custom-element"
   ],
   "publishConfig": {
     "access": "public",
@@ -27,6 +32,10 @@
   "homepage": "https://github.com/flyfish-dev/file-viewer",
   "bugs": {
     "url": "https://github.com/flyfish-dev/file-viewer/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

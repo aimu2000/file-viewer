@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@file-viewer/core": "workspace:^2.0.11",
+    "@file-viewer/preset-all": "workspace:^2.0.11",
     "@file-viewer/vue3": "workspace:^2.0.11",
     "@lucide/vue": "^1.17.0",
     "qs": "^6.15.2",

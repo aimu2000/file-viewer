@@ -8,7 +8,10 @@
     "file-viewer",
     "document-preview",
     "vue3",
-    "alias"
+    "alias",
+    "document-viewer",
+    "file-preview",
+    "self-hosted"
   ],
   "publishConfig": {
     "access": "public",
@@ -26,6 +29,10 @@
   "homepage": "https://github.com/flyfish-dev/file-viewer",
   "bugs": {
     "url": "https://github.com/flyfish-dev/file-viewer/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

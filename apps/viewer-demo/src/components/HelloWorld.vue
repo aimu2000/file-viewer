@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import {
   ChevronDown,
   ChevronUp,
@@ -14,6 +14,7 @@ import {
   ZoomOut
 } from '@lucide/vue'
 import { DEFAULT_FILE_VIEWER_ARCHIVE_WORKER_PATH } from '@file-viewer/core'
+import { allRenderers } from '@file-viewer/preset-all'
 import { listenForFile } from '@/components/utils'
 import type {
   FileViewerFileRef as FileRef,
@@ -38,7 +39,7 @@ const controlPanelRef = ref<HTMLElement | null>(null)
 const sampleMenuPlacement = ref<'bottom' | 'top'>('bottom')
 const sampleMenuMaxHeight = ref('min(52vh, 520px)')
 const watermarkEnabled = ref(false)
-const runtimeOptions = ref<FileViewerOptions>({})
+const runtimeOptions = shallowRef<FileViewerOptions>({})
 const mobileControlsOpen = ref(false)
 const mobileActionsOpen = ref(false)
 const viewerSearchOpen = ref(false)
@@ -117,7 +118,7 @@ const sampleGroups: SampleGroup[] = [
   },
   {
     title: '演示与图纸',
-    description: 'PPTX / CAD / Drawing',
+    description: 'PPTX / CAD',
     family: 'cad',
     items: [
       { name: 'PPTX 中文课件', url: '/example/ppt.pptx' },
@@ -126,7 +127,17 @@ const sampleGroups: SampleGroup[] = [
       { name: 'DWG', url: '/example/sample.dwg' },
       { name: 'DWF Blocks/Tables', url: '/example/samples/apache/blocks_and_tables.dwf' },
       { name: 'DWFx House', url: '/example/samples/autodesk/house.dwfx' },
-      { name: 'DWFx RobotArm', url: '/example/samples/autodesk/robot-arm.dwfx' },
+      { name: 'DWFx RobotArm', url: '/example/samples/autodesk/robot-arm.dwfx' }
+    ]
+  },
+  {
+    title: '脑图与绘图',
+    description: 'XMind / Mermaid / PlantUML / draw.io',
+    family: 'drawing',
+    items: [
+      { name: 'XMind 脑图', url: '/example/mindmap.xmind' },
+      { name: 'Mermaid 架构图', url: '/example/architecture.mermaid' },
+      { name: 'PlantUML 时序图', url: '/example/sequence.plantuml' },
       { name: 'Excalidraw', url: '/example/flow.excalidraw' },
       { name: 'draw.io', url: '/example/process.drawio' }
     ]
@@ -166,14 +177,17 @@ const sampleGroups: SampleGroup[] = [
   },
   {
     title: '邮件与 EDA',
-    description: 'EML / MSG / OLB / DRA',
+    description: 'EML / MSG / OLB / DRA / GDS / OASIS',
     family: 'email',
     items: [
       { name: 'EML', url: '/example/sample.eml' },
       { name: 'MSG', url: '/example/sample.msg' },
       { name: 'MBOX', url: '/example/sample.mbox' },
       { name: 'OLB', url: '/example/sample.olb' },
-      { name: 'DRA', url: '/example/sample.dra' }
+      { name: 'DRA', url: '/example/sample.dra' },
+      { name: 'GDSII', url: '/example/layout.gds' },
+      { name: 'OAS', url: '/example/layout.oas' },
+      { name: 'OASIS', url: '/example/layout.oasis' }
     ]
   },
   {
@@ -217,7 +231,9 @@ const sampleGroups: SampleGroup[] = [
       { name: 'TeX', url: '/example/formula.tex' },
       { name: 'Graphviz', url: '/example/graph.gv' },
       { name: 'HTTP', url: '/example/request.http' },
-      { name: 'DIFF', url: '/example/change.diff' }
+      { name: 'DIFF', url: '/example/change.diff' },
+      { name: 'PATCH 左右比对', url: '/example/change.patch' },
+      { name: 'Git Bundle', url: '/example/repository.bundle' }
     ]
   },
   {
@@ -251,6 +267,7 @@ const sampleGroups: SampleGroup[] = [
     items: [
       { name: 'SQLite', url: '/example/sample.sqlite' },
       { name: 'WASM', url: '/example/module.wasm' },
+      { name: 'PSD 图层', url: '/example/design.psd' },
       { name: 'ICO', url: '/example/icon.ico' }
     ]
   },
@@ -286,7 +303,8 @@ const extraUploadExtensions = [
   'step', 'stp', 'iges', 'igs', 'ifc', '3dm', 'pcd', 'wrl', 'vrml', 'xyz', 'vtk', 'vtp', 'shp',
   'zip', 'zipx', '7z', 'rar', 'tar', 'gz', 'gzip', 'tgz', 'bz2', 'bzip2', 'tbz', 'tbz2',
   'xz', 'txz', 'lzma', 'zst', 'tzst', 'cab', 'ar', 'cpio', 'iso', 'xar', 'lha', 'lzh',
-  'jar', 'war', 'ear', 'apk', 'cbz', 'cbr', 'eml', 'msg', 'mbox', 'olb', 'dra', 'typst',
+  'jar', 'war', 'ear', 'apk', 'cbz', 'cbr', 'eml', 'msg', 'mbox', 'olb', 'dra', 'gds', 'oas', 'oasis', 'xmind', 'typst',
+  'mermaid', 'mmd', 'plantuml', 'puml', 'patch', 'bundle', 'bdl',
   'ttf', 'otf', 'woff', 'woff2', 'psd', 'ai', 'eps', 'parquet', 'avro', 'webarchive'
 ]
 
@@ -336,6 +354,11 @@ const fileIconMeta: Record<string, { icon: string; family: string }> = {
   dwf: { icon: 'DWF', family: 'cad' },
   dwfx: { icon: 'DWFx', family: 'cad' },
   xps: { icon: 'XPS', family: 'cad' },
+  xmind: { icon: 'XM', family: 'drawing' },
+  mermaid: { icon: 'MER', family: 'drawing' },
+  mmd: { icon: 'MER', family: 'drawing' },
+  plantuml: { icon: 'UML', family: 'drawing' },
+  puml: { icon: 'UML', family: 'drawing' },
   glb: { icon: '3D', family: 'model' },
   gltf: { icon: '3D', family: 'model' },
   obj: { icon: 'OBJ', family: 'model' },
@@ -407,6 +430,9 @@ const fileIconMeta: Record<string, { icon: string; family: string }> = {
   mbox: { icon: 'MBOX', family: 'email' },
   olb: { icon: 'OLB', family: 'eda' },
   dra: { icon: 'DRA', family: 'eda' },
+  gds: { icon: 'GDS', family: 'eda' },
+  oas: { icon: 'OAS', family: 'eda' },
+  oasis: { icon: 'OAS', family: 'eda' },
   md: { icon: 'MD', family: 'text' },
   markdown: { icon: 'MD', family: 'text' },
   txt: { icon: 'TXT', family: 'text' },
@@ -448,6 +474,9 @@ const fileIconMeta: Record<string, { icon: string; family: string }> = {
   hpp: { icon: 'H++', family: 'code' },
   cs: { icon: 'CS', family: 'code' },
   diff: { icon: 'DIFF', family: 'code' },
+  patch: { icon: 'PATCH', family: 'code' },
+  bundle: { icon: 'GIT', family: 'code' },
+  bdl: { icon: 'GIT', family: 'code' },
   java: { icon: 'JV', family: 'code' },
   py: { icon: 'PY', family: 'code' },
   rb: { icon: 'RB', family: 'code' },
@@ -622,28 +651,38 @@ const viewerSearchSummary = computed(() => {
   return state.total ? `${state.currentIndex + 1}/${state.total}` : '0/0'
 })
 
-const viewerOptions = computed<FileViewerOptions>(() => ({
-  archive: {
+const viewerOptions = computed((): FileViewerOptions => {
+  const runtime = runtimeOptions.value
+  const options = { ...(runtime as Record<string, unknown>) } as FileViewerOptions
+  options.renderers = runtime.renderers ?? allRenderers
+
+  options.archive = {
     workerUrl: `/${DEFAULT_FILE_VIEWER_ARCHIVE_WORKER_PATH}`,
     cache: true,
-    ...runtimeOptions.value.archive
-  },
-  ...runtimeOptions.value,
-  toolbar: hidden.value ? runtimeOptions.value.toolbar ?? true : false,
-  watermark: watermarkEnabled.value
+    ...runtime.archive
+  }
+  options.spreadsheet = {
+    resizableColumns: true,
+    ...runtime.spreadsheet
+  }
+  options.drawing = { ...runtime.drawing }
+  options.toolbar = hidden.value ? runtime.toolbar ?? true : false
+  options.watermark = watermarkEnabled.value
     ? {
         text: 'Flyfish Viewer',
         opacity: 0.16,
         rotate: -24,
         color: '#1f7a58',
         ...(
-          typeof runtimeOptions.value.watermark === 'object'
-            ? runtimeOptions.value.watermark
+          typeof runtime.watermark === 'object' && runtime.watermark
+            ? runtime.watermark
             : {}
         )
       }
-    : runtimeOptions.value.watermark
-}))
+    : runtime.watermark
+
+  return options
+})
 
 function triggerViewerAction(action: ViewerAction) {
   mobileActionsOpen.value = false
