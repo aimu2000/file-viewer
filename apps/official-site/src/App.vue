@@ -146,15 +146,15 @@ const copy = {
     solutionsTitle: '适合长期运行在企业系统里',
     solutionsIntro:
       '从 OA 审批到工程图纸，从客服工单到 AI 文档工作台，File Viewer 更关注真实文件、复杂网络、私有化部署和用户每天都会遇到的细节。',
-    ecosystemTitle: 'Core 负责底层预览能力，标准组件负责原生体验。',
+    ecosystemTitle: '原生组件接入，统一参数与事件。',
     ecosystemIntro:
-      '一个组件，一行代码，快速集成。业务侧只需要先选择宿主技术栈，再按实际格式装配 lite、office、engineering 或自定义 renderer。首页只展示最常用接入路径，完整生态能力交给文档承载。',
-    demoTitle: '先看真实 Demo，再决定如何接入。',
+      '一个组件，一行代码，快速集成。Vanilla JS、Vue、React、Svelte、jQuery 与 Vue2 均提供独立接入示例；按需选择 lite、office、engineering、all preset 或单 renderer 精确装配。',
+    demoTitle: '在线 Demo，直接验证真实预览体验。',
     demoIntro:
-      '在线 Demo 使用与生产包一致的渲染链路、样例文件、上传入口、工具栏和文档比对页。客户可以直接打开 Word、PDF、PPTX、CAD、Typst、压缩包、图形、代码和媒体样例，验证体验后再进入接入文档。',
-    docsTitle: '文档从快速开始进入，细节往下查。',
+      '打开完整样例矩阵，验证 Word、PDF、PPTX、CAD、Typst、压缩包、图形、代码、媒体、上传预览与文档比对等核心场景。',
+    docsTitle: '接入文档，快速参阅关键能力。',
     docsIntro:
-      'doc.file-viewer.app 默认引导到快速开始，再继续展开模块化装配、格式支持、主题水印、搜索定位、打印导出、Docker、Release 与私有化部署。官网顶部导航负责滚动定位，文档站负责落地细节。',
+      '从快速开始进入，集中查阅模块化装配、格式矩阵、组件参数、主题水印、搜索定位、打印导出、Docker、Release 与私有化部署。',
     commercialTitle: '需要更高还原度和极致性能？选择商业版原生文档引擎。',
     commercialIntro:
       '商业版来自本地 office 产品线，采用自研原生文档引擎，面向严肃企业场景提供 Word、Excel、PowerPoint 的高还原渲染、Worker 解析、分页布局、虚拟滚动和更稳定的大文件体验。',
@@ -194,15 +194,15 @@ const copy = {
     solutionsTitle: 'Built for long-running enterprise workspaces',
     solutionsIntro:
       'From approvals to engineering drawings, support tickets, and AI document workflows, File Viewer focuses on real files, private networks, self-hosted delivery, and the details users meet every day.',
-    ecosystemTitle: 'Core owns preview capability. Standard components own native framework experience.',
+    ecosystemTitle: 'Native integrations with one options and event model.',
     ecosystemIntro:
-      'One component, one line of code, fast integration. Pick the host stack first, then compose lite, office, engineering, or exact renderer packages by the formats your product actually needs. The homepage keeps the path focused; the docs carry the full ecosystem details.',
-    demoTitle: 'Try the real demo before choosing an integration path.',
+      'One component, one line of code, fast integration. Vanilla JS, Vue, React, Svelte, jQuery, and Vue 2 each get a dedicated entry path; compose lite, office, engineering, all presets, or exact renderers by product scope.',
+    demoTitle: 'Live demo for real preview validation.',
     demoIntro:
-      'The live demo uses the same rendering pipeline, sample files, upload entry, toolbar, and comparison page as the production packages. Open Word, PDF, PPTX, CAD, Typst, archives, diagrams, code, media, and data samples first, then move into integration docs.',
-    docsTitle: 'The docs site and product portal share one information architecture.',
+      'Open the complete sample matrix to validate Word, PDF, PPTX, CAD, Typst, archives, diagrams, code, media, upload preview, and document comparison flows.',
+    docsTitle: 'Integration docs for fast technical reference.',
     docsIntro:
-      'doc.file-viewer.app starts from quickstart, then expands into modular assembly, format support, theme and watermark options, search anchors, print/export, Docker, Release downloads, and self-hosted deployment.',
+      'Start from quickstart and jump into modular assembly, format matrix, component options, themes, watermarks, search anchors, print/export, Docker, Release downloads, and self-hosted deployment.',
     commercialTitle: 'Need higher fidelity and extreme performance? Choose the commercial native document engine.',
     commercialIntro:
       'The commercial edition is powered by the local office product line: a self-developed native document engine for serious enterprise Word, Excel, and PowerPoint rendering, Worker parsing, pagination, virtual scrolling, and stable large-file performance.',
@@ -380,6 +380,25 @@ const capabilities = computed<Capability[]>(() =>
       ]
 )
 
+const GitHubMark = {
+  name: 'GitHubMark',
+  render: () =>
+    h(
+      'svg',
+      {
+        class: 'github-mark',
+        viewBox: '0 0 24 24',
+        'aria-hidden': 'true',
+        fill: 'currentColor'
+      },
+      [
+        h('path', {
+          d: 'M12 1.7C6.3 1.7 1.7 6.3 1.7 12c0 4.6 3 8.5 7.2 9.8.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.2-3.5-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 2.9.9.1-.7.4-1.1.7-1.3-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3.9 0 1.8.1 2.6.3 2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.7 5.1.4.3.8 1 .8 2v3c0 .3.2.6.8.5 4.2-1.3 7.2-5.2 7.2-9.8C22.3 6.3 17.7 1.7 12 1.7Z'
+        })
+      ]
+    )
+} satisfies Component
+
 const portalLinks = computed<LinkItem[]>(() =>
   isZh.value
     ? [
@@ -441,20 +460,20 @@ viewer.addEventListener('viewer-load-complete', event => {
 viewer.zoomIn()`
   },
   {
-    label: isZh.value ? 'Vue / React' : 'Vue / React',
+    label: 'Vue 3',
     packageName: '@file-viewer/vue3',
-    install: isZh.value ? '选择对应框架组件包' : 'Choose the native package for your framework',
-    title: isZh.value ? '框架项目使用原生组件，不走 iframe 黑盒' : 'Framework projects use native components, not iframe boxes',
+    install: 'npm install @file-viewer/vue3',
+    title: isZh.value ? 'Vue 3 项目原生组件接入' : 'Native Vue 3 component integration',
     summary: isZh.value
-      ? 'Vue、React、Svelte、jQuery 和 Vue2 都共享同一套 options，首页不堆包名，完整差异在文档中展开。'
-      : 'Vue, React, Svelte, jQuery, and Vue 2 share the same options model; detailed package differences live in the docs.',
+      ? '保持 Vue 插件、组件 props、事件和样式入口的原生体验，适合管理后台、知识库和企业门户。'
+      : 'Vue plugin, component props, events, and style entry stay native for admin consoles, knowledge bases, and portals.',
     language: 'Vue SFC',
     href: `${docsUrl}guide/quickstart-vue3`,
     tone: 'green',
     icon: PanelTop,
     code: `${snippetImport("{ createApp } from 'vue'")}
 ${snippetImport("FileViewer from '@file-viewer/vue3'")}
-${snippetImport("'@file-viewer/vue3/dist/file-viewer3.css'")}
+${snippetImport("'@file-viewer/vue3/style.css'")}
 
 createApp(App).use(FileViewer).mount('#app')
 
@@ -467,6 +486,115 @@ createApp(App).use(FileViewer).mount('#app')
   }"
   @load-complete="handleLoadComplete"
 />`
+  },
+  {
+    label: 'React',
+    packageName: '@file-viewer/react',
+    install: 'npm install @file-viewer/react',
+    title: isZh.value ? 'React 项目使用组件与 hooks' : 'React components and hooks',
+    summary: isZh.value
+      ? '提供 React 组件、类型化 options、事件回调和 ref/controller，便于在业务页面内组合权限、工具栏和状态。'
+      : 'Use React components, typed options, callbacks, and ref/controller APIs to compose permissions, toolbars, and state.',
+    language: 'TSX',
+    href: `${docsUrl}guide/quickstart-react`,
+    tone: 'blue',
+    icon: Rocket,
+    code: `${snippetImport("{ FileViewer, useFileViewerController } from '@file-viewer/react'")}
+${snippetImport("'@file-viewer/react/style.css'")}
+
+export function Preview() {
+  const controller = useFileViewerController()
+
+  return (
+    <FileViewer
+      src="/files/report.docx"
+      controller={controller}
+      options={{ theme: 'light', toolbar: { position: 'bottom-right' } }}
+      onLoadComplete={event => console.log(event.fileName)}
+    />
+  )
+}`
+  },
+  {
+    label: 'Svelte',
+    packageName: '@file-viewer/svelte',
+    install: 'npm install @file-viewer/svelte',
+    title: isZh.value ? 'Svelte 页面保持轻量原生' : 'Lightweight native Svelte entry',
+    summary: isZh.value
+      ? 'Svelte 组件独立依赖 core，保留同样的 options、事件、主题、搜索、缩放和打印导出能力。'
+      : 'The Svelte component depends directly on core and keeps the same options, events, themes, search, zoom, print, and export APIs.',
+    language: 'Svelte',
+    href: `${docsUrl}guide/ecosystem#svelte`,
+    tone: 'cyan',
+    icon: Zap,
+    code: `<script lang="ts">
+  ${snippetImport("FileViewer from '@file-viewer/svelte'")}
+  ${snippetImport("'@file-viewer/svelte/style.css'")}
+
+  const options = {
+    theme: 'light',
+    toolbar: { position: 'bottom-right', zoom: true }
+  }
+${'<\\/script>'}
+
+<FileViewer
+  src="/files/deck.pptx"
+  {options}
+  on:loadComplete={event => console.log(event.detail.fileName)}
+/>`
+  },
+  {
+    label: 'Vue 2',
+    packageName: '@file-viewer/vue2.7',
+    install: isZh.value ? 'npm install @file-viewer/vue2.7 或 @file-viewer/vue2.6' : 'npm install @file-viewer/vue2.7 or @file-viewer/vue2.6',
+    title: isZh.value ? 'Vue 2.7 / 2.6 项目平滑接入' : 'Smooth Vue 2.7 / 2.6 integration',
+    summary: isZh.value
+      ? 'Vue legacy 组件保持同样的 props、事件和样式入口，适合存量 Vue2 系统逐步升级预览能力。'
+      : 'Vue legacy packages keep the same props, events, and style entry for existing Vue 2 systems.',
+    language: 'Vue 2',
+    href: `${docsUrl}guide/quickstart-vue2`,
+    tone: 'amber',
+    icon: Layers3,
+    code: `${snippetImport("Vue from 'vue'")}
+${snippetImport("FileViewer from '@file-viewer/vue2.7'")}
+${snippetImport("'@file-viewer/vue2.7/style.css'")}
+
+Vue.use(FileViewer)
+
+new Vue({
+  template: \`
+    <file-viewer
+      url="/files/archive.zip"
+      :options="{ theme: 'light', toolbar: true }"
+      @load-complete="handleLoadComplete"
+    />
+  \`
+}).$mount('#app')`
+  },
+  {
+    label: 'jQuery',
+    packageName: '@file-viewer/jquery',
+    install: 'npm install @file-viewer/jquery',
+    title: isZh.value ? '传统页面使用命令式挂载' : 'Imperative mounting for classic pages',
+    summary: isZh.value
+      ? '面向传统多页应用和渐进式改造，保留 controller、事件解绑、销毁和运行时更新能力。'
+      : 'For classic multi-page apps and progressive migration, with controller, event cleanup, destroy, and runtime updates.',
+    language: 'JavaScript',
+    href: `${docsUrl}guide/ecosystem#jquery`,
+    tone: 'orange',
+    icon: Wrench,
+    code: `${snippetImport("{ mountViewer } from '@file-viewer/jquery'")}
+${snippetImport("'@file-viewer/jquery/style.css'")}
+
+const viewer = mountViewer('#viewer', {
+  src: '/files/sheet.xlsx',
+  options: { theme: 'light', toolbar: { zoom: true } },
+  onLoadComplete(event) {
+    console.log(event.fileName)
+  }
+})
+
+viewer.setSrc('/files/contract.pdf')`
   },
   {
     label: isZh.value ? '按需装配' : 'On-demand',
@@ -657,25 +785,6 @@ function scrollToSection(event: MouseEvent, id: string) {
   window.history.replaceState(null, '', `#${id}`)
   window.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' })
 }
-
-const GitHubMark = {
-  name: 'GitHubMark',
-  render: () =>
-    h(
-      'svg',
-      {
-        class: 'github-mark',
-        viewBox: '0 0 24 24',
-        'aria-hidden': 'true',
-        fill: 'currentColor'
-      },
-      [
-        h('path', {
-          d: 'M12 1.7C6.3 1.7 1.7 6.3 1.7 12c0 4.6 3 8.5 7.2 9.8.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.2-3.5-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 2.9.9.1-.7.4-1.1.7-1.3-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3.9 0 1.8.1 2.6.3 2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.7 5.1.4.3.8 1 .8 2v3c0 .3.2.6.8.5 4.2-1.3 7.2-5.2 7.2-9.8C22.3 6.3 17.7 1.7 12 1.7Z'
-        })
-      ]
-    )
-} satisfies Component
 
 function disposeScene(scene: Scene, renderer: WebGLRenderer) {
   scene.traverse((child: Object3D) => {
@@ -1088,8 +1197,8 @@ onBeforeUnmount(() => {
             ></iframe>
             <div v-else class="demo-frame-placeholder">
               <MonitorPlay :size="28" />
-              <strong>{{ isZh ? '正在准备在线 Demo' : 'Preparing the live demo' }}</strong>
-              <span>{{ isZh ? '预览器在进入视区后加载，保持首屏轻快' : 'The viewer loads when this section enters the viewport' }}</span>
+              <strong>{{ isZh ? '在线 Demo' : 'Live demo' }}</strong>
+              <span>{{ isZh ? '完整预览器即将加载' : 'Full viewer loading' }}</span>
             </div>
           </div>
           <div class="demo-seam demo-seam-bottom">
