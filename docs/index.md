@@ -6,7 +6,7 @@ titleTemplate: false
 
 <main class="doc-home doc-home-v2">
 <nav class="doc-home-anchor" aria-label="文档首页导航">
-<a href="#quickstart">快速开始</a>
+<a href="#capability">核心能力</a>
 <a href="#demo">Demo</a>
 <a href="#presets">预设选择</a>
 <a href="#ecosystem">生态接入</a>
@@ -14,47 +14,66 @@ titleTemplate: false
 <a href="#delivery">部署分发</a>
 </nav>
 
-<section id="quickstart" class="doc-start">
+<section id="capability" class="doc-start doc-product-hero">
 <div class="doc-start-copy">
-<span class="doc-eyebrow">Documentation Hub</span>
-<h1>企业级文件预览，先跑起来，再精准装配。</h1>
+<span class="doc-eyebrow">Flyfish Viewer Docs</span>
+<h1>把复杂文件预览，稳定交给前端。</h1>
 <p>
-Flyfish Viewer 为业务系统提供浏览器端文件预览能力。文档从最短可运行路径开始，再逐步展开 preset、renderer、Worker/WASM 资产和私有化边界，帮助团队先完成接入验证，再按业务格式控制依赖范围。
+Flyfish Viewer 是面向业务系统的浏览器端文件预览基础设施，覆盖办公文档、工程图纸、压缩包、邮件、电子书、代码、图片、音视频和结构化数据。文档站把能力矩阵、接入路径、模块化边界、离线部署和生产验证放在同一个入口，帮助团队快速评估、按需装配并稳定上线。
 </p>
 <div class="doc-home-actions">
-<a class="doc-action doc-action-primary" href="/guide/quickstart">进入快速开始</a>
-<a class="doc-action" href="https://demo.file-viewer.app" target="_blank" rel="noreferrer">体验 Demo</a>
-<a class="doc-action" href="/guide/on-demand-renderers">查看模块化装配</a>
+<a class="doc-action doc-action-primary" href="https://demo.file-viewer.app" target="_blank" rel="noreferrer">立即体验 Demo</a>
+<a class="doc-action" href="/guide/formats">查看格式矩阵</a>
+<a class="doc-action" href="/guide/quickstart">进入快速开始</a>
 </div>
 <div class="doc-start-stats" aria-label="Flyfish Viewer 核心能力">
 <div><strong>206</strong><span>扩展名映射</span></div>
 <div><strong>24</strong><span>预览链路</span></div>
-<div><strong>50</strong><span>npm 发布目标</span></div>
+<div><strong>离线</strong><span>Worker / WASM / 字体自托管</span></div>
+<div><strong>按需</strong><span>preset 与 renderer 组合装配</span></div>
 </div>
 </div>
 
-<div class="doc-install-panel" aria-label="推荐安装方式">
+<div class="doc-capability-panel" aria-label="Flyfish Viewer 能力概览">
 <div class="doc-panel-top">
 <span></span><span></span><span></span>
-<strong>recommended setup</strong>
+<strong>preview platform</strong>
 </div>
-<div class="doc-install-block">
-<span>1. 选择生态组件</span>
-<pre><code>pnpm add @file-viewer/vue3</code></pre>
+<div class="doc-preview-board">
+<div class="doc-preview-main">
+<span>active document</span>
+<strong>PDF · DOCX · DWG · ZIP</strong>
+<p>按文件类型异步加载 renderer、worker、wasm 和离线 vendor 资源，避免首屏被全量能力拖慢。</p>
+<div class="doc-preview-pills">
+<b>Search</b><b>Zoom</b><b>Print</b><b>Export</b>
 </div>
-<div class="doc-install-block">
-<span>2. 追加业务需要的格式能力</span>
-<pre><code>pnpm add @file-viewer/preset-office</code></pre>
 </div>
-<div class="doc-install-block">
-<span>3. 通过 options.preset 注入</span>
-<pre><code>import officePreset from '@file-viewer/preset-office'
-const options = { preset: officePreset }</code></pre>
+<div class="doc-preview-rail">
+<span class="is-active">Office fidelity</span>
+<span>Engineering CAD</span>
+<span>Archive nested preview</span>
+<span>Offline assets</span>
 </div>
-<div class="doc-install-note">
-<strong>组件包保持轻量。</strong>
-<span><code>@file-viewer/vue3</code>、<code>@file-viewer/react</code>、<code>@file-viewer/web</code> 等负责原生接入体验；Office、CAD、EDA、Typst、压缩包等能力由 preset 或 renderer 提供。Webpack、Rspack、Rollup、Umi、传统多页应用都可以直接用 <code>options.preset</code>；Vite 项目注册 <code>@file-viewer/vite-plugin</code> 后可自动发现已安装 preset。</span>
 </div>
+<div class="doc-platform-points">
+<div><strong>统一交互</strong><span>搜索、高亮、缩放、打印、导出、水印和生命周期钩子。</span></div>
+<div><strong>企业部署</strong><span>内网静态资源、Docker、Cloudflare Pages 和 Release 产物。</span></div>
+<div><strong>原生生态</strong><span>Vanilla JS、Vue、React、Svelte、jQuery 共享同一套 core。</span></div>
+</div>
+</div>
+</section>
+
+<section class="doc-section doc-capability-section">
+<div class="doc-section-heading">
+<span>Platform Capability</span>
+<h2>不只是展示文件，而是把预览链路做成可交付的前端能力。</h2>
+<p>从格式识别、渲染调度、资源加载、用户交互到部署分发，Flyfish Viewer 以模块化架构把复杂预览能力拆成可控制、可验证、可持续升级的能力单元。</p>
+</div>
+<div class="doc-feature-grid">
+<article class="doc-card"><strong>多格式高还原</strong><h3>覆盖真实业务附件</h3><p>PDF、Word、Excel、PPTX、OFD、Typst、CAD、DWF、PSD、Mermaid、PlantUML、压缩包内嵌预览等能力按模块维护。</p></article>
+<article class="doc-card"><strong>按需与性能</strong><h3>命中文件才加载重型依赖</h3><p>renderer、worker、wasm、字体和 vendor 资源分层加载，IIFE full 入口也不会把全部能力压进首个脚本。</p></article>
+<article class="doc-card"><strong>交互一致性</strong><h3>预览器级操作统一</h3><p>搜索定位、缩放、打印、导出、下载、水印、工具栏权限和生命周期回调保持一致，减少业务侧重复适配。</p></article>
+<article class="doc-card"><strong>企业化部署</strong><h3>公网、内网和离线都能落地</h3><p>Worker/WASM/字体资源可自托管，支持 Docker、静态站点、Cloudflare Pages、Release 包和私有 CDN。</p></article>
 </div>
 </section>
 

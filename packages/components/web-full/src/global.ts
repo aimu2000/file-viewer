@@ -6,11 +6,13 @@ import {
   FileViewerFullElement,
   fileViewerFullPreset,
   getDefaultFullAssetBaseUrl,
+  getFullRendererScriptUrl,
   mountViewer,
+  preloadFullRenderer,
   setDefaultFullAssetBaseUrl,
   withFullMountOptions,
   withFullViewerOptions
-} from './index'
+} from './iife'
 
 const FlyfishFileViewerWebFull = {
   createViewerControllerHandle,
@@ -20,7 +22,9 @@ const FlyfishFileViewerWebFull = {
   FILE_VIEWER_ELEMENT_TAG,
   fileViewerFullPreset,
   getDefaultFullAssetBaseUrl,
+  getFullRendererScriptUrl,
   mountViewer,
+  preloadFullRenderer,
   setDefaultFullAssetBaseUrl,
   withFullMountOptions,
   withFullViewerOptions
@@ -47,7 +51,9 @@ export {
   FILE_VIEWER_ELEMENT_TAG,
   fileViewerFullPreset,
   getDefaultFullAssetBaseUrl,
+  getFullRendererScriptUrl,
   mountViewer,
+  preloadFullRenderer,
   setDefaultFullAssetBaseUrl,
   withFullMountOptions,
   withFullViewerOptions

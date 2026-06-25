@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-text",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "private": false,
   "type": "module",
   "description": "Standalone code, text, Markdown, patch diff, and Git bundle renderer plugin for Flyfish File Viewer.",
@@ -61,7 +61,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:^2.1.3",
+    "@file-viewer/core": "workspace:^2.1.4",
     "diff2html": "^3.4.56",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.5",

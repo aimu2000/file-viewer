@@ -21,7 +21,7 @@ npm install @file-viewer/web @file-viewer/preset-office
 npm install @file-viewer/web-full
 ```
 
-`@file-viewer/web-full` 会自动启用 `@file-viewer/preset-all`，仍然暴露 `<flyfish-file-viewer>`、`mountViewer` 和同一套 controller API。
+`@file-viewer/web-full` 会自动启用完整格式矩阵，仍然暴露 `<flyfish-file-viewer>`、`mountViewer` 和同一套 controller API。它的 CDN / IIFE 首包只包含组件壳和 lazy full preset，PDF、Word、Excel、CAD、Typst、压缩包等重型 renderer 会在命中文件类型时异步加载对应 `dist/renderers/*.iife.js`。
 
 历史包名仍同步维护:
 
@@ -186,7 +186,7 @@ IIFE 会自动执行 `defineFileViewerElement()` 并暴露 `window.FlyfishFileVi
 
 ### CDN full 完整能力
 
-如果页面不使用构建工具，而且希望无需本地安装就快速接入完整格式矩阵，可以使用 `@file-viewer/web-full` 的 CDN 入口。jsDelivr / unpkg 会直接从 npm 分发完整 IIFE，它会暴露 `window.FlyfishFileViewerWebFull`，并自动按脚本地址定位随包分发的 Worker、WASM、字体和 vendor 资源：
+如果页面不使用构建工具，而且希望无需本地安装就快速接入完整格式矩阵，可以使用 `@file-viewer/web-full` 的 CDN 入口。jsDelivr / unpkg 会直接从 npm 分发完整 IIFE，它会暴露 `window.FlyfishFileViewerWebFull`。首包只加载组件壳和 lazy full preset，具体 PDF、Word、Excel、CAD、Typst、压缩包等 renderer 会在命中文件类型时异步加载 `dist/renderers/*.iife.js`，Worker、WASM、字体和 vendor 资源仍自动按脚本地址定位：
 
 ```html
 <div id="viewer" style="height:720px"></div>

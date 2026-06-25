@@ -6,7 +6,7 @@ titleTemplate: false
 
 <main class="doc-home doc-home-v2">
 <nav class="doc-home-anchor" aria-label="Documentation home navigation">
-<a href="#quickstart">Quickstart</a>
+<a href="#capability">Capability</a>
 <a href="#demo">Demo</a>
 <a href="#presets">Presets</a>
 <a href="#ecosystem">Ecosystem</a>
@@ -14,47 +14,66 @@ titleTemplate: false
 <a href="#delivery">Delivery</a>
 </nav>
 
-<section id="quickstart" class="doc-start">
+<section id="capability" class="doc-start doc-product-hero">
 <div class="doc-start-copy">
-<span class="doc-eyebrow">Documentation Hub</span>
-<h1>Start fast. Scale with modular file preview.</h1>
+<span class="doc-eyebrow">Flyfish Viewer Docs</span>
+<h1>Put complex file preview safely in the browser.</h1>
 <p>
-Flyfish Viewer brings browser-side file preview into product workflows. The docs start with a runnable quickstart, then move into presets, renderers, Worker/WASM assets, and private deployment boundaries so teams can adopt only the capabilities they need.
+Flyfish Viewer is browser-side file preview infrastructure for business applications. It covers office documents, engineering drawings, archives, email, ebooks, code, images, media, and structured data. This documentation connects the capability matrix, integration paths, modular boundaries, offline deployment, and production validation in one place.
 </p>
 <div class="doc-home-actions">
-<a class="doc-action doc-action-primary" href="/en/guide/quickstart">Open quickstart</a>
-<a class="doc-action" href="https://demo.file-viewer.app" target="_blank" rel="noreferrer">Try the demo</a>
-<a class="doc-action" href="/en/guide/on-demand-renderers">Modular Integration</a>
+<a class="doc-action doc-action-primary" href="https://demo.file-viewer.app" target="_blank" rel="noreferrer">Try the demo</a>
+<a class="doc-action" href="/en/guide/formats">View format matrix</a>
+<a class="doc-action" href="/en/guide/quickstart">Open quickstart</a>
 </div>
 <div class="doc-start-stats" aria-label="Flyfish Viewer capability metrics">
 <div><strong>206</strong><span>extension mappings</span></div>
 <div><strong>24</strong><span>preview pipelines</span></div>
-<div><strong>50</strong><span>npm targets</span></div>
+<div><strong>Offline</strong><span>self-hosted Worker / WASM / fonts</span></div>
+<div><strong>Modular</strong><span>preset and renderer composition</span></div>
 </div>
 </div>
 
-<div class="doc-install-panel" aria-label="Recommended installation">
+<div class="doc-capability-panel" aria-label="Flyfish Viewer capability overview">
 <div class="doc-panel-top">
 <span></span><span></span><span></span>
-<strong>recommended setup</strong>
+<strong>preview platform</strong>
 </div>
-<div class="doc-install-block">
-<span>1. Choose the native component</span>
-<pre><code>pnpm add @file-viewer/vue3</code></pre>
+<div class="doc-preview-board">
+<div class="doc-preview-main">
+<span>active document</span>
+<strong>PDF · DOCX · DWG · ZIP</strong>
+<p>Renderers, workers, WASM, fonts, and offline vendor assets load by file type, keeping the first script lean even for full-format pages.</p>
+<div class="doc-preview-pills">
+<b>Search</b><b>Zoom</b><b>Print</b><b>Export</b>
 </div>
-<div class="doc-install-block">
-<span>2. Add the required document capability</span>
-<pre><code>pnpm add @file-viewer/preset-office</code></pre>
 </div>
-<div class="doc-install-block">
-<span>3. Inject it through options.preset</span>
-<pre><code>import officePreset from '@file-viewer/preset-office'
-const options = { preset: officePreset }</code></pre>
+<div class="doc-preview-rail">
+<span class="is-active">Office fidelity</span>
+<span>Engineering CAD</span>
+<span>Archive nested preview</span>
+<span>Offline assets</span>
 </div>
-<div class="doc-install-note">
-<strong>Component packages are intentionally light.</strong>
-<span><code>@file-viewer/vue3</code>, <code>@file-viewer/react</code>, and <code>@file-viewer/web</code> provide native integration. Office, CAD, EDA, Typst, archive, and other heavy capabilities come from presets or renderers. Webpack, Rspack, Rollup, Umi, and classic apps can use <code>options.preset</code>; Vite projects can register <code>@file-viewer/vite-plugin</code> to auto-discover installed presets.</span>
 </div>
+<div class="doc-platform-points">
+<div><strong>Unified UX</strong><span>Search, highlight, zoom, print, export, watermark, toolbar permissions, and lifecycle hooks.</span></div>
+<div><strong>Enterprise delivery</strong><span>Intranet assets, Docker, Cloudflare Pages, release artifacts, and private CDN paths.</span></div>
+<div><strong>Native ecosystem</strong><span>Vanilla JS, Vue, React, Svelte, and jQuery share the same core capability layer.</span></div>
+</div>
+</div>
+</section>
+
+<section class="doc-section doc-capability-section">
+<div class="doc-section-heading">
+<span>Platform Capability</span>
+<h2>More than file display: a production-ready preview layer for frontend teams.</h2>
+<p>From format detection, rendering orchestration, asset loading, and user interaction to deployment, Flyfish Viewer splits complex preview behavior into controlled, testable, and upgradeable capability modules.</p>
+</div>
+<div class="doc-feature-grid">
+<article class="doc-card"><strong>Format fidelity</strong><h3>Real business attachments</h3><p>PDF, Word, Excel, PPTX, OFD, Typst, CAD, DWF, PSD, Mermaid, PlantUML, and nested archive preview are maintained as focused modules.</p></article>
+<article class="doc-card"><strong>Performance by design</strong><h3>Heavy dependencies load on demand</h3><p>Renderers, workers, WASM, fonts, and vendor assets are layered so the full IIFE entry does not push every capability into the first script.</p></article>
+<article class="doc-card"><strong>Consistent interaction</strong><h3>Viewer-level operations stay unified</h3><p>Search, zoom, print, export, download, watermark, toolbar permissions, and lifecycle hooks stay consistent across preview pipelines.</p></article>
+<article class="doc-card"><strong>Enterprise delivery</strong><h3>Public, intranet, and offline deployment</h3><p>Worker, WASM, and font assets can be self-hosted with Docker, static hosting, Cloudflare Pages, release packages, and private CDNs.</p></article>
 </div>
 </section>
 

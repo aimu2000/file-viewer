@@ -18,7 +18,7 @@ Use the full package when you want the complete matrix immediately:
 npm install @file-viewer/web-full
 ```
 
-`@file-viewer/web-full` enables `@file-viewer/preset-all` automatically while keeping `<flyfish-file-viewer>`, `mountViewer`, and the same controller APIs.
+`@file-viewer/web-full` enables the complete format matrix while keeping `<flyfish-file-viewer>`, `mountViewer`, and the same controller APIs. Its CDN / IIFE entry only loads the shell and lazy full preset up front; heavy PDF, Word, Excel, CAD, Typst, archive, and similar renderer bundles are fetched later from `dist/renderers/*.iife.js` when the active file type needs them.
 
 The historical package name remains synchronized for compatibility:
 
@@ -164,7 +164,7 @@ The IIFE registers the default custom element and exposes `window.FlyfishFileVie
 
 ### CDN Full Bundle
 
-For no-build pages that need the complete format matrix without local installation, use the `@file-viewer/web-full` CDN entry. jsDelivr / unpkg distribute the complete IIFE directly from npm, it exposes `window.FlyfishFileViewerWebFull`, and it resolves bundled workers, WASM files, fonts, and vendor assets relative to the script URL:
+For no-build pages that need the complete format matrix without local installation, use the `@file-viewer/web-full` CDN entry. jsDelivr / unpkg distribute the complete IIFE directly from npm and expose `window.FlyfishFileViewerWebFull`. The first script only loads the shell and lazy full preset; PDF, Word, Excel, CAD, Typst, archive, and similar renderers are fetched later from `dist/renderers/*.iife.js` when the active file type needs them. Worker, WASM, font, and vendor assets still resolve relative to the script URL:
 
 ```html
 <div id="viewer" style="height:720px"></div>

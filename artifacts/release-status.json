@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-25T06:46:19.770Z",
-  "version": "2.1.3",
+  "generatedAt": "2026-06-25T08:15:23.839Z",
+  "version": "2.1.4",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
   "sourceBaseline": {
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "d0714bcdd6933bbf15c19048e902ea772606b885",
+    "authoritativeCommit": "4f29262f7f260c1e67eda98e46a3bf60f3a3e4a8",
     "localBranch": "main",
-    "localCommit": "d0714bcdd6933bbf15c19048e902ea772606b885",
+    "localCommit": "4f29262f7f260c1e67eda98e46a3bf60f3a3e4a8",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "d0714bcdd6933bbf15c19048e902ea772606b885",
-    "shortCommit": "d0714bcd",
-    "dirty": false
+    "commit": "4f29262f7f260c1e67eda98e46a3bf60f3a3e4a8",
+    "shortCommit": "4f29262f",
+    "dirty": true
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "d0714bcdd6933bbf15c19048e902ea772606b885",
+    "hash": "4f29262f7f260c1e67eda98e46a3bf60f3a3e4a8",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "bd8872d027c92ec0d268661d72389cfaccaaf75e",
+      "hash": "22df68b9be7eb27c4beca13d6d069eca54224966",
       "error": ""
     },
     "gitee": {
@@ -43,22 +43,22 @@
       "error": ""
     },
     "inSync": false,
-    "syncMode": "stale",
-    "treeChecked": true,
-    "referenceTree": "7f65d3ed2ff7e944c4e4c6a5c8286647b132d5e2",
-    "giteeTree": "62b18f03808005d7045f6bcb1c078889de3cdff4",
-    "treeError": "",
+    "syncMode": "unchecked",
+    "treeChecked": false,
+    "referenceTree": "ab2bf2f33d50452e7597b9c5fde53f88fcf33ac8",
+    "giteeTree": "",
+    "treeError": "local public repository 332b74c9edc7 does not match GitHub 22df68b9be7e",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": true,
-    "tag": "v2.1.3",
-    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.1.3",
-    "assetCount": 56,
-    "hasManifest": true,
-    "hasStatus": true,
-    "hasSchema": true,
-    "error": ""
+    "ok": false,
+    "tag": "v2.1.4",
+    "url": "",
+    "assetCount": 0,
+    "hasManifest": false,
+    "hasStatus": false,
+    "hasSchema": false,
+    "error": "release not found"
   },
   "componentRepositories": [
     {
@@ -371,366 +371,394 @@
   "npmPackages": [
     {
       "packageName": "@file-viewer/core",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-pdf",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-ofd",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-presentation",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-word",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-spreadsheet",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-drawing",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-3d",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-mindmap",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-cad",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-typst",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-archive",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-email",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-epub",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-text",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-image",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-media",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-geo",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-data",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/eda-layout",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/eda-orcad",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/geometry-engine",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-eda",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/pptx",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-all",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-lite",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-office",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-engineering",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vite-plugin",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer3",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "file-viewer3",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer-web",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer-react",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/web",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/web-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue3",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue3-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.7",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.7-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.6",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.6-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-legacy",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-legacy-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/jquery",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/jquery-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/svelte",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/svelte-full",
-      "expectedVersion": "2.1.3",
-      "publishedVersion": "2.1.3",
+      "expectedVersion": "2.1.4",
+      "publishedVersion": "2.1.4",
       "ok": true,
       "error": ""
     }
   ],
-  "gaps": [],
+  "gaps": [
+    "local source worktree has uncommitted changes",
+    "GitHub Release v2.1.4 missing"
+  ],
   "gapSummary": {
-    "total": 0,
-    "externalBlockers": 0,
-    "localActionable": 0,
-    "byChannel": {},
-    "externalBlockerChannels": [],
-    "localActionableChannels": []
+    "total": 2,
+    "externalBlockers": 1,
+    "localActionable": 1,
+    "byChannel": {
+      "source-worktree": 1,
+      "github-release": 1
+    },
+    "externalBlockerChannels": [
+      "github-release"
+    ],
+    "localActionableChannels": [
+      "source-worktree"
+    ]
   },
-  "gapDetails": [],
+  "gapDetails": [
+    {
+      "id": "source-worktree-local-source-worktree-has-uncommitted-changes",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local source worktree has uncommitted changes",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    },
+    {
+      "id": "github-release-github-release-v2.1.4-missing",
+      "channel": "github-release",
+      "scope": "release-assets",
+      "externalBlocker": true,
+      "message": "GitHub Release v2.1.4 missing",
+      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
+    }
+  ],
   "nextActions": [
-    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
+    "Create or update the GitHub Release assets, then rerun `pnpm release:public`.",
+    "Commit and push the local source/public repository changes, then regenerate the release status report."
   ]
 }

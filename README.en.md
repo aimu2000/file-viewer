@@ -82,6 +82,8 @@ Choose the integration layer first, then select the format capability. Use a `*-
 ></flyfish-file-viewer>
 ```
 
+The `web-full` CDN IIFE only loads the Custom Element, controller, and lazy full preset up front. Heavy PDF, Word, Excel, CAD, Typst, archive, and similar renderer bundles are fetched asynchronously from `dist/renderers/*.iife.js` only when the active file type needs them. Worker, WASM, font, and vendor assets still resolve relative to the script URL, so intranet deployments can mirror the whole `dist` directory to a private static origin.
+
 ### Vanilla JS
 
 ```bash
