@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-archive",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "private": false,
   "type": "module",
   "description": "Standalone archive renderer plugin for Flyfish File Viewer with libarchive worker, ZIP/TAR fallback, IndexedDB cache, and nested previews.",
@@ -60,7 +60,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:^2.1.6",
+    "@file-viewer/core": "workspace:^2.1.7",
     "jszip": "^3.10.1",
     "libarchive.js": "^2.0.2"
   },

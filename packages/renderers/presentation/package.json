@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-presentation",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "private": false,
   "type": "module",
   "description": "Standalone presentation renderer plugin for Flyfish File Viewer powered by @file-viewer/pptx.",
@@ -58,8 +58,8 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:^2.1.6",
-    "@file-viewer/pptx": "workspace:^2.1.6"
+    "@file-viewer/core": "workspace:^2.1.7",
+    "@file-viewer/pptx": "workspace:^2.1.7"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

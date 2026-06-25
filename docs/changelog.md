@@ -8,6 +8,7 @@
 - 新增 `CONTRIBUTING.md`、`SUPPORT.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md`、`ROADMAP.md`、根 `CHANGELOG.md`、Issue 模板和 PR 模板，方便收集真实业务文件兼容性反馈
 - 文档站新增方案对比页，克制说明 File Viewer、服务端转码和 Office Online / 云服务的适用边界
 - 新增 `RELEASE_TEMPLATE.md`，沉淀 Release 写法、Topics、Social Preview 和版本发布节奏
+- 新增 GitHub Wiki 同步链路，将完整中英文文档以 Wiki 页面保留在 GitHub，和官网文档站形成双入口
 
 ## `v2.1.6` Vite 插件 PDF 资产复制与移动端接入说明修复
 

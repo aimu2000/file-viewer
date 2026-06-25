@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-word",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "private": false,
   "type": "module",
   "description": "Standalone Word and compatible document renderer plugin for Flyfish File Viewer powered by @file-viewer/docx, msdoc-viewer, and RTF/ODF parsing.",
@@ -61,7 +61,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:^2.1.6",
+    "@file-viewer/core": "workspace:^2.1.7",
     "@file-viewer/docx": "^0.3.12",
     "jszip": "^3.10.1",
     "msdoc-viewer": "^0.2.0",

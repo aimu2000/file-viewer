@@ -23,6 +23,7 @@ const enNav = [
       { text: 'npm React', link: 'https://www.npmjs.com/package/@file-viewer/react' },
       { text: 'npm Svelte', link: 'https://www.npmjs.com/package/@file-viewer/svelte' },
       { text: 'GitHub Repository', link: 'https://github.com/flyfish-dev/file-viewer' },
+      { text: 'GitHub Wiki', link: 'https://github.com/flyfish-dev/file-viewer/wiki' },
       { text: 'Sponsor / Priority Support', link: 'https://dev.flyfish.group/shop' }
     ]
   }
@@ -113,7 +114,7 @@ const enSearch = {
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Flyfish Viewer',
-  description: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码，覆盖 Office、PDF/OFD、CAD、压缩包、邮件、媒体和代码。',
+  description: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码，覆盖 206+ 扩展名和 24 条预览链路。',
   cleanUrls: true,
   lastUpdated: true,
   locales: {
@@ -126,7 +127,7 @@ export default defineConfig({
       lang: 'en-US',
       link: '/en/',
       title: 'Flyfish Viewer',
-      description: 'Browser-native file preview for internal web apps, covering Office, PDF/OFD, CAD, archives, email, media, and code without server-side conversion.',
+      description: 'Browser-native file preview for internal web apps, covering 206+ extensions across 24 preview pipelines without server-side conversion.',
       themeConfig: {
         logo: '/_media/logo.svg',
         nav: enNav,
@@ -149,7 +150,7 @@ export default defineConfig({
   head: [
     ['meta', { name: 'theme-color', content: '#1d6fd6' }],
     ['meta', { property: 'og:title', content: 'Flyfish Viewer' }],
-    ['meta', { property: 'og:description', content: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码。' }]
+    ['meta', { property: 'og:description', content: '面向企业后台、内网和私有化系统的纯前端文件预览组件，覆盖 206+ 扩展名和 24 条预览链路。' }]
   ],
   themeConfig: {
     logo: '/_media/logo.svg',
@@ -170,6 +171,7 @@ export default defineConfig({
           { text: 'npm React', link: 'https://www.npmjs.com/package/@file-viewer/react' },
           { text: 'npm Svelte', link: 'https://www.npmjs.com/package/@file-viewer/svelte' },
           { text: 'GitHub 开源总仓库', link: 'https://github.com/flyfish-dev/file-viewer' },
+          { text: 'GitHub Wiki', link: 'https://github.com/flyfish-dev/file-viewer/wiki' },
           { text: 'Gitee 开源总仓库', link: 'https://gitee.com/flyfish-dev/file-viewer' },
           { text: '打赏与优先支持', link: 'https://dev.flyfish.group/shop' }
         ]
