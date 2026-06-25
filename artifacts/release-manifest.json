@@ -1,9 +1,9 @@
 {
   "version": "2.1.4",
   "package": "@flyfish-group/file-viewer-workspace",
-  "generatedAt": "2026-06-25T08:15:14.406Z",
+  "generatedAt": "2026-06-25T08:22:51.790Z",
   "sourceBranch": "main",
-  "sourceCommit": "4f29262f",
+  "sourceCommit": "821f0c7e",
   "corePackage": {
     "packageName": "@file-viewer/core",
     "description": "Framework-neutral modular TypeScript file preview core with format registry, renderer orchestration, lifecycle APIs, search, zoom, print, and export.",
@@ -1199,6 +1199,7 @@
     "LICENSE",
     "package.json",
     "pnpm-workspace.yaml",
+    ".github",
     "apps",
     "packages",
     "dist",
