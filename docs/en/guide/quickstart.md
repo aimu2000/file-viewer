@@ -17,6 +17,10 @@
 
 This page keeps the shortest runnable paths. See [Component Options](/en/guide/usage) for the full API, renderer package matrix, toolbar, watermark, print, search, lifecycle, and guard options. See [Modular Assembly](/en/guide/on-demand-renderers) for on-demand renderers and the Vite plugin.
 
+<div class="doc-callout">
+  <strong>Mobile note:</strong> for H5 and mobile browsers, give the viewer host a stable height such as <code>height:100dvh; min-height:0</code>, and prefer <code>toolbar.position:'bottom-right'</code>. React Native should load a WebView-based H5 viewer route; the DOM component cannot mount directly into native RN views. See the <a href="/en/guide/quickstart-react#mobile-h5-and-react-native-webview">React mobile example</a>.
+</div>
+
 ## Pick The Capability Layer First
 
 Installing a standard component package such as `@file-viewer/vue3`, `@file-viewer/react`, or `@file-viewer/web` is the lightest path. It gives you the native framework component, types, controller APIs, and the core foundation; it does not install every heavy PDF, Office, CAD, Typst, archive, or engineering renderer by default.

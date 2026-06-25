@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-geo",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "private": false,
   "type": "module",
   "description": "Standalone geospatial renderer plugin for Flyfish File Viewer with GeoJSON, KML, GPX, and SHP parsing, SVG map preview, and offline-friendly lazy loading.",
@@ -59,7 +59,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:^2.1.5",
+    "@file-viewer/core": "workspace:^2.1.6",
     "@tmcw/togeojson": "^7.1.2",
     "shpjs": "^6.2.0"
   },

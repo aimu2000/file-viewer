@@ -116,6 +116,40 @@ npm install @file-viewer/react-legacy
 
 The event and options model stays aligned with `@file-viewer/react`.
 
+## Mobile, H5, And React Native WebView
+
+The React component works in mobile browsers and H5 WebViews. Give the host container a stable viewport height, keep `minHeight: 0`, and place the common toolbar at the bottom right so document content stays readable. PDF, Word, PPTX, images, CAD, XMind, Mermaid, PlantUML, and similar renderers fit to the available width first; zoom in/out/reset should go through the viewer controller or built-in toolbar instead of wrapping the rendered content with outer CSS transforms.
+
+```tsx
+import FileViewer from '@file-viewer/react'
+import officePreset from '@file-viewer/preset-office'
+
+export function MobilePreview() {
+  return (
+    <main
+      style={{
+        height: '100dvh',
+        minHeight: 0,
+        paddingBottom: 'env(safe-area-inset-bottom)'
+      }}
+    >
+      <FileViewer
+        url="/files/report.pdf"
+        options={{
+          preset: officePreset,
+          rendererMode: 'replace',
+          theme: 'light',
+          toolbar: { position: 'bottom-right' },
+          pdf: { toolbar: true }
+        }}
+      />
+    </main>
+  )
+}
+```
+
+React Native cannot mount the DOM component directly. Use a `WebView` that loads an H5 viewer route or an `@file-viewer/web-full` IIFE page, then pass file URLs, authorization tokens, or Blob URLs through your app bridge. Enable JavaScript, DOM Storage, and the download capability in the WebView. For strict CSP or offline intranet deployments, keep using `file-viewer-copy-assets` or `@file-viewer/vite-plugin` with `copyAssets:true` so worker, WASM, font, and vendor assets are served from your own domain.
+
 ## Vite And Assets
 
 For production bundles, use `@file-viewer/vite-plugin` or run `npx file-viewer-copy-assets ./public/file-viewer` so worker/WASM assets stay self-hosted.

@@ -2,6 +2,12 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## `v2.1.6` Vite 插件 PDF 资产复制与移动端接入说明修复
+
+- `@file-viewer/vite-plugin` 的依赖解析改为递归锚点发现：在 pnpm / yarn PnP 风格严格依赖场景下，即使业务只直接安装 `@file-viewer/react`、`@file-viewer/preset-office` 和 `@file-viewer/vite-plugin`，插件也能从 preset 依赖链继续定位 `@file-viewer/renderer-pdf` 与 `pdfjs-dist`，正确复制 `vendor/pdf/pdf.worker.mjs`、CMap、WASM 和 standard fonts
+- 新增插件回归用例，模拟 React/Vite 项目中 renderer 只挂在 preset 依赖下的安装结构，验证 `copyAssets:true` 能在 dev publicDir 中生成完整 PDF 离线资源
+- React 快速开始补充手机浏览器、H5 WebView 与 React Native WebView 接入说明，明确容器高度、`100dvh`、安全区、右下角工具栏、内部缩放 provider 和自托管 Worker/WASM 资源的推荐配置
+
 ## `v2.1.5` DOCX Electron 兼容与 Excel 图片滚动层级修复
 
 - DOCX Worker 默认改为自动环境检测：HTTP/HTTPS 部署继续启用 Worker，Electron `file://`、`about:`、`data:` 等不安全本地协议会自动回退到主线程解析，避免本地预览长时间等待 Worker 握手；显式 `options.docx.worker: true / false` 仍拥有最高优先级

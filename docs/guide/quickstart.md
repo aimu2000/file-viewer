@@ -32,6 +32,10 @@
   <strong>推荐经验:</strong> 先用标准组件包和一个明确的 preset 跑通业务文件，例如 Vue3 + preset-office；确认格式范围后，再收敛到 preset-lite、单 renderer，或扩展到 preset-engineering / preset-all。core 负责底层预览能力和 API，各生态组件负责原生接入体验。
 </div>
 
+<div class="doc-callout">
+  <strong>移动端提示:</strong> H5 / 手机浏览器场景请给预览容器设置明确高度，例如 <code>height:100dvh; min-height:0</code>，工具栏建议使用 <code>toolbar.position:'bottom-right'</code>。React Native 请通过 WebView 承载 H5 预览页，DOM 版组件不能直接挂在原生 RN 视图中。详细示例见 <a href="/guide/quickstart-react#移动端--h5--react-native-webview">React 移动端接入</a>。
+</div>
+
 ## 先理解安装边界
 
 直接安装 `@file-viewer/vue3`、`@file-viewer/react`、`@file-viewer/web` 这类标准组件包是最轻的接入方式，它们只提供当前框架的原生组件、类型、controller 和 core 基础能力，不会默认把 PDF、Office、CAD、Typst、压缩包等重型渲染依赖全部装进业务项目。

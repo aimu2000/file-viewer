@@ -142,6 +142,40 @@ export function PrivatePreview() {
 }
 ```
 
+## 移动端 / H5 / React Native WebView
+
+React 组件支持手机浏览器和 H5 WebView。关键是让承载容器拥有稳定高度，并把通用工具栏放到右下角，减少对文档正文的遮挡。PDF、Word、PPTX、图片、CAD、XMind、Mermaid / PlantUML 等渲染链路都会优先按当前可用宽度做自适应；用户仍可通过组件内部的缩放 provider 做放大、缩小和还原，不建议在外层直接用 CSS `transform: scale()`。
+
+```tsx
+import FileViewer from '@file-viewer/react'
+import officePreset from '@file-viewer/preset-office'
+
+export function MobilePreview() {
+  return (
+    <main
+      style={{
+        height: '100dvh',
+        minHeight: 0,
+        paddingBottom: 'env(safe-area-inset-bottom)'
+      }}
+    >
+      <FileViewer
+        url="/files/report.pdf"
+        options={{
+          preset: officePreset,
+          rendererMode: 'replace',
+          theme: 'light',
+          toolbar: { position: 'bottom-right' },
+          pdf: { toolbar: true }
+        }}
+      />
+    </main>
+  )
+}
+```
+
+React Native 不能直接运行 DOM 版组件，请在 `WebView` 中承载 H5 页面或 `@file-viewer/web-full` IIFE 页面，再通过业务桥接传入文件 URL、鉴权 token 或下载后的 Blob URL。推荐把预览页设置为独立路由，并开启 WebView 的 JavaScript、DOM Storage 和文件下载能力；如果业务使用严格 CSP 或离线内网环境，仍按 Web 方案运行 `file-viewer-copy-assets` 或使用 `@file-viewer/vite-plugin` 的 `copyAssets:true` 自托管 Worker / WASM / 字体资源。
+
 ## 可用参数
 
 | 参数 | 类型 | 说明 |
