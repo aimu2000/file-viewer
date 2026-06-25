@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/geometry-engine",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "private": false,
   "type": "module",
   "description": "Framework-neutral geometry kernel boundary package for STEP, IGES, IFC, 3DM, and BREP preview routes in Flyfish File Viewer.",

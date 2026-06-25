@@ -33,6 +33,8 @@
 | 办公文档平台 | `npm i @file-viewer/vue3 @file-viewer/preset-office` | PDF、Word、Excel、PowerPoint、OFD、RTF、OpenDocument，推荐业务默认路线 |
 | 工程附件平台 | `npm i @file-viewer/vue3 @file-viewer/preset-engineering` | CAD、3D、绘图、XMind、Geo、Typst、Archive、Data、EDA |
 | 完整 Demo 能力 | `npm i @file-viewer/vue3 @file-viewer/preset-all` | 全量一键安装，适合演示站、后台运维和内部全格式附件中心 |
+| 完整 full 包 | `npm i @file-viewer/vue3-full` | 默认启用 `preset-all`，不需要手动传 `options.preset` |
+| CDN 完整体验 | `https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js` | 无需本地安装，适合纯 JS / script 标签快速试跑完整格式矩阵 |
 | 极致裁剪 | `npm i @file-viewer/vue3 @file-viewer/renderer-pdf` | 只安装需要的 renderer，并通过 `options.renderers` 注入 |
 
 `options.preset` 是跨构建工具的稳定装配方式。Webpack、Rspack、Rollup、Umi、传统多页应用、微前端壳和内部组件库都可以显式 import preset，然后传给当前生态组件:
@@ -74,13 +76,21 @@ export default {
 | 全量 preset | `@file-viewer/preset-all` | 官方 Demo、内部全格式附件中心 | 当前完整格式矩阵 |
 | Word renderer | `@file-viewer/renderer-word` | 只需要 DOCX/DOC/RTF/ODT 的业务 | 标准 renderer 插件，按需加载自研 DOCX、老 DOC 和 RTF/OpenDocument 链路 |
 | Vanilla JS / Pure Web | `@file-viewer/web` | 无框架页面、微前端壳、传统系统 | `<flyfish-file-viewer>` 原生组件、`mountViewer(container, options)`、IIFE script 标签包、资源复制 CLI |
+| Vanilla JS / Pure Web Full | `@file-viewer/web-full` | script 标签、POC、全格式传统页面 | 默认启用完整矩阵的 Custom Element、IIFE 和命令式挂载 |
 | Vue 3 | `@file-viewer/vue3` | Vue 3.3+ | Vue 插件、`<file-viewer>` 组件、props、事件、ref/controller 和完整类型 |
+| Vue 3 Full | `@file-viewer/vue3-full` | Vue 3 全格式附件中心 | 默认启用完整矩阵，组件 API 与 `@file-viewer/vue3` 一致 |
 | Vue 2.7 | `@file-viewer/vue2.7` | Vue 2.7 项目 | `Vue.use(FileViewer)` 插件式注册，能力与 Vue 3 线保持一致 |
+| Vue 2.7 Full | `@file-viewer/vue2.7-full` | Vue 2.7 全格式附件中心 | 默认启用完整矩阵，适合存量 Vue2.7 项目快速升级 |
 | Vue 2.6 | `@file-viewer/vue2.6` | 仍停留在 Vue 2.6 的老项目 | Vue 2.6 专线，避免强迫业务升级到 2.7 |
+| Vue 2.6 Full | `@file-viewer/vue2.6-full` | Vue 2.6 全格式附件中心 | 默认启用完整矩阵 |
 | React 18/19 | `@file-viewer/react` | React 18 / 19，也兼容 React 17 | 原生 React 组件、`useFileViewer`、`useFileViewerState` 和 ref handle |
+| React 18/19 Full | `@file-viewer/react-full` | React 全格式附件中心 | 默认启用完整矩阵，组件和 hooks 体验与标准包一致 |
 | React 16.8/17 | `@file-viewer/react-legacy` | 旧 React hooks 项目 | 面向 React 16.8 / 17 的独立组件包 |
+| React 16.8/17 Full | `@file-viewer/react-legacy-full` | 旧 React 全格式附件中心 | 默认启用完整矩阵 |
 | jQuery | `@file-viewer/jquery` | 传统后台、jQuery 插件体系 | `$(el).fileViewer(options)` 和插件方法调用 |
+| jQuery Full | `@file-viewer/jquery-full` | 传统后台全格式附件中心 | 默认启用完整矩阵 |
 | Svelte | `@file-viewer/svelte` | Svelte / SvelteKit | Svelte 组件、action、事件和 controller 方法 |
+| Svelte Full | `@file-viewer/svelte-full` | Svelte 全格式附件中心 | 默认启用完整矩阵，组件与 action 入口保持一致 |
 
 历史兼容包继续发布: `@flyfish-group/file-viewer3`、`file-viewer3`、`@flyfish-group/file-viewer`、`@flyfish-group/file-viewer-react`、`@flyfish-group/file-viewer-web`。新系统建议使用标准包名，便于理解依赖边界和后续迁移。
 

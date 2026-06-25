@@ -44,6 +44,27 @@ const options = {
 
 需要完整 Demo 能力时，把 `@file-viewer/preset-office` 换成 `@file-viewer/preset-all`，并把 `options.preset` 指向全量 preset。
 
+如果你希望一个包直接获得完整格式矩阵，可以使用 full 包。`@file-viewer/vue3-full` 默认启用 `@file-viewer/preset-all`，组件 API 与标准包保持一致：
+
+```bash
+pnpm add @file-viewer/vue3-full
+```
+
+```ts
+import { createApp } from 'vue'
+import App from './App.vue'
+import FileViewer from '@file-viewer/vue3-full'
+
+createApp(App).use(FileViewer).mount('#app')
+```
+
+```vue
+<file-viewer
+  url="/files/demo.pdf"
+  :options="{ theme: 'light', toolbar: { position: 'bottom-right' } }"
+/>
+```
+
 ## Vite 免配置装配
 
 Vite 项目可以额外安装 `@file-viewer/vite-plugin`。插件会自动发现已安装的 `@file-viewer/preset-*` 并注入 renderer，业务代码可以省去手动 import preset。注意：只安装插件包不会让 Vite 自动运行，仍需要在 `vite.config.ts` 注册一次：

@@ -11,15 +11,23 @@
 
 | Step | Decision | Fast answer |
 | --- | --- | --- |
-| 1 | Pick the component package | Vanilla JS uses `@file-viewer/web`; Vue uses `@file-viewer/vue3`, `@file-viewer/vue2.7`, or `@file-viewer/vue2.6`; React uses `@file-viewer/react`; the ecosystem page covers every package. |
-| 2 | Pick the capability layer | Use `preset-lite` for lightweight attachments, `preset-office` for documents, `preset-engineering` for engineering assets, or `preset-all` for the complete matrix. |
-| 3 | Pass the source and options | Use `url="/files/demo.pdf"` or a real `File`, then pass the selected preset through `options`. |
+| 1 | Pick the component package | Use standard packages such as `@file-viewer/web`, `@file-viewer/vue3`, or `@file-viewer/react` for the lightest entry; use full packages such as `@file-viewer/web-full`, `@file-viewer/vue3-full`, or `@file-viewer/react-full` for one-step complete capability. |
+| 2 | Pick the capability layer | Standard packages receive `preset-lite`, `preset-office`, `preset-engineering`, or `preset-all` through options; full packages enable the complete matrix by default. |
+| 3 | Pass the source and options | Use `url="/files/demo.pdf"` or a real `File`; standard packages pass a preset through `options`, while full packages can start with theme, toolbar, watermark, and business options only. |
 
 This page keeps the shortest runnable paths. See [Component Options](/en/guide/usage) for the full API, renderer package matrix, toolbar, watermark, print, search, lifecycle, and guard options. See [Modular Assembly](/en/guide/on-demand-renderers) for on-demand renderers and the Vite plugin.
 
 ## Pick The Capability Layer First
 
 Installing a standard component package such as `@file-viewer/vue3`, `@file-viewer/react`, or `@file-viewer/web` is the lightest path. It gives you the native framework component, types, controller APIs, and the core foundation; it does not install every heavy PDF, Office, CAD, Typst, archive, or engineering renderer by default.
+
+If you want “one component, one line of code” with the complete official demo capability, use a full package. Full packages import `@file-viewer/preset-all` for you, keep the same component API, and enable the full format matrix by default. For CDN / script-tag pages, prefer `@file-viewer/web-full`: jsDelivr / unpkg distribute the complete IIFE directly from npm, so the host application does not need to carry the full dependency set; the script also resolves bundled workers, WASM files, fonts, and vendor assets relative to its own URL. For intranet, strict-CSP, or fully offline deployments, mirror those assets to your own static domain.
+
+| Mode | Install | Notes |
+| --- | --- | --- |
+| Light standard package | `npm i @file-viewer/vue3 @file-viewer/preset-office` | Pick exactly the preset / renderer your product needs |
+| Complete full package | `npm i @file-viewer/vue3-full` | Enables `preset-all` by default for all-format workbenches |
+| CDN full | `https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js` | No local install, ideal for script-tag validation |
 
 Add a preset or a single renderer package for the file formats your product actually needs:
 
@@ -86,6 +94,66 @@ export const viewerOptions = {
 ```
 
 If a file extension is supported but the required renderer is not assembled, the viewer shows an install-oriented hint instead of a vague unsupported state.
+
+### One-Step Setup: Full Packages
+
+Full packages are for teams that want the complete format experience first and can optimize package size later. They expose the same props, events, controller APIs, and options as standard packages, but `preset-all` is enabled by default:
+
+| Ecosystem | Full package | Standard package |
+| --- | --- | --- |
+| Vanilla JS / Web Component | `@file-viewer/web-full` | `@file-viewer/web` |
+| Vue 3 | `@file-viewer/vue3-full` | `@file-viewer/vue3` |
+| Vue 2.7 | `@file-viewer/vue2.7-full` | `@file-viewer/vue2.7` |
+| Vue 2.6 | `@file-viewer/vue2.6-full` | `@file-viewer/vue2.6` |
+| React 18 / 19 | `@file-viewer/react-full` | `@file-viewer/react` |
+| React 16.8 / 17 | `@file-viewer/react-legacy-full` | `@file-viewer/react-legacy` |
+| jQuery | `@file-viewer/jquery-full` | `@file-viewer/jquery` |
+| Svelte | `@file-viewer/svelte-full` | `@file-viewer/svelte` |
+
+```bash
+npm install @file-viewer/vue3-full
+```
+
+```ts
+import FileViewer from '@file-viewer/vue3-full'
+```
+
+```vue
+<file-viewer url="/files/contract.pdf" :options="{ theme: 'light', toolbar: { position: 'bottom-right' } }" />
+```
+
+React, Vue 2, Svelte, and jQuery keep the same component shape; only the package name changes.
+
+### CDN Full: Complete Script-Tag Trial
+
+No-build pages can load the full CDN bundle directly. It avoids local package installation and is useful for demos, POCs, and classic admin pages:
+
+```html
+<div id="viewer" style="height:720px"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<script>
+  FlyfishFileViewerWebFull.mountViewer(document.getElementById('viewer'), {
+    url: '/files/demo.pdf',
+    options: {
+      theme: 'light',
+      toolbar: { position: 'bottom-right' }
+    }
+  })
+</script>
+```
+
+The Custom Element route is available as well:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<flyfish-file-viewer
+  src="/files/demo.docx"
+  theme="light"
+  toolbar-position="bottom-right"
+  style="display:block;height:720px"
+></flyfish-file-viewer>
+```
 
 ### Vite Plugin: Zero-Config Assembly
 

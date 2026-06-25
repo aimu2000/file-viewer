@@ -29,7 +29,7 @@ Flyfish Viewer brings browser-side file preview into product workflows. Componen
 <div class="doc-start-stats" aria-label="Flyfish Viewer capability metrics">
 <div><strong>206</strong><span>extension mappings</span></div>
 <div><strong>24</strong><span>preview pipelines</span></div>
-<div><strong>42</strong><span>npm targets</span></div>
+<div><strong>50</strong><span>npm targets</span></div>
 </div>
 </div>
 

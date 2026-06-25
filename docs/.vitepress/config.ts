@@ -50,7 +50,7 @@ const enSidebar = {
         { text: 'React', link: '/en/guide/quickstart-react' },
         { text: 'React Legacy', link: '/en/guide/ecosystem#react-legacy' },
         { text: 'jQuery', link: '/en/guide/ecosystem#jquery' },
-        { text: 'Svelte', link: '/en/guide/ecosystem#svelte' },
+        { text: 'Svelte', link: '/en/guide/quickstart-svelte' },
         { text: 'Core API', link: '/en/guide/ecosystem#core-api' },
         { text: 'PPTX Engine', link: '/en/guide/ecosystem#pptx-engine' },
         { text: 'Component Options', link: '/en/guide/usage' }
@@ -196,7 +196,7 @@ export default defineConfig({
             { text: 'React 集成', link: '/guide/quickstart-react' },
             { text: 'React Legacy 集成', link: '/guide/ecosystem#react-legacy' },
             { text: 'jQuery 集成', link: '/guide/ecosystem#jquery' },
-            { text: 'Svelte 集成', link: '/guide/ecosystem#svelte' },
+            { text: 'Svelte 集成', link: '/guide/quickstart-svelte' },
             { text: 'Core 自定义接入', link: '/guide/ecosystem#core' },
             { text: 'PPTX 引擎接入', link: '/guide/ecosystem#pptx' },
             { text: '组件用法', link: '/guide/usage' }

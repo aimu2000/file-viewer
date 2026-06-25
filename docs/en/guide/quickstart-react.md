@@ -50,6 +50,30 @@ Switch `@file-viewer/preset-office` to `@file-viewer/preset-all` when heavy user
 npm install @file-viewer/react @file-viewer/preset-all
 ```
 
+Use a full package when you want one package to enable the complete matrix. React 18 / 19 uses `@file-viewer/react-full`; React 16.8 / 17 uses `@file-viewer/react-legacy-full`:
+
+```bash
+npm install @file-viewer/react-full
+```
+
+```tsx
+import FileViewer from '@file-viewer/react-full'
+
+export function Preview() {
+  return (
+    <div style={{ height: '100vh' }}>
+      <FileViewer
+        url="/files/demo.pdf"
+        options={{
+          theme: 'light',
+          toolbar: { position: 'bottom-right' }
+        }}
+      />
+    </div>
+  )
+}
+```
+
 Use `formats`, `renderers`, `scan:true`, `inject:false`, or `chunkStrategy:'renderer'` only when the product needs explicit control. The recommended default remains `fileViewerRenderers({ copyAssets:true })`, with installed presets auto-activated by the plugin.
 
 ## Component Usage

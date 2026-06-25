@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-25T04:10:00.719Z",
-  "version": "2.1.2",
+  "generatedAt": "2026-06-25T05:44:16.416Z",
+  "version": "2.1.3",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
   "sourceBaseline": {
@@ -18,7 +18,7 @@
     "branch": "main",
     "commit": "2b06ee5748bbc252c68a900ecc6c2fe294f656e9",
     "shortCommit": "2b06ee57",
-    "dirty": false
+    "dirty": true
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "2571cffd06872b6282aa8ec36443f1561aa597ef",
+      "hash": "eebb86dffec0c3205a0c8d7aaf4791ce7f1f8aab",
       "error": ""
     },
     "gitee": {
@@ -45,20 +45,20 @@
     "inSync": false,
     "syncMode": "stale",
     "treeChecked": true,
-    "referenceTree": "1a6b5815d62cf0458c21f8efab9cb2fd7d58c010",
+    "referenceTree": "487e08c3e9534f4dc7e0c2287afe61fcf4f76c8d",
     "giteeTree": "62b18f03808005d7045f6bcb1c078889de3cdff4",
     "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": true,
-    "tag": "v2.1.2",
-    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.1.2",
-    "assetCount": 48,
-    "hasManifest": true,
-    "hasStatus": true,
-    "hasSchema": true,
-    "error": ""
+    "ok": false,
+    "tag": "v2.1.3",
+    "url": "",
+    "assetCount": 0,
+    "hasManifest": false,
+    "hasStatus": false,
+    "hasSchema": false,
+    "error": "release not found"
   },
   "componentRepositories": [
     {
@@ -68,7 +68,7 @@
         "url": "https://github.com/flyfish-dev/file-viewer-core",
         "branch": "main",
         "ok": true,
-        "hash": "900d3f10b654b751872ab2cb30ebc8bff52c8644",
+        "hash": "2d9fd08d32da28ef1c2b50aeb2f94bae8f7dd85e",
         "error": ""
       },
       "gitee": {
@@ -86,7 +86,7 @@
         "url": "https://github.com/flyfish-dev/file-viewer-web",
         "branch": "main",
         "ok": true,
-        "hash": "17deb32970fecd0ede8bb7653b941a9a4da4c2db",
+        "hash": "397ee615697b4838cde2a7be4e552e5183552d67",
         "error": ""
       },
       "gitee": {
@@ -98,13 +98,31 @@
       }
     },
     {
+      "id": "web-full",
+      "packageName": "@file-viewer/web-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-web-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "985572553f02bccc455f83910e66944ac70c7f52",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-web-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-web-full/' not found"
+      }
+    },
+    {
       "id": "vue3",
       "packageName": "@file-viewer/vue3",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-vue3",
         "branch": "main",
         "ok": true,
-        "hash": "a6f99c2264d5d211dab9b3c64d04bc8ed91ff859",
+        "hash": "1f1462f08fe49093d195a6646e7d485b92d8e8fa",
         "error": ""
       },
       "gitee": {
@@ -116,13 +134,31 @@
       }
     },
     {
+      "id": "vue3-full",
+      "packageName": "@file-viewer/vue3-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-vue3-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "fa6fb7622c1bd4b6c87970f7e7a6a8f54f7ca908",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-vue3-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue3-full/' not found"
+      }
+    },
+    {
       "id": "vue2.7",
       "packageName": "@file-viewer/vue2.7",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-vue2.7",
         "branch": "main",
         "ok": true,
-        "hash": "752328271409ebce2097cfa3a124895386945c42",
+        "hash": "cb3ea2ecbd47be5924690851056f18fde68fbacd",
         "error": ""
       },
       "gitee": {
@@ -134,13 +170,31 @@
       }
     },
     {
+      "id": "vue2.7-full",
+      "packageName": "@file-viewer/vue2.7-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-vue2.7-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "69376780854a3a2dbb431425eff11fa9c0e1f6c6",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-vue2.7-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.7-full/' not found"
+      }
+    },
+    {
       "id": "vue2.6",
       "packageName": "@file-viewer/vue2.6",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-vue2.6",
         "branch": "main",
         "ok": true,
-        "hash": "543a50bddb77a47431098eec71c86bb783e13e60",
+        "hash": "955fa364b6e4b256bc26972b91667d7674bf1c95",
         "error": ""
       },
       "gitee": {
@@ -152,13 +206,31 @@
       }
     },
     {
+      "id": "vue2.6-full",
+      "packageName": "@file-viewer/vue2.6-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-vue2.6-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "e0ca909df1944a7583f5386e92ab2a30d64012f0",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-vue2.6-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.6-full/' not found"
+      }
+    },
+    {
       "id": "react",
       "packageName": "@file-viewer/react",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-react",
         "branch": "main",
         "ok": true,
-        "hash": "3bde29e2a8c09a08b00c081e9e0c22a8ccf0054d",
+        "hash": "c3bfd613f174563220f1ab24d312b68a52269583",
         "error": ""
       },
       "gitee": {
@@ -170,13 +242,31 @@
       }
     },
     {
+      "id": "react-full",
+      "packageName": "@file-viewer/react-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-react-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "8b5cfdcf71439139bfcaf2c15eece63f20170a89",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-react-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react-full/' not found"
+      }
+    },
+    {
       "id": "react-legacy",
       "packageName": "@file-viewer/react-legacy",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-react-legacy",
         "branch": "main",
         "ok": true,
-        "hash": "40c5dfe1e297e0d870a5bf93448d20a3a984e493",
+        "hash": "25ad08888385d181e3b516a44815445b0acf657e",
         "error": ""
       },
       "gitee": {
@@ -188,13 +278,31 @@
       }
     },
     {
+      "id": "react-legacy-full",
+      "packageName": "@file-viewer/react-legacy-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-react-legacy-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "ccbc1eec164648b2a745e0695e2d9a0ac1e81a9e",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-react-legacy-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react-legacy-full/' not found"
+      }
+    },
+    {
       "id": "jquery",
       "packageName": "@file-viewer/jquery",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-jquery",
         "branch": "main",
         "ok": true,
-        "hash": "599916062b808b38bb0e3e65029e3b507bb86a5c",
+        "hash": "adeafc72ba299537426f21f7fa0f56de7833cab1",
         "error": ""
       },
       "gitee": {
@@ -206,13 +314,31 @@
       }
     },
     {
+      "id": "jquery-full",
+      "packageName": "@file-viewer/jquery-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-jquery-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "c16747562f2129d32ee879facb9ba56555bc99f8",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-jquery-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-jquery-full/' not found"
+      }
+    },
+    {
       "id": "svelte",
       "packageName": "@file-viewer/svelte",
       "github": {
         "url": "https://github.com/flyfish-dev/file-viewer-svelte",
         "branch": "main",
         "ok": true,
-        "hash": "dc91a448b4cba7cd9b3d1203fb75a0c7e79cdc8f",
+        "hash": "2cafa638d5644c36c0ead32ca4580e39e500fb3c",
         "error": ""
       },
       "gitee": {
@@ -222,315 +348,870 @@
         "hash": "",
         "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-svelte/' not found"
       }
+    },
+    {
+      "id": "svelte-full",
+      "packageName": "@file-viewer/svelte-full",
+      "github": {
+        "url": "https://github.com/flyfish-dev/file-viewer-svelte-full",
+        "branch": "main",
+        "ok": true,
+        "hash": "d24965eacb0269fad1462771fdab229c72eebaa6",
+        "error": ""
+      },
+      "gitee": {
+        "url": "https://gitee.com/flyfish-dev/file-viewer-svelte-full",
+        "branch": "main",
+        "ok": false,
+        "hash": "",
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-svelte-full/' not found"
+      }
     }
   ],
   "npmPackages": [
     {
       "packageName": "@file-viewer/core",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-pdf",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-ofd",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-presentation",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-word",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-spreadsheet",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-drawing",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-3d",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-mindmap",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-cad",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-typst",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-archive",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-email",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-epub",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-text",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-image",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-media",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-geo",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-data",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/eda-layout",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/eda-orcad",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/geometry-engine",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/renderer-eda",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/pptx",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/preset-all",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/preset-lite",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/preset-office",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/preset-engineering",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/vite-plugin",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@flyfish-group/file-viewer3",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "file-viewer3",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@flyfish-group/file-viewer",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@flyfish-group/file-viewer-web",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@flyfish-group/file-viewer-react",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
     },
     {
       "packageName": "@file-viewer/web",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/web-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fweb-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/web-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/vue3",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/vue3-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fvue3-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/vue3-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/vue2.7",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/vue2.7-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fvue2.7-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/vue2.7-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/vue2.6",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/vue2.6-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fvue2.6-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/vue2.6-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/react",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/react-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2freact-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/react-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/react-legacy",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/react-legacy-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2freact-legacy-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/react-legacy-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/jquery",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/jquery-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fjquery-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/jquery-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     },
     {
       "packageName": "@file-viewer/svelte",
-      "expectedVersion": "2.1.2",
+      "expectedVersion": "2.1.3",
       "publishedVersion": "2.1.2",
-      "ok": true,
-      "error": ""
+      "ok": false,
+      "error": "expected 2.1.3"
+    },
+    {
+      "packageName": "@file-viewer/svelte-full",
+      "expectedVersion": "2.1.3",
+      "publishedVersion": null,
+      "ok": false,
+      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fsvelte-full - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/svelte-full@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
     }
   ],
-  "gaps": [],
+  "gaps": [
+    "local source worktree has uncommitted changes",
+    "GitHub Release v2.1.3 missing",
+    "@file-viewer/core npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-pdf npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-ofd npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-presentation npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-word npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-spreadsheet npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-drawing npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-3d npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-mindmap npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-cad npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-typst npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-archive npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-email npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-epub npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-text npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-image npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-media npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-geo npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-data npm 2.1.2 !== 2.1.3",
+    "@file-viewer/eda-layout npm 2.1.2 !== 2.1.3",
+    "@file-viewer/eda-orcad npm 2.1.2 !== 2.1.3",
+    "@file-viewer/geometry-engine npm 2.1.2 !== 2.1.3",
+    "@file-viewer/renderer-eda npm 2.1.2 !== 2.1.3",
+    "@file-viewer/pptx npm 2.1.2 !== 2.1.3",
+    "@file-viewer/preset-all npm 2.1.2 !== 2.1.3",
+    "@file-viewer/preset-lite npm 2.1.2 !== 2.1.3",
+    "@file-viewer/preset-office npm 2.1.2 !== 2.1.3",
+    "@file-viewer/preset-engineering npm 2.1.2 !== 2.1.3",
+    "@file-viewer/vite-plugin npm 2.1.2 !== 2.1.3",
+    "@flyfish-group/file-viewer3 npm 2.1.2 !== 2.1.3",
+    "file-viewer3 npm 2.1.2 !== 2.1.3",
+    "@flyfish-group/file-viewer npm 2.1.2 !== 2.1.3",
+    "@flyfish-group/file-viewer-web npm 2.1.2 !== 2.1.3",
+    "@flyfish-group/file-viewer-react npm 2.1.2 !== 2.1.3",
+    "@file-viewer/web npm 2.1.2 !== 2.1.3",
+    "@file-viewer/web-full npm unpublished !== 2.1.3",
+    "@file-viewer/vue3 npm 2.1.2 !== 2.1.3",
+    "@file-viewer/vue3-full npm unpublished !== 2.1.3",
+    "@file-viewer/vue2.7 npm 2.1.2 !== 2.1.3",
+    "@file-viewer/vue2.7-full npm unpublished !== 2.1.3",
+    "@file-viewer/vue2.6 npm 2.1.2 !== 2.1.3",
+    "@file-viewer/vue2.6-full npm unpublished !== 2.1.3",
+    "@file-viewer/react npm 2.1.2 !== 2.1.3",
+    "@file-viewer/react-full npm unpublished !== 2.1.3",
+    "@file-viewer/react-legacy npm 2.1.2 !== 2.1.3",
+    "@file-viewer/react-legacy-full npm unpublished !== 2.1.3",
+    "@file-viewer/jquery npm 2.1.2 !== 2.1.3",
+    "@file-viewer/jquery-full npm unpublished !== 2.1.3",
+    "@file-viewer/svelte npm 2.1.2 !== 2.1.3",
+    "@file-viewer/svelte-full npm unpublished !== 2.1.3"
+  ],
   "gapSummary": {
-    "total": 0,
-    "externalBlockers": 0,
-    "localActionable": 0,
-    "byChannel": {},
-    "externalBlockerChannels": [],
-    "localActionableChannels": []
+    "total": 52,
+    "externalBlockers": 51,
+    "localActionable": 1,
+    "byChannel": {
+      "source-worktree": 1,
+      "github-release": 1,
+      "npm": 50
+    },
+    "externalBlockerChannels": [
+      "github-release",
+      "npm"
+    ],
+    "localActionableChannels": [
+      "source-worktree"
+    ]
   },
-  "gapDetails": [],
+  "gapDetails": [
+    {
+      "id": "source-worktree-local-source-worktree-has-uncommitted-changes",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local source worktree has uncommitted changes",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    },
+    {
+      "id": "github-release-github-release-v2.1.3-missing",
+      "channel": "github-release",
+      "scope": "release-assets",
+      "externalBlocker": true,
+      "message": "GitHub Release v2.1.3 missing",
+      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
+    },
+    {
+      "id": "npm-@file-viewer-core-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/core npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-pdf-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-pdf npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-ofd-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-ofd npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-presentation-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-presentation npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-word-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-word npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-spreadsheet-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-spreadsheet npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-drawing-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-drawing npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-3d-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-3d npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-mindmap-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-mindmap npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-cad-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-cad npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-typst-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-typst npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-archive-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-archive npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-email-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-email npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-epub-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-epub npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-text-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-text npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-image-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-image npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-media-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-media npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-geo-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-geo npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-data-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-data npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-eda-layout-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/eda-layout npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-eda-orcad-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/eda-orcad npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-geometry-engine-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/geometry-engine npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-renderer-eda-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/renderer-eda npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-pptx-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/pptx npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-preset-all-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/preset-all npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-preset-lite-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/preset-lite npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-preset-office-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/preset-office npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-preset-engineering-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/preset-engineering npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vite-plugin-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vite-plugin npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@flyfish-group-file-viewer3-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@flyfish-group/file-viewer3 npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-file-viewer3-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "file-viewer3 npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@flyfish-group-file-viewer-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@flyfish-group/file-viewer npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@flyfish-group-file-viewer-web-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@flyfish-group/file-viewer-web npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@flyfish-group-file-viewer-react-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@flyfish-group/file-viewer-react npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-web-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/web npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-web-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/web-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue3-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue3 npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue3-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue3-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue2.7-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue2.7 npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue2.7-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue2.7-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue2.6-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue2.6 npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-vue2.6-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/vue2.6-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-react-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/react npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-react-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/react-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-react-legacy-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/react-legacy npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-react-legacy-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/react-legacy-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-jquery-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/jquery npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-jquery-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/jquery-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-svelte-npm-2.1.2-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/svelte npm 2.1.2 !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    },
+    {
+      "id": "npm-@file-viewer-svelte-full-npm-unpublished-2.1.3",
+      "channel": "npm",
+      "scope": "package-registry",
+      "externalBlocker": true,
+      "message": "@file-viewer/svelte-full npm unpublished !== 2.1.3",
+      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+    }
+  ],
   "nextActions": [
-    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
+    "Run `npm login` / passkey in an interactive terminal, then `pnpm release:ecosystem:publish`.",
+    "Create or update the GitHub Release assets, then rerun `pnpm release:public`.",
+    "Commit and push the local source/public repository changes, then regenerate the release status report."
   ]
 }

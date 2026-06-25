@@ -431,59 +431,54 @@ function snippetImport(statement: string) {
 
 const quickStartItems = computed<QuickStartItem[]>(() => [
   {
-    label: isZh.value ? 'Vanilla JS' : 'Vanilla JS',
-    packageName: '@file-viewer/web',
-    install: 'npm install @file-viewer/web @file-viewer/preset-office',
-    title: isZh.value ? '无框架页面也有原生组件' : 'Native components for framework-free pages',
+    label: isZh.value ? 'Vanilla JS Full' : 'Vanilla JS Full',
+    packageName: '@file-viewer/web-full',
+    install: 'CDN: @file-viewer/web-full',
+    title: isZh.value ? '无需组件，脚本标签即可完整预览' : 'Complete preview from a script tag',
     summary: isZh.value
-      ? 'Custom Element、命令式 controller 和 script 标签入口都走同一套 core 能力，最适合快速标准化接入。'
-      : 'Custom Element, imperative controller, and script-tag entry all share the same core for the fastest standard integration path.',
+      ? 'CDN full 包默认启用完整格式矩阵，也保留命令式 mountViewer，适合传统页面、POC 和低门槛接入。'
+      : 'The CDN full bundle enables the complete matrix by default and keeps an imperative mountViewer API for classic pages and POCs.',
     language: 'HTML',
     href: `${docsUrl}guide/quickstart-web`,
     tone: 'violet',
     icon: MonitorPlay,
-    code: `<flyfish-file-viewer
-  id="viewer"
-  src="/files/drawing.dwg"
-  theme="light"
-  toolbar-position="bottom-right"
-></flyfish-file-viewer>
+    code: `<div id="viewer" style="height:720px"></div>
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></${'script'}>
 
-${snippetImport("{ defineFileViewerElement } from '@file-viewer/web'")}
-${snippetImport("officePreset from '@file-viewer/preset-office'")}
+<script>
+const controller = FlyfishFileViewerWebFull.mountViewer(
+  document.getElementById('viewer'),
+  {
+    url: '/files/drawing.dwg',
+    options: {
+      theme: 'light',
+      toolbar: { position: 'bottom-right' }
+    },
+    onEvent(event) {
+      console.log(event.type, event.payload)
+    }
+  }
+)
 
-defineFileViewerElement()
-
-const viewer = document.getElementById('viewer')
-viewer.options = {
-  preset: officePreset,
-  rendererMode: 'replace'
-}
-viewer.addEventListener('viewer-load-complete', event => {
-  console.log('loaded', event.detail.payload.fileName)
-})
-viewer.zoomIn()`
+controller.zoomIn()
+</${'script'}>`
   },
   {
     label: 'Vue 3',
-    packageName: '@file-viewer/vue3',
-    install: 'npm install @file-viewer/vue3 @file-viewer/preset-office',
-    title: isZh.value ? 'Vue 3 项目原生组件接入' : 'Native Vue 3 component integration',
+    packageName: '@file-viewer/vue3-full',
+    install: 'npm install @file-viewer/vue3-full',
+    title: isZh.value ? 'Vue 3 一步获得完整能力' : 'Vue 3 with complete capability',
     summary: isZh.value
-      ? '保持 Vue 插件、组件 props、事件和样式入口的原生体验，适合管理后台、知识库和企业门户。'
-      : 'Vue plugin, component props, events, and style entry stay native for admin consoles, knowledge bases, and portals.',
+      ? 'full 包默认启用完整矩阵，仍保持 Vue 插件、组件 props、事件和 ref/controller 的原生体验。'
+      : 'The full package enables the complete matrix while keeping native Vue plugin, props, events, and ref/controller APIs.',
     language: 'Vue SFC',
     href: `${docsUrl}guide/quickstart-vue3`,
     tone: 'green',
     icon: PanelTop,
     code: `${snippetImport("{ createApp } from 'vue'")}
-${snippetImport("FileViewer from '@file-viewer/vue3'")}
-${snippetImport("officePreset from '@file-viewer/preset-office'")}
-${snippetImport("'@file-viewer/vue3/style.css'")}
+${snippetImport("FileViewer from '@file-viewer/vue3-full'")}
 
 const viewerOptions = {
-  preset: officePreset,
-  rendererMode: 'replace',
   theme: 'light',
   toolbar: { position: 'bottom-right', zoom: true }
 }
@@ -497,75 +492,98 @@ createApp(App).use(FileViewer).mount('#app')
 />`
   },
   {
-    label: 'React',
-    packageName: '@file-viewer/react',
-    install: 'npm install @file-viewer/react @file-viewer/preset-office',
-    title: isZh.value ? 'React 项目使用组件与 hooks' : 'React components and hooks',
+    label: isZh.value ? 'Vue 3 按需' : 'Vue 3 On Demand',
+    packageName: '@file-viewer/vue3',
+    install: 'npm install @file-viewer/vue3 @file-viewer/preset-office',
+    title: isZh.value ? 'Vue 3 标准包按需装配' : 'Vue 3 standard package with presets',
     summary: isZh.value
-      ? '提供 React 组件、类型化 options、事件回调和 ref/controller，便于在业务页面内组合权限、工具栏和状态。'
-      : 'Use React components, typed options, callbacks, and ref/controller APIs to compose permissions, toolbars, and state.',
+      ? '标准包保持最轻入口，格式能力通过 preset 或单 renderer 注入，适合控制安装体积。'
+      : 'The standard package stays light; presets or single renderers control the installed capability set.',
+    language: 'Vue SFC',
+    href: `${docsUrl}guide/quickstart-vue3`,
+    tone: 'green',
+    icon: PanelTop,
+    code: `${snippetImport("{ createApp } from 'vue'")}
+${snippetImport("FileViewer from '@file-viewer/vue3'")}
+${snippetImport("officePreset from '@file-viewer/preset-office'")}
+
+const viewerOptions = {
+  preset: officePreset,
+  rendererMode: 'replace',
+  theme: 'light',
+  toolbar: { position: 'bottom-right', zoom: true }
+}
+
+createApp(App).use(FileViewer).mount('#app')
+
+<file-viewer
+  url="/files/contract.pdf"
+  :options="viewerOptions"
+/>`
+  },
+  {
+    label: 'React',
+    packageName: '@file-viewer/react-full',
+    install: 'npm install @file-viewer/react-full',
+    title: isZh.value ? 'React full 包一行接入' : 'React full package in one line',
+    summary: isZh.value
+      ? '默认完整矩阵，同时保留 React 组件、hooks、事件回调和 ref/controller，便于组合权限和业务工具栏。'
+      : 'Complete matrix by default, with React components, hooks, callbacks, and ref/controller APIs for business toolbars.',
     language: 'TSX',
     href: `${docsUrl}guide/quickstart-react`,
     tone: 'blue',
     icon: Rocket,
-    code: `${snippetImport("{ FileViewer, useFileViewerController } from '@file-viewer/react'")}
-${snippetImport("officePreset from '@file-viewer/preset-office'")}
-${snippetImport("'@file-viewer/react/style.css'")}
+    code: `${snippetImport("FileViewer, { useFileViewer } from '@file-viewer/react-full'")}
 
 export function Preview() {
-  const controller = useFileViewerController()
-  const options = {
-    preset: officePreset,
-    rendererMode: 'replace',
-    theme: 'light',
-    toolbar: { position: 'bottom-right' }
-  }
+  const viewer = useFileViewer({
+    url: '/files/report.docx',
+    options: {
+      theme: 'light',
+      toolbar: { position: 'bottom-right' }
+    },
+    onEvent: event => console.log(event.type)
+  })
 
   return (
     <FileViewer
-      src="/files/report.docx"
-      controller={controller}
-      options={options}
-      onLoadComplete={event => console.log(event.fileName)}
+      ref={viewer.ref}
+      {...viewer.props}
     />
   )
 }`
   },
   {
     label: 'Svelte',
-    packageName: '@file-viewer/svelte',
-    install: 'npm install @file-viewer/svelte @file-viewer/preset-office',
-    title: isZh.value ? 'Svelte 页面保持轻量原生' : 'Lightweight native Svelte entry',
+    packageName: '@file-viewer/svelte-full',
+    install: 'npm install @file-viewer/svelte-full',
+    title: isZh.value ? 'Svelte full 包完整接入' : 'Svelte full package with the complete matrix',
     summary: isZh.value
-      ? 'Svelte 组件独立依赖 core，保留同样的 options、事件、主题、搜索、缩放和打印导出能力。'
-      : 'The Svelte component depends directly on core and keeps the same options, events, themes, search, zoom, print, and export APIs.',
+      ? 'Svelte 组件独立依赖 core，full 包默认启用完整矩阵，并保留同样的 options、事件、主题、搜索、缩放和打印导出能力。'
+      : 'The Svelte component depends directly on core; the full package enables the complete matrix and keeps the same options, events, themes, search, zoom, print, and export APIs.',
     language: 'Svelte',
-    href: `${docsUrl}guide/ecosystem#svelte`,
+    href: `${docsUrl}guide/quickstart-svelte`,
     tone: 'cyan',
     icon: Zap,
     code: `<script lang="ts">
-  ${snippetImport("FileViewer from '@file-viewer/svelte'")}
-  ${snippetImport("officePreset from '@file-viewer/preset-office'")}
-  ${snippetImport("'@file-viewer/svelte/style.css'")}
+  ${snippetImport("FileViewer from '@file-viewer/svelte-full'")}
 
   const options = {
-    preset: officePreset,
-    rendererMode: 'replace',
     theme: 'light',
     toolbar: { position: 'bottom-right', zoom: true }
   }
 ${'<\\/script>'}
 
 <FileViewer
-  src="/files/deck.pptx"
+  url="/files/deck.pptx"
   {options}
-  on:loadComplete={event => console.log(event.detail.fileName)}
+  on:viewerEvent={event => console.log(event.detail.type)}
 />`
   },
   {
     label: 'Vue 2',
-    packageName: '@file-viewer/vue2.7',
-    install: 'npm install @file-viewer/vue2.7 @file-viewer/preset-office',
+    packageName: '@file-viewer/vue2.7-full',
+    install: 'npm install @file-viewer/vue2.7-full',
     title: isZh.value ? 'Vue 2.7 / 2.6 项目平滑接入' : 'Smooth Vue 2.7 / 2.6 integration',
     summary: isZh.value
       ? 'Vue legacy 组件保持同样的 props、事件和样式入口，适合存量 Vue2 系统逐步升级预览能力。'
@@ -575,9 +593,7 @@ ${'<\\/script>'}
     tone: 'amber',
     icon: Layers3,
     code: `${snippetImport("Vue from 'vue'")}
-${snippetImport("FileViewer from '@file-viewer/vue2.7'")}
-${snippetImport("officePreset from '@file-viewer/preset-office'")}
-${snippetImport("'@file-viewer/vue2.7/style.css'")}
+${snippetImport("FileViewer from '@file-viewer/vue2.7-full'")}
 
 Vue.use(FileViewer)
 
@@ -586,13 +602,11 @@ new Vue({
     <file-viewer
       url="/files/archive.zip"
       :options="viewerOptions"
-      @load-complete="handleLoadComplete"
+      @viewer-event="handleViewerEvent"
     />
   \`,
   data: () => ({
     viewerOptions: {
-      preset: officePreset,
-      rendererMode: 'replace',
       theme: 'light',
       toolbar: true
     }
@@ -613,22 +627,21 @@ new Vue({
     icon: Wrench,
     code: `${snippetImport("{ mountViewer } from '@file-viewer/jquery'")}
 ${snippetImport("officePreset from '@file-viewer/preset-office'")}
-${snippetImport("'@file-viewer/jquery/style.css'")}
 
-const viewer = mountViewer('#viewer', {
-  src: '/files/sheet.xlsx',
+const controller = mountViewer(document.getElementById('viewer'), {
+  url: '/files/sheet.xlsx',
   options: {
     preset: officePreset,
     rendererMode: 'replace',
     theme: 'light',
     toolbar: { zoom: true }
   },
-  onLoadComplete(event) {
-    console.log(event.fileName)
+  onEvent(event) {
+    console.log(event.type)
   }
 })
 
-viewer.setSrc('/files/contract.pdf')`
+controller.load({ url: '/files/contract.pdf' })`
   },
   {
     label: isZh.value ? 'Vite 自动装配' : 'Vite Auto',

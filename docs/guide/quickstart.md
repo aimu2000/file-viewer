@@ -12,9 +12,9 @@
 
 | 步骤 | 做什么 | 最短答案 |
 | --- | --- | --- |
-| 1 | 选生态组件 | 纯 JS 用 `@file-viewer/web`，Vue 用 `@file-viewer/vue3` / `@file-viewer/vue2.7` / `@file-viewer/vue2.6`，React 用 `@file-viewer/react`，其他见生态总览 |
-| 2 | 选格式能力 | 轻附件选 `preset-lite`，办公文档选 `preset-office`，工程资料选 `preset-engineering`，全格式选 `preset-all` |
-| 3 | 传入文件和 options | `url="/files/demo.pdf"` 或 `file={file}`，再把 `preset` 放进 `options` |
+| 1 | 选生态组件 | 最轻入口用 `@file-viewer/web` / `@file-viewer/vue3` / `@file-viewer/react` 等标准包；一步到位用 `@file-viewer/web-full` / `@file-viewer/vue3-full` / `@file-viewer/react-full` 等 full 包 |
+| 2 | 选格式能力 | 标准包按需注入 `preset-lite`、`preset-office`、`preset-engineering` 或 `preset-all`；full 包默认已启用完整矩阵 |
+| 3 | 传入文件和 options | `url="/files/demo.pdf"` 或 `file={file}`，标准包把 `preset` 放进 `options`，full 包可直接传主题、工具栏、水印等业务配置 |
 
 本页只保留最短可运行路径。完整 options、renderer 包清单和工具栏/水印/打印/搜索等参数见 [组件用法](/guide/usage)，按需装配和 Vite 插件细节见 [模块化与按需装配](/guide/on-demand-renderers)。
 
@@ -36,6 +36,14 @@
 ## 先理解安装边界
 
 直接安装 `@file-viewer/vue3`、`@file-viewer/react`、`@file-viewer/web` 这类标准组件包是最轻的接入方式，它们只提供当前框架的原生组件、类型、controller 和 core 基础能力，不会默认把 PDF、Office、CAD、Typst、压缩包等重型渲染依赖全部装进业务项目。
+
+如果你的目标是“一个组件，一行代码，快速获得完整体验”，可以使用 full 包。full 包内部已引入 `@file-viewer/preset-all`，保留同样的组件 API，但默认具备官方 Demo 的完整格式矩阵。CDN / script 标签场景优先使用 `@file-viewer/web-full`，jsDelivr / unpkg 会直接从 npm 分发完整 IIFE，不需要把完整依赖下载到业务仓库；脚本会按自身 URL 自动定位随包分发的 Worker、WASM、字体和 vendor 资源。内网、严格 CSP 或完全离线部署时，再把这些资源同步到自己的静态域。
+
+| 模式 | 安装示例 | 特点 |
+| --- | --- | --- |
+| 最轻标准包 | `npm i @file-viewer/vue3 @file-viewer/preset-office` | 按业务选择 preset / renderer，安装体积最可控 |
+| 完整 full 包 | `npm i @file-viewer/vue3-full` | 默认启用 `preset-all`，适合后台全格式附件中心 |
+| CDN full | `https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js` | 无需本地安装，适合传统页面快速试跑完整矩阵 |
 
 需要预览具体文件格式时，再选择一个 preset 或单独 renderer:
 
@@ -102,6 +110,66 @@ export const viewerOptions = {
 ```
 
 如果打开的是支持矩阵内但未装配的格式，预览器会给出应该安装哪个 preset / renderer 的提示；只有真正不在矩阵中的扩展名才提示不支持。
+
+### 一步到位：full 包
+
+full 包适合希望先获得完整格式体验、再按业务优化体积的团队。它们与标准包暴露同样的 props、事件、controller 和 options，只是默认已启用完整 preset：
+
+| 生态 | full 包 | 标准包 |
+| --- | --- | --- |
+| Vanilla JS / Web Component | `@file-viewer/web-full` | `@file-viewer/web` |
+| Vue 3 | `@file-viewer/vue3-full` | `@file-viewer/vue3` |
+| Vue 2.7 | `@file-viewer/vue2.7-full` | `@file-viewer/vue2.7` |
+| Vue 2.6 | `@file-viewer/vue2.6-full` | `@file-viewer/vue2.6` |
+| React 18 / 19 | `@file-viewer/react-full` | `@file-viewer/react` |
+| React 16.8 / 17 | `@file-viewer/react-legacy-full` | `@file-viewer/react-legacy` |
+| jQuery | `@file-viewer/jquery-full` | `@file-viewer/jquery` |
+| Svelte | `@file-viewer/svelte-full` | `@file-viewer/svelte` |
+
+```bash
+npm install @file-viewer/vue3-full
+```
+
+```ts
+import FileViewer from '@file-viewer/vue3-full'
+```
+
+```vue
+<file-viewer url="/files/contract.pdf" :options="{ theme: 'light', toolbar: { position: 'bottom-right' } }" />
+```
+
+React / Vue2 / Svelte / jQuery 只需要把包名替换为对应 full 包，组件写法保持一致。
+
+### CDN full：完整能力快速试跑
+
+无构建工具或临时验证页面可以直接使用 CDN full 包。CDN 不占用本地项目安装体积，适合演示、POC 和传统后台页面快速试跑：
+
+```html
+<div id="viewer" style="height:720px"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<script>
+  FlyfishFileViewerWebFull.mountViewer(document.getElementById('viewer'), {
+    url: '/files/demo.pdf',
+    options: {
+      theme: 'light',
+      toolbar: { position: 'bottom-right' }
+    }
+  })
+</script>
+```
+
+也可以使用原生组件写法：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<flyfish-file-viewer
+  src="/files/demo.docx"
+  theme="light"
+  toolbar-position="bottom-right"
+  style="display:block;height:720px"
+></flyfish-file-viewer>
+```
 
 ### Vite 插件：免配置自动装配
 

@@ -97,6 +97,19 @@ Use the same component API as Vue 2.7. Keep your host container at a fixed or vi
 npm install @file-viewer/vue2.6 @file-viewer/preset-all
 ```
 
+Full packages are also available when you want the complete matrix by default: use `@file-viewer/vue2.7-full` for Vue 2.7 and `@file-viewer/vue2.6-full` for Vue 2.6.
+
+```bash
+npm install @file-viewer/vue2.7-full
+```
+
+```ts
+import Vue from 'vue'
+import FileViewer from '@file-viewer/vue2.7-full'
+
+Vue.use(FileViewer)
+```
+
 Use `formats`, `renderers`, `scan:true`, `inject:false`, or `chunkStrategy:'renderer'` only for explicit registry control. Normal projects should keep `fileViewerRenderers({ copyAssets:true })` and let the plugin auto-activate installed presets.
 
 ## Historical Package

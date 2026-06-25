@@ -29,7 +29,7 @@ Flyfish Viewer 为业务系统提供浏览器端文件预览能力。组件包�
 <div class="doc-start-stats" aria-label="Flyfish Viewer 核心能力">
 <div><strong>206</strong><span>扩展名映射</span></div>
 <div><strong>24</strong><span>预览链路</span></div>
-<div><strong>42</strong><span>npm 发布目标</span></div>
+<div><strong>50</strong><span>npm 发布目标</span></div>
 </div>
 </div>
 

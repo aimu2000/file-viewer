@@ -18,6 +18,27 @@ Switch `@file-viewer/preset-office` to `@file-viewer/preset-all` when you want t
 npm install @file-viewer/vue3 @file-viewer/preset-all
 ```
 
+Use the full package when you want one package to enable the complete matrix by default:
+
+```bash
+npm install @file-viewer/vue3-full
+```
+
+```ts
+import { createApp } from 'vue'
+import App from './App.vue'
+import FileViewer from '@file-viewer/vue3-full'
+
+createApp(App).use(FileViewer).mount('#app')
+```
+
+```vue
+<file-viewer
+  url="/files/demo.pdf"
+  :options="{ theme: 'light', toolbar: { position: 'bottom-right' } }"
+/>
+```
+
 ## Universal Renderer Assembly
 
 The Vue package stays lightweight. Concrete PDF, Office, CAD, Typst, archive, and engineering capabilities are injected through presets or renderer packages. This path works in Vite, Webpack, Rspack, Rollup, Umi, and internal component libraries:

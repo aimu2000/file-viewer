@@ -2,6 +2,14 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## `v2.1.3` CDN 全量接入与生态 full 包
+
+- 新增 `@file-viewer/web-full`、`@file-viewer/vue3-full`、`@file-viewer/vue2.7-full`、`@file-viewer/vue2.6-full`、`@file-viewer/react-full`、`@file-viewer/react-legacy-full`、`@file-viewer/jquery-full` 和 `@file-viewer/svelte-full`，面向“一个组件，一行代码，完整能力”的快速接入场景
+- `@file-viewer/web-full` 提供 CDN / script 标签完整格式入口，IIFE 包会根据脚本地址自动定位随包分发的 Worker、WASM、字体、PDF cMap、CAD、Typst、Archive、Docx、Excel 和 Draw.io 离线资源，适合公网 CDN 与企业自托管两种模式
+- 保留原有轻量组件包与 `preset-lite` / `preset-office` / `preset-engineering` / `preset-all` 的按需组合模式；文档和 README 前置说明“轻组件 + preset / renderer”的推荐边界，避免把 full 包误用为所有业务的默认选择
+- Vanilla JS 快速开始补齐无组件命令式 `mountViewer` 示例；Vue3、Vue2.7、Vue2.6、React、React Legacy、Svelte、jQuery 的快速开始均补齐 full 包与按需包两条路径
+- 生态包校验扩展到 50 个发布目标，覆盖标准组件、完整 full 包、核心、renderer、preset、Vite 插件与历史兼容 alias；发布链路同步构建 Demo、官网、文档站、开源总仓和 npm
+
 ## `v2.1.2` 压缩包内嵌预览、移动端 PDF 与安装口径修复
 
 - 压缩包内嵌 PDF / Office / 图片等文件预览会清理父级压缩包的 `url` / `streamUrl`，避免内部 PDF 误读取外层 `.zip` / `.rar` 流导致 `Invalid PDF structure` 或 `Bad FCHECK in flate stream`
@@ -27,7 +35,7 @@
 - README 头部补齐品牌图标、GitHub / npm / Docs / Demo / Release / Docker / License / 格式矩阵 badge，并把 Demo GIF 前置，降低用户理解成本
 - README 与文档站补齐最小化引入和组合引入的详细步骤，说明 `@file-viewer/vite-plugin`、`formats`、`preset`、`copyAssets`、`virtual:file-viewer-renderers`、`builtinRenderers:'none'` 和 `rendererMode:'replace'` 的推荐搭配
 - 文档站首页移除嵌入 Demo 的 iframe，改为 GIF 展示、模块化接入路径和更专业的文档导览；官网 `file-viewer.app` 改为嵌入 `doc.file-viewer.app`，让门户和文档站关系更紧密
-- 对外 npm 生态口径更新为 42 个发布目标：37 个标准组件/核心/renderer/preset/工程插件包 + 5 个历史兼容 alias
+- 对外 npm 生态口径更新为 50 个发布目标：45 个标准组件/完整 full 包/核心/renderer/preset/工程插件包 + 5 个历史兼容 alias
 
 ## 当前主线 XMind、EDA 版图与表格列宽体验补齐
 

@@ -26,7 +26,7 @@
   <a href="https://hub.docker.com/r/flyfishdev/file-viewer"><img alt="Docker" src="https://img.shields.io/badge/docker-flyfishdev%2Ffile--viewer-2496ed?logo=docker" /></a>
   <img alt="Supported formats" src="https://img.shields.io/badge/formats-206%2B-f59e0b" />
   <img alt="Modular architecture" src="https://img.shields.io/badge/architecture-modular%20renderers-7c3aed" />
-  <img alt="Ecosystem packages" src="https://img.shields.io/badge/npm%20targets-42-0f766e" />
+  <img alt="Ecosystem packages" src="https://img.shields.io/badge/npm%20targets-50-0f766e" />
 </p>
 
 ---
@@ -245,11 +245,11 @@ npm i @file-viewer/web @file-viewer/preset-all
 npm exec file-viewer-copy-assets ./public/file-viewer
 ```
 
-如果只是想最快在传统页面里试跑 Custom Element，也可以使用 npm CDN 的 IIFE 包。`@file-viewer/web` 已在包元数据中声明 `jsdelivr` / `unpkg` 入口；cdnjs 当前尚未收录本包，正式生产和内网部署仍建议走 npm 安装或自托管静态资源。
+如果只是想最快在传统页面里接入完整能力，也可以使用 npm CDN 的 full IIFE 包。`@file-viewer/web-full` 会暴露 `window.FlyfishFileViewerWebFull`，默认启用完整格式矩阵，并会按脚本所在目录自动定位随包分发的 Worker、WASM、字体和 vendor 资源；jsDelivr / unpkg 会直接从 npm 分发，无需把完整依赖下载到业务仓库。
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web@latest"></script>
-<!-- 或者: <script src="https://unpkg.com/@file-viewer/web@latest"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<!-- 或者: <script src="https://unpkg.com/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script> -->
 
 <flyfish-file-viewer
   src="/files/demo.pdf"
@@ -259,13 +259,13 @@ npm exec file-viewer-copy-assets ./public/file-viewer
 ></flyfish-file-viewer>
 ```
 
-CDN 方式适合快速验证纯 JS 集成；如果要预览 PDF、Office、CAD、Typst、压缩包等重型格式，请使用 npm 安装对应 preset / renderer，并通过 `file-viewer-copy-assets` 自托管 Worker、WASM、字体和 vendor 资源。
+CDN full 方式适合纯 JS 快速接入完整能力。生产公网可继续使用 npm CDN；内网、严格 CSP、完全离线或需要走自有 Cloudflare/CDNJS 风格静态域时，把 `@file-viewer/web-full/dist` 或 `file-viewer-copy-assets` 生成的 Worker、WASM、字体和 vendor 资源同步到自己的 CDN 即可。cdnjs 不会自动托管任意 npm 包，若需要 cdnjs.com 形式，需要先完成库收录；文档中的 jsDelivr / unpkg 地址是发布后即可复制使用的真实路径。
 
 更详细的 Vanilla JS、Vue、React、Svelte、jQuery、Core API 和离线资源步骤见 [官方文档](https://doc.file-viewer.app/guide/ecosystem)。
 
 ## 当前 npm 生态
 
-当前版本以 npm registry 的 `latest` dist-tag 为准，共维护 42 个 npm 发布目标: 37 个标准组件/核心/renderer/preset/工程插件包 + 5 个历史兼容 alias。新项目建议优先使用 `@file-viewer/*` 标准包名；旧项目继续使用 `@flyfish-group/*` 或 `file-viewer3` 时也会拿到同版本能力。
+当前版本以 npm registry 的 `latest` dist-tag 为准，共维护 50 个 npm 发布目标: 45 个标准组件/完整 full 包/核心/renderer/preset/工程插件包 + 5 个历史兼容 alias。新项目建议优先使用 `@file-viewer/*` 标准包名；旧项目继续使用 `@flyfish-group/*` 或 `file-viewer3` 时也会拿到同版本能力。
 
 | 场景                                | 推荐 npm 包                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | 历史兼容包                                                                                                                                               | 版本策略 | 说明                                                                                                                                                                    |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -364,13 +364,21 @@ GitHub Release 会同步提供完整下载项:
 | 框架 | 标准 npm 包 | 入口格式 | GitHub | Gitee | 兼容历史包 |
 | --- | --- | --- | --- | --- | --- |
 | Vanilla JS / Pure Web | `@file-viewer/web` | ESM, 类型声明, script 标签 IIFE, Worker/WASM viewer 资源, 复制静态资源 CLI | [file-viewer-web](https://github.com/flyfish-dev/file-viewer-web) | [file-viewer-web](https://gitee.com/flyfish-dev/file-viewer-web) | `@flyfish-group/file-viewer-web` |
+| Vanilla JS / Pure Web Full | `@file-viewer/web-full` | ESM, 类型声明, script 标签 IIFE | [file-viewer-web-full](https://github.com/flyfish-dev/file-viewer-web-full) | [file-viewer-web-full](https://gitee.com/flyfish-dev/file-viewer-web-full) | 无 |
 | Vue 3 | `@file-viewer/vue3` | ESM, 类型声明 | [file-viewer-vue3](https://github.com/flyfish-dev/file-viewer-vue3) | [file-viewer-vue3](https://gitee.com/flyfish-dev/file-viewer-vue3) | `@flyfish-group/file-viewer3`, `file-viewer3` |
+| Vue 3 Full | `@file-viewer/vue3-full` | ESM, 类型声明 | [file-viewer-vue3-full](https://github.com/flyfish-dev/file-viewer-vue3-full) | [file-viewer-vue3-full](https://gitee.com/flyfish-dev/file-viewer-vue3-full) | 无 |
 | Vue 2.7 | `@file-viewer/vue2.7` | ESM, 类型声明 | [file-viewer-vue2.7](https://github.com/flyfish-dev/file-viewer-vue2.7) | [file-viewer-vue2.7](https://gitee.com/flyfish-dev/file-viewer-vue2.7) | `@flyfish-group/file-viewer` |
+| Vue 2.7 Full | `@file-viewer/vue2.7-full` | ESM, 类型声明 | [file-viewer-vue2.7-full](https://github.com/flyfish-dev/file-viewer-vue2.7-full) | [file-viewer-vue2.7-full](https://gitee.com/flyfish-dev/file-viewer-vue2.7-full) | 无 |
 | Vue 2.6 | `@file-viewer/vue2.6` | ESM, 类型声明 | [file-viewer-vue2.6](https://github.com/flyfish-dev/file-viewer-vue2.6) | [file-viewer-vue2.6](https://gitee.com/flyfish-dev/file-viewer-vue2.6) | 无 |
+| Vue 2.6 Full | `@file-viewer/vue2.6-full` | ESM, 类型声明 | [file-viewer-vue2.6-full](https://github.com/flyfish-dev/file-viewer-vue2.6-full) | [file-viewer-vue2.6-full](https://gitee.com/flyfish-dev/file-viewer-vue2.6-full) | 无 |
 | React 18/19 | `@file-viewer/react` | ESM, 类型声明 | [file-viewer-react](https://github.com/flyfish-dev/file-viewer-react) | [file-viewer-react](https://gitee.com/flyfish-dev/file-viewer-react) | `@flyfish-group/file-viewer-react` |
+| React 18/19 Full | `@file-viewer/react-full` | ESM, 类型声明 | [file-viewer-react-full](https://github.com/flyfish-dev/file-viewer-react-full) | [file-viewer-react-full](https://gitee.com/flyfish-dev/file-viewer-react-full) | 无 |
 | React 16.8/17 | `@file-viewer/react-legacy` | ESM, 类型声明 | [file-viewer-react-legacy](https://github.com/flyfish-dev/file-viewer-react-legacy) | [file-viewer-react-legacy](https://gitee.com/flyfish-dev/file-viewer-react-legacy) | 无 |
+| React 16.8/17 Full | `@file-viewer/react-legacy-full` | ESM, 类型声明 | [file-viewer-react-legacy-full](https://github.com/flyfish-dev/file-viewer-react-legacy-full) | [file-viewer-react-legacy-full](https://gitee.com/flyfish-dev/file-viewer-react-legacy-full) | 无 |
 | jQuery | `@file-viewer/jquery` | ESM, 类型声明 | [file-viewer-jquery](https://github.com/flyfish-dev/file-viewer-jquery) | [file-viewer-jquery](https://gitee.com/flyfish-dev/file-viewer-jquery) | 无 |
+| jQuery Full | `@file-viewer/jquery-full` | ESM, 类型声明 | [file-viewer-jquery-full](https://github.com/flyfish-dev/file-viewer-jquery-full) | [file-viewer-jquery-full](https://gitee.com/flyfish-dev/file-viewer-jquery-full) | 无 |
 | Svelte | `@file-viewer/svelte` | Svelte 组件, ESM, 类型声明 | [file-viewer-svelte](https://github.com/flyfish-dev/file-viewer-svelte) | [file-viewer-svelte](https://gitee.com/flyfish-dev/file-viewer-svelte) | 无 |
+| Svelte Full | `@file-viewer/svelte-full` | Svelte 组件, ESM, 类型声明 | [file-viewer-svelte-full](https://github.com/flyfish-dev/file-viewer-svelte-full) | [file-viewer-svelte-full](https://gitee.com/flyfish-dev/file-viewer-svelte-full) | 无 |
 
 ## 工程级按需 renderer 装配
 

@@ -61,6 +61,30 @@ export default defineConfig({
 npm install @file-viewer/react @file-viewer/preset-all
 ```
 
+如果希望一个包直接获得完整格式矩阵，使用 full 包即可。React 18 / 19 使用 `@file-viewer/react-full`，React 16.8 / 17 使用 `@file-viewer/react-legacy-full`：
+
+```bash
+npm install @file-viewer/react-full
+```
+
+```tsx
+import FileViewer from '@file-viewer/react-full'
+
+export function Preview() {
+  return (
+    <div style={{ height: '100vh' }}>
+      <FileViewer
+        url="/files/demo.pdf"
+        options={{
+          theme: 'light',
+          toolbar: { position: 'bottom-right' }
+        }}
+      />
+    </div>
+  )
+}
+```
+
 需要更强自定义时，再配置 `formats`、`renderers`、`scan:true`、`inject:false` 或 `chunkStrategy:'renderer'`；默认推荐保持 `fileViewerRenderers({ copyAssets:true })`，让插件根据已安装 preset 自动激活能力。
 
 ## 最短示例

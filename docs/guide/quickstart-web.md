@@ -15,6 +15,14 @@
 npm install @file-viewer/web @file-viewer/preset-office
 ```
 
+想要一步到位获得完整格式矩阵时，直接使用 full 包:
+
+```bash
+npm install @file-viewer/web-full
+```
+
+`@file-viewer/web-full` 会自动启用 `@file-viewer/preset-all`，仍然暴露 `<flyfish-file-viewer>`、`mountViewer` 和同一套 controller API。
+
 历史包名仍同步维护:
 
 ```bash
@@ -80,7 +88,7 @@ export default defineConfig({
 })
 ```
 
-只安装 `@file-viewer/web` 是最轻的原生组件入口；PDF、Office、CAD、Typst、压缩包等具体格式能力请安装对应 preset 或 renderer。重度用户需要完整能力时，直接把 `@file-viewer/preset-office` 换成 `@file-viewer/preset-all`：
+只安装 `@file-viewer/web` 是最轻的原生组件入口；PDF、Office、CAD、Typst、压缩包等具体格式能力请安装对应 preset 或 renderer。重度用户需要完整能力时，可以选择 full 包，也可以继续使用标准包 + `preset-all`：
 
 ```bash
 npm install @file-viewer/web @file-viewer/preset-all
@@ -111,6 +119,22 @@ const controller = mountViewer(document.getElementById('viewer')!, {
 })
 
 controller.reload()
+```
+
+如果使用 full 包，命令式代码不需要再手动 import preset：
+
+```ts
+import { mountViewer } from '@file-viewer/web-full'
+
+const controller = mountViewer(document.getElementById('viewer')!, {
+  url: '/files/demo.dwg',
+  options: {
+    theme: 'light',
+    toolbar: { position: 'bottom-right' }
+  }
+})
+
+controller.zoomIn()
 ```
 
 ## 鉴权文件
@@ -159,6 +183,39 @@ cp ./node_modules/@file-viewer/web/dist/flyfish-file-viewer-web.iife.js ./public
 ```
 
 IIFE 会自动执行 `defineFileViewerElement()` 并暴露 `window.FlyfishFileViewerWeb`。如果你更喜欢命令式方式，仍然可以使用 `window.FlyfishFileViewerWeb.mountViewer(container, options)`。
+
+### CDN full 完整能力
+
+如果页面不使用构建工具，而且希望无需本地安装就快速接入完整格式矩阵，可以使用 `@file-viewer/web-full` 的 CDN 入口。jsDelivr / unpkg 会直接从 npm 分发完整 IIFE，它会暴露 `window.FlyfishFileViewerWebFull`，并自动按脚本地址定位随包分发的 Worker、WASM、字体和 vendor 资源：
+
+```html
+<div id="viewer" style="height:720px"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<script>
+  FlyfishFileViewerWebFull.mountViewer(document.getElementById('viewer'), {
+    url: '/files/demo.pdf',
+    options: {
+      theme: 'light',
+      toolbar: { position: 'bottom-right' }
+    }
+  })
+</script>
+```
+
+Custom Element 也可以直接使用同一个 CDN full 包：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js"></script>
+<flyfish-file-viewer
+  src="/files/demo.xlsx"
+  theme="light"
+  toolbar-position="bottom-right"
+  style="display:block;height:720px"
+></flyfish-file-viewer>
+```
+
+CDN full 适合 POC、传统后台和公网生产页面快速获得完整能力。内网、严格 CSP、完全离线或自有 Cloudflare/CDNJS 风格静态域场景，把 `@file-viewer/web-full/dist` 或 `file-viewer-copy-assets` 生成的资源整体同步到自己的 CDN。cdnjs.com 不会自动托管任意 npm 包，只有库被收录后才会有真实 cdnjs 路径。
 
 ## 自托管 Worker / WASM 资源
 

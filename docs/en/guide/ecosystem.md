@@ -18,6 +18,8 @@ Standard component packages are intentionally light. Installing `@file-viewer/vu
 | Office document platform | `npm i @file-viewer/vue3 @file-viewer/preset-office` | PDF, Word, Excel, PowerPoint, OFD, RTF, OpenDocument; recommended default for document apps |
 | Engineering platform | `npm i @file-viewer/vue3 @file-viewer/preset-engineering` | CAD, 3D, drawing, XMind, Geo, Typst, Archive, Data, EDA |
 | Full demo capability | `npm i @file-viewer/vue3 @file-viewer/preset-all` | One-step full capability for demos, admin tools, and internal all-format workbenches |
+| Full package | `npm i @file-viewer/vue3-full` | Enables `preset-all` by default, no manual `options.preset` needed |
+| CDN full trial | `https://cdn.jsdelivr.net/npm/@file-viewer/web-full@latest/dist/flyfish-file-viewer-web-full.iife.js` | No local install, ideal for script-tag validation of the complete matrix |
 | Strict custom cut | `npm i @file-viewer/vue3 @file-viewer/renderer-pdf` | Install one renderer and pass it through `options.renderers` |
 
 `options.preset` is the bundler-neutral assembly path. Webpack, Rspack, Rollup, Umi, classic multi-page apps, micro-frontends, and internal component libraries can import a preset explicitly and pass it to the component:
@@ -57,13 +59,21 @@ export default {
 | Full renderer preset | `@file-viewer/preset-all` | Registers the full lazy renderer set |
 | Vite on-demand plugin | `@file-viewer/vite-plugin` | Generates renderer imports from explicit formats or source hints |
 | Web Component / Vanilla JS | `@file-viewer/web` | `<flyfish-file-viewer>`, `mountViewer`, IIFE bundle, and asset copy CLI |
+| Web Component / Vanilla JS Full | `@file-viewer/web-full` | Complete-matrix Custom Element, IIFE, and imperative mount for script tags and POCs |
 | Vue 3 | `@file-viewer/vue3` | Native Vue 3 plugin and component |
+| Vue 3 Full | `@file-viewer/vue3-full` | Complete-matrix Vue 3 package with the same component API |
 | Vue 2.7 | `@file-viewer/vue2.7` | Native Vue 2.7 component |
+| Vue 2.7 Full | `@file-viewer/vue2.7-full` | Complete-matrix package for modern Vue 2 applications |
 | Vue 2.6 | `@file-viewer/vue2.6` | Dedicated Vue 2.6 compatibility line |
+| Vue 2.6 Full | `@file-viewer/vue2.6-full` | Complete-matrix package for legacy Vue 2.6 applications |
 | React 18/19 | `@file-viewer/react` | Native React component and handle APIs |
+| React 18/19 Full | `@file-viewer/react-full` | Complete-matrix React package with the same component and hook APIs |
 | React 16.8/17 | `@file-viewer/react-legacy` | Legacy React package with the same viewer semantics |
+| React 16.8/17 Full | `@file-viewer/react-legacy-full` | Complete-matrix package for old React applications |
 | jQuery | `@file-viewer/jquery` | Traditional admin-system integration |
+| jQuery Full | `@file-viewer/jquery-full` | Complete-matrix package for classic admin systems |
 | Svelte | `@file-viewer/svelte` | Svelte component and action |
+| Svelte Full | `@file-viewer/svelte-full` | Complete-matrix Svelte package with the same component and action APIs |
 
 ## Renderer Packages
 
