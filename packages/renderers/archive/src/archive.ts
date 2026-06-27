@@ -557,6 +557,12 @@ export default async function renderArchive(
     reason: FileViewerArchivePasswordRequestReason,
     previousError?: unknown
   ) => {
+    const wasLoading = loading;
+    if (wasLoading) {
+      loading = false;
+      syncState();
+      renderEmptyState();
+    }
     passwordDescription.textContent = t('archive.password.description');
     passwordError.textContent = previousError || reason === 'invalid-password'
       ? t('archive.password.invalid')
@@ -566,7 +572,14 @@ export default async function renderArchive(
     targetWindow?.setTimeout(() => passwordInput.focus(), 0);
 
     return new Promise<string | null>((resolve) => {
-      passwordResolver = resolve;
+      passwordResolver = password => {
+        if (wasLoading && password !== null) {
+          loading = true;
+          syncState();
+          renderEmptyState();
+        }
+        resolve(password);
+      };
     });
   };
 

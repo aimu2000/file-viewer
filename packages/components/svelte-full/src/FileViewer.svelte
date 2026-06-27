@@ -1,5 +1,5 @@
 <script>
-  import '@file-viewer/preset-all'
+  import allRenderers from '@file-viewer/preset-all'
   import BaseFileViewer from '@file-viewer/svelte'
 
   export let url = undefined
@@ -16,6 +16,25 @@
 
   let viewer
 
+  function withFullViewerOptions(value = {}) {
+    const { preset = allRenderers, rendererMode = 'replace', ...rest } = value
+    return {
+      ...rest,
+      preset,
+      rendererMode,
+      autoRenderers: rest.autoRenderers ?? true
+    }
+  }
+
+  function withFullMountOptions(value = {}) {
+    return {
+      ...value,
+      options: withFullViewerOptions(value.options)
+    }
+  }
+
+  $: fullOptions = withFullViewerOptions(options)
+
   export function getController() {
     return viewer?.getController() ?? null
   }
@@ -25,11 +44,11 @@
   }
 
   export function load(nextOptions) {
-    return viewer?.load(nextOptions) ?? Promise.resolve()
+    return viewer?.load(withFullMountOptions(nextOptions)) ?? Promise.resolve()
   }
 
   export function update(nextOptions) {
-    return viewer?.update(nextOptions) ?? Promise.resolve()
+    return viewer?.update(withFullMountOptions(nextOptions)) ?? Promise.resolve()
   }
 
   export function reload() {
@@ -126,7 +145,7 @@
   {filename}
   {type}
   {size}
-  {options}
+  options={fullOptions}
   {onEvent}
   {className}
   {containerStyle}

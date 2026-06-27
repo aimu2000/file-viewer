@@ -7,6 +7,9 @@
       "DOM",
       "ES2020"
     ],
+    "types": [
+      "jquery"
+    ],
     "strict": true,
     "composite": true,
     "declaration": true,

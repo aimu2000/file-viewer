@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "@file-viewer/core": "workspace:^2.1.9",
-    "@file-viewer/docx": "^0.3.12",
+    "@file-viewer/docx": "^0.3.13",
     "jszip": "^3.10.1",
     "msdoc-viewer": "^0.2.0",
     "rtf.js": "^3.0.9"

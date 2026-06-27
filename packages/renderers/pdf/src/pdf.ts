@@ -46,6 +46,7 @@ const FIT_HORIZONTAL_PADDING = 28;
 const PAGE_BORDER_WIDTH = 18;
 const PDF_EXPORT_MAX_PAGE_PIXELS = 8_000_000;
 const PDF_WORKER_PROBE_TIMEOUT_MS = 1200;
+const PDF_JS_DESTROY_CONSOLE_SUPPRESSION_MS = 1500;
 
 type PdfWorkerHandlerModule = {
   WorkerMessageHandler: unknown;
@@ -74,6 +75,15 @@ type PdfResource = {
   loadingTask: PdfLoadingTask;
   worker: PdfWorkerInstance | null;
 };
+type ConsoleLike = {
+  error: (...data: unknown[]) => void;
+};
+type PdfJsConsoleErrorSuppression = {
+  originalError: ConsoleLike['error'];
+  patchedError: ConsoleLike['error'];
+  depth: number;
+  restoreTimer: number | undefined;
+};
 type PdfNavigationResult = void | PromiseLike<void>;
 type PdfFindMatchesCount = { current: number; total: number };
 
@@ -89,6 +99,8 @@ interface PdfFlattenedOutlineItem {
   item: PdfOutlineItemView;
   depth: number;
 }
+
+const pdfJsConsoleErrorSuppressions = new WeakMap<ConsoleLike, PdfJsConsoleErrorSuppression>();
 
 const createStyle = (documentRef: Document) => {
   const style = documentRef.createElement('style');
@@ -178,6 +190,78 @@ const waitForPaint = (view?: Window | null) => new Promise<void>(resolve => {
   }
   globalThis.setTimeout(resolve, 0);
 });
+
+const readErrorLikeMessage = (value: unknown) => {
+  if (value instanceof Error) {
+    return value.message;
+  }
+  if (value && typeof value === 'object' && 'message' in value) {
+    return String((value as { message?: unknown }).message || '');
+  }
+  return String(value || '');
+};
+
+const isPdfJsDestroyedTransportPageInitError = (args: unknown[]) => {
+  const [message, reason] = args;
+  return typeof message === 'string' &&
+    /^Unable to get page \d+ to initialize viewer$/.test(message) &&
+    readErrorLikeMessage(reason).includes('Transport destroyed');
+};
+
+const suppressPdfJsDestroyedTransportPageInitErrors = (view: Window) => {
+  const consoleRef = (
+    (view as Window & { console?: ConsoleLike }).console ||
+    globalThis.console
+  ) as ConsoleLike | undefined;
+  if (!consoleRef || typeof consoleRef.error !== 'function') {
+    return () => {};
+  }
+
+  let suppression = pdfJsConsoleErrorSuppressions.get(consoleRef);
+  if (!suppression) {
+    const originalError = consoleRef.error;
+    suppression = {
+      originalError,
+      patchedError: (...args: unknown[]) => {
+        if (isPdfJsDestroyedTransportPageInitError(args)) {
+          return;
+        }
+        return originalError.apply(consoleRef, args);
+      },
+      depth: 0,
+      restoreTimer: undefined,
+    };
+    pdfJsConsoleErrorSuppressions.set(consoleRef, suppression);
+    consoleRef.error = suppression.patchedError;
+  } else if (suppression.restoreTimer !== undefined) {
+    view.clearTimeout(suppression.restoreTimer);
+    suppression.restoreTimer = undefined;
+  }
+
+  suppression.depth += 1;
+  let restored = false;
+  return () => {
+    if (restored || !suppression) {
+      return;
+    }
+    restored = true;
+    suppression.depth = Math.max(0, suppression.depth - 1);
+    if (suppression.depth > 0) {
+      return;
+    }
+
+    suppression.restoreTimer = view.setTimeout(() => {
+      if (!suppression || suppression.depth > 0) {
+        return;
+      }
+      if (consoleRef.error === suppression.patchedError) {
+        consoleRef.error = suppression.originalError;
+      }
+      pdfJsConsoleErrorSuppressions.delete(consoleRef);
+      suppression.restoreTimer = undefined;
+    }, PDF_JS_DESTROY_CONSOLE_SUPPRESSION_MS);
+  };
+};
 
 const isConfiguredUrl = (value: string | URL | undefined) => {
   return value !== undefined && value !== null && String(value).trim().length > 0;
@@ -992,12 +1076,17 @@ export default async function renderPdf(
     if (!resource) {
       return;
     }
+    const restorePdfJsConsoleErrors = suppressPdfJsDestroyedTransportPageInitErrors(targetWindow);
     try {
       await resource.loadingTask.destroy();
     } catch (error) {
       console.warn('PDF 加载任务销毁失败', error);
     } finally {
-      resource.worker?.destroy();
+      try {
+        resource.worker?.destroy();
+      } finally {
+        restorePdfJsConsoleErrors();
+      }
     }
   };
 

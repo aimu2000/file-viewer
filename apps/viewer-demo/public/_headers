@@ -11,6 +11,9 @@
 /vendor/*
   Cache-Control: public, max-age=31536000, immutable
 
+/vendor/docx/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /wasm/*
   Cache-Control: public, max-age=31536000, immutable
   X-Content-Type-Options: nosniff

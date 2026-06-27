@@ -721,14 +721,14 @@ const qrItems = computed<QrItem[]>(() =>
         { label: '支付宝打赏', note: '支持开源持续迭代', image: '/donate-alipay.jpg' },
         { label: '客服微信', note: '优先支持与商业沟通', image: '/contact.jpg' },
         { label: '公众号', note: '关注更新与实践文章', image: '/wechat-mp.png' },
-        { label: '交流群', note: '加入用户交流群', image: '/community-qr.png' }
+        { label: '交流群', note: '加入用户交流群', image: '/invite.svg' }
       ]
     : [
         { label: 'WeChat Sponsor', note: 'Buy us a lemonade', image: '/donate-wx.jpg' },
         { label: 'Alipay Sponsor', note: 'Support open-source work', image: '/donate-alipay.jpg' },
         { label: 'Support Contact', note: 'Priority support and business inquiries', image: '/contact.jpg' },
         { label: 'Official Account', note: 'Updates and engineering notes', image: '/wechat-mp.png' },
-        { label: 'Community Group', note: 'Join the user community', image: '/community-qr.png' }
+        { label: 'Community Group', note: 'Join the user community', image: '/invite.svg' }
       ]
 )
 

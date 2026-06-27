@@ -4,7 +4,7 @@
 
 <p class="doc-lead">
   这一页说明 Flyfish Viewer 对外分发时包含什么、如何安装、如何发布私有化 Worker/WASM viewer assets，以及开源总仓库和私有 Gitea 聚合仓之间的职责。
-  GitHub / Gitee 的 <code>flyfish-dev/file-viewer</code> 是开源总仓库和主分发入口，包含可直接运行的主 Demo 源码、core、标准组件包、兼容包、文档源码、构建产物、示例文件和 release 下载物。
+  GitHub / Gitee 的 <code>flyfish-dev/file-viewer</code> 是开源总仓库和主分发入口，包含可运行的主 Demo 源码、core、标准组件包、兼容包、文档源码和 release 索引；完整静态站点产物通过 GitHub Release 或 Cloudflare Pages 分发。
   为控制国内镜像仓库体积，Gitee 同步使用最新完整快照的干净历史，避免多轮二进制构建历史叠加。
   Gitee 镜像同步同一份开源总仓库内容，方便国内网络环境下载和部署。
 </p>
@@ -176,26 +176,23 @@ pnpm verify:cloudflare-compression
 
 ## 开源总仓库内容
 
-GitHub / Gitee 的 `flyfish-dev/file-viewer` 是开源总仓库，用于分发开源源码、可直接运行的 Demo、文档源码和可直接使用的 release 产物。私有 Gitea 继续作为完整聚合仓、统一发布脚本、内部自动化和优先技术支持入口。仓库内容包括:
+GitHub / Gitee 的 `flyfish-dev/file-viewer` 是开源总仓库，用于分发开源源码、Demo / 文档源码和 release 元数据。私有 Gitea 继续作为完整聚合仓、统一发布脚本、内部自动化和优先技术支持入口。仓库内容包括:
 
 - `packages/core/`: framework-neutral core 源码
 - `packages/components/`: Vanilla JS / Pure Web、Vue、React、jQuery、Svelte 等标准组件包源码
 - `packages/compat/`: 历史 npm 包名兼容 alias 源码
 - `apps/`: 主 Demo 和组件 Demo 源码
 - `dist/`: 混淆压缩后的组件库产物
-- `demo/`: 可独立部署的私有化预览器静态站点
-- `component-demo/`: React 和纯 JS 接入的最小化示例
-- `docs/`: VitePress 文档静态站点
-- `example/`: 完整样例文件列表
-- `artifacts/`: npm tarball、组件 tarball、Demo tarball、文档 tarball
+- `docs/`: VitePress 文档源码
+- `artifacts/`: release manifest、状态报告和可上传到 GitHub Release 的 tarball
 - `Dockerfile` / Docker Hub 标签: 可直接部署的静态镜像构建与发布信息
 - `README.md`: 默认中文入口，提供友好的安装、嵌入、下载和授权说明
 - `README.en.md`: 完整英文入口，与中文 README 互相提供语言切换链接，便于海外客户快速评估和接入
 - `LICENSE`: 项目许可证
 
-其中 `README.md` 会承担开源总仓库首页职责，写明官方文档、在线 Demo、npm 包、私有化部署、源码目录、release 下载物和支持入口。`apps/`、`packages/`、`docs/`、`demo/`、`component-demo/` 和 `example/` 默认展开提交，保证用户克隆后可以直接运行和审计完整结构；`artifacts/*.tar.gz` 继续保留，方便直接下载离线包。
+其中 `README.md` 会承担开源总仓库首页职责，写明官方文档、在线 Demo、npm 包、私有化部署、源码目录、release 下载物和支持入口。`apps/`、`packages/` 和 `docs/` 默认保留源码，主 Demo、component demo、文档站和样例文件的构建产物不再作为顶层目录常驻提交，避免 GitHub clone 被静态站点和二进制样例拖大。需要下载站点产物时，从 GitHub Release 或 Cloudflare Pages 部署域名获取。
 
-如果某个镜像平台临时无法承载完整展开目录，可以显式使用 `FILE_VIEWER_PUBLIC_SLIM=1` 或 `--slim` 生成应急轻量布局。该模式只用于临时镜像排障，不作为公开 GitHub / Gitee 的默认发布形态。
+如果确实需要生成完整展开目录，可以显式使用 `FILE_VIEWER_PUBLIC_EXPANDED_ASSETS=1` 或 `--expanded-assets`。该模式只用于一次性交付、离线包检查或临时镜像排障，不作为公开 GitHub / Gitee 的默认发布形态。
 
 开源总仓库会包含 `apps/`、`packages/core/`、`packages/components/`、`packages/compat/` 和 `docs/` 等源码，同时继续保留可直接部署或下载的 release 产物。
 
@@ -241,7 +238,7 @@ pnpm release:ecosystem:publish
 pnpm release:public
 ```
 
-该命令会同步开源源码、Demo、component demo、文档静态产物、示例文件、混淆后的 `dist/` 和生态 tarball，并在写入后自动执行 `pnpm verify:public-main`。如果只想检查已经生成的开源总仓库内容，可以执行:
+该命令会同步开源源码、混淆后的 `dist/`、release 元数据和生态 tarball，并在写入后自动执行 `pnpm verify:public-main`。默认不会把 Demo、component demo、文档静态产物和示例文件展开写入开源总仓；如需完整展开，请显式追加 `--expanded-assets`。如果只想检查已经生成的开源总仓库内容，可以执行:
 
 ```bash
 pnpm verify:public-main

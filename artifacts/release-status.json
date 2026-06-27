@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-27T06:43:55.949Z",
+  "generatedAt": "2026-06-27T17:24:21.300Z",
   "version": "2.1.9",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "d379dcc5ef98021779ece1bd30abde47c6060794",
+    "authoritativeCommit": "879a122c84fad81051fe8ea46abd1d8be0891705",
     "localBranch": "main",
-    "localCommit": "d379dcc5ef98021779ece1bd30abde47c6060794",
-    "inSync": true,
+    "localCommit": "4e6bc431887749a709c4d372dab98fad34cab370",
+    "inSync": false,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "d379dcc5ef98021779ece1bd30abde47c6060794",
-    "shortCommit": "d379dcc5",
-    "dirty": false
+    "commit": "4e6bc431887749a709c4d372dab98fad34cab370",
+    "shortCommit": "4e6bc431",
+    "dirty": true
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "d379dcc5ef98021779ece1bd30abde47c6060794",
+    "hash": "879a122c84fad81051fe8ea46abd1d8be0891705",
     "error": ""
   },
   "openSourceMain": {
@@ -32,21 +32,21 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "f138234649d5996a151071dc9ad5716ff6dbc797",
+      "hash": "76bb6ce94777c981c37251dd5a56191323fb2d78",
       "error": ""
     },
     "gitee": {
       "url": "https://gitee.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "8ddb952be08daa9ca284752d8c45c398472eb39c",
+      "hash": "3825a5003c1b1fec0cf9d912a883904f58d78d93",
       "error": ""
     },
     "inSync": false,
     "syncMode": "stale",
     "treeChecked": true,
-    "referenceTree": "22e8d76a45e1174adbadc3c9603f634a45eae8b8",
-    "giteeTree": "62b18f03808005d7045f6bcb1c078889de3cdff4",
+    "referenceTree": "733929ebdea276e71c203e74dfc6a7b3c28dc2ff",
+    "giteeTree": "ef9e54e70ed3110034a0103cb80e8fee613104c3",
     "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
@@ -720,17 +720,41 @@
       "error": ""
     }
   ],
-  "gaps": [],
+  "gaps": [
+    "local HEAD 4e6bc431 does not match origin/main 879a122c84fa",
+    "local source worktree has uncommitted changes"
+  ],
   "gapSummary": {
-    "total": 0,
+    "total": 2,
     "externalBlockers": 0,
-    "localActionable": 0,
-    "byChannel": {},
+    "localActionable": 2,
+    "byChannel": {
+      "source-worktree": 2
+    },
     "externalBlockerChannels": [],
-    "localActionableChannels": []
+    "localActionableChannels": [
+      "source-worktree"
+    ]
   },
-  "gapDetails": [],
+  "gapDetails": [
+    {
+      "id": "source-worktree-local-head-4e6bc431-does-not-match-origin-main-879a122c84fa",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local HEAD 4e6bc431 does not match origin/main 879a122c84fa",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    },
+    {
+      "id": "source-worktree-local-source-worktree-has-uncommitted-changes",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local source worktree has uncommitted changes",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    }
+  ],
   "nextActions": [
-    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
+    "Commit and push the local source/public repository changes, then regenerate the release status report."
   ]
 }

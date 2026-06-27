@@ -106,6 +106,7 @@ GitHub Releases can carry:
 - demo GIF or MP4 assets for posts and README embeds
 
 For offline or intranet package installs, download the tarballs and install them through a private registry or direct local paths.
+The public GitHub repository keeps source, small release metadata, and lightweight package output in git. Full demo, component demo, docs, and sample-file builds should live in GitHub Releases or Cloudflare Pages deployments instead of expanded top-level directories, so a normal clone stays practical. Use `pnpm release:public -- --expanded-assets` only for one-off delivery or mirror troubleshooting that truly needs expanded static assets.
 
 ## Self-hosted Runtime Assets
 

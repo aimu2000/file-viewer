@@ -1,5 +1,4 @@
 import type { DocxProgressEvent, Options, renderAsync } from '@file-viewer/docx'
-import type JSZip from 'jszip'
 import {
   resolveFileViewerDocxWorkerJsZipUrl,
   resolveFileViewerDocxWorkerUrl,
@@ -25,80 +24,12 @@ const DOCX_DEFAULT_PAGE_SIZE: PrintPageSize = {
   height: 1123
 }
 
-const DOCX_PROGRESSIVE_BATCH_SIZE = 2
-const DOCX_WORKER_TIMEOUT = 5000
 const DOCX_WORKER_UNSAFE_PROTOCOLS = new Set(['file:', 'about:', 'data:'])
 const DOCX_MIN_SCALE = 0.24
 const DOCX_MAX_SCALE = 3
 const DOCX_ZOOM_STEP = 0.15
-const DOCX_EMU_PER_CSS_PIXEL = 9525
+const DOCX_VENDOR_ASSET_VERSION = '0.3.13'
 const ZIP_SIGNATURE_PK = 0x504b
-
-type DocxZip = JSZip
-type DocxZipFile = JSZip.JSZipObject
-type JSZipConstructorLike = {
-  loadAsync(data: ArrayBuffer): Promise<DocxZip>
-}
-
-interface DocxRelationship {
-  id: string;
-  type: string;
-  target: string;
-  targetMode?: string;
-}
-
-interface DocxImageFallback {
-  role: 'watermark' | 'ole-preview' | 'vml-image';
-  key: string;
-  kind: 'image' | 'math-text';
-  dataUrl?: string;
-  text?: string;
-  sourcePath: string;
-  partPath: string;
-  title?: string;
-  style?: string;
-  width?: number;
-  height?: number;
-  paragraphIndex?: number;
-}
-
-const resolveJSZip = (module: unknown): JSZipConstructorLike => {
-  const record = module as Record<string, unknown> | undefined
-  const defaultRecord = record?.default as Record<string, unknown> | undefined
-  const candidates = [
-    record?.default,
-    defaultRecord?.default,
-    record?.JSZip,
-    module
-  ]
-  const JSZip = candidates.find(candidate =>
-    !!candidate &&
-    typeof candidate === 'object' &&
-    typeof (candidate as { loadAsync?: unknown }).loadAsync === 'function'
-  ) as JSZipConstructorLike | undefined
-
-  if (!JSZip) {
-    throw new Error('JSZip module does not expose loadAsync.')
-  }
-  return JSZip
-}
-
-interface DocxChartSeries {
-  name: string;
-  categories: string[];
-  values: number[];
-}
-
-interface DocxChartFallback {
-  key: string;
-  title: string;
-  type: string;
-  sourcePath: string;
-  series: DocxChartSeries[];
-  width?: number;
-  height?: number;
-  paragraphIndex?: number;
-}
 
 const loadLibrary = (() => {
   const loader = {
@@ -170,6 +101,14 @@ const shouldUseDocxWorker = (
   return !DOCX_WORKER_UNSAFE_PROTOCOLS.has(getTargetProtocol(target))
 }
 
+const appendDocxVendorAssetVersion = (url: string | undefined, explicitUrl: boolean) => {
+  if (!url || explicitUrl) {
+    return url
+  }
+
+  return `${url}${url.includes('?') ? '&' : '?'}file-viewer-docx=${DOCX_VENDOR_ASSET_VERSION}`
+}
+
 const createDocxOptions = (
   target: HTMLDivElement,
   context: FileRenderContext | undefined,
@@ -185,46 +124,62 @@ const createDocxOptions = (
     }
   }
 
-  return {
-    // Word 会写入 autoSpaceDN/autoSpaceDE 等兼容标签；生产预览保持静默，避免 DOCX 调试告警刷屏。
-    debug: false,
-    experimental: false,
+  const options: Partial<Options> = {
     useWorker,
-    workerUrl: useWorker
-      ? resolveFileViewerDocxWorkerUrl(docxOptions, documentBaseUrl)
-      : undefined,
-    workerJsZipUrl: useWorker
-      ? resolveFileViewerDocxWorkerJsZipUrl(docxOptions, documentBaseUrl)
-      : undefined,
-    workerFallback: true,
-    workerTimeout: docxOptions?.workerTimeout ?? DOCX_WORKER_TIMEOUT,
-    renderPageBatchSize:
-      docxOptions?.renderPageBatchSize ??
-      (docxOptions?.progressive === false ? Number.MAX_SAFE_INTEGER : DOCX_PROGRESSIVE_BATCH_SIZE),
-    renderYieldEveryMs: docxOptions?.renderYieldEveryMs ?? 16,
-    strictWordCompatibility: docxOptions?.strictWordCompatibility ?? true,
-    paginationTolerance: docxOptions?.paginationTolerance ?? 2,
     breakPages: usePagedLayout,
-    maxDynamicPaginationPasses:
-      usePagedLayout
-        ? docxOptions?.maxDynamicPaginationPasses ?? 1000
-        : 0,
-    awaitLayout: docxOptions?.awaitLayout ?? usePagedLayout,
-    preserveComplexFieldResults: docxOptions?.preserveComplexFieldResults ?? true,
-    updatePageReferences: docxOptions?.updatePageReferences ?? false,
-    hideWebHiddenContent: docxOptions?.hideWebHiddenContent ?? false,
     ignoreLastRenderedPageBreak: docxOptions?.ignoreLastRenderedPageBreak ?? !usePagedLayout,
     progress
   }
+
+  if (useWorker) {
+    options.workerUrl = appendDocxVendorAssetVersion(
+      resolveFileViewerDocxWorkerUrl(docxOptions, documentBaseUrl),
+      !!docxOptions?.workerUrl
+    )
+    options.workerJsZipUrl = appendDocxVendorAssetVersion(
+      resolveFileViewerDocxWorkerJsZipUrl(docxOptions, documentBaseUrl),
+      !!docxOptions?.workerJsZipUrl
+    )
+  }
+  if (docxOptions?.workerTimeout !== undefined) {
+    options.workerTimeout = docxOptions.workerTimeout
+  }
+  if (docxOptions?.renderPageBatchSize !== undefined) {
+    options.renderPageBatchSize = docxOptions.renderPageBatchSize
+  } else if (docxOptions?.progressive === false) {
+    options.renderPageBatchSize = Number.MAX_SAFE_INTEGER
+  }
+  if (docxOptions?.renderYieldEveryMs !== undefined) {
+    options.renderYieldEveryMs = docxOptions.renderYieldEveryMs
+  }
+  if (docxOptions?.strictWordCompatibility !== undefined) {
+    options.strictWordCompatibility = docxOptions.strictWordCompatibility
+  }
+  if (docxOptions?.paginationTolerance !== undefined) {
+    options.paginationTolerance = docxOptions.paginationTolerance
+  }
+  if (docxOptions?.maxDynamicPaginationPasses !== undefined) {
+    options.maxDynamicPaginationPasses = docxOptions.maxDynamicPaginationPasses
+  }
+  if (docxOptions?.awaitLayout !== undefined) {
+    options.awaitLayout = docxOptions.awaitLayout
+  }
+  if (docxOptions?.preserveComplexFieldResults !== undefined) {
+    options.preserveComplexFieldResults = docxOptions.preserveComplexFieldResults
+  }
+  if (docxOptions?.updatePageReferences !== undefined) {
+    options.updatePageReferences = docxOptions.updatePageReferences
+  }
+  if (docxOptions?.hideWebHiddenContent !== undefined) {
+    options.hideWebHiddenContent = docxOptions.hideWebHiddenContent
+  }
+
+  return options
 }
 
 const isTargetHTMLElement = (value: unknown, target: HTMLDivElement): value is HTMLElement => {
   const HTMLElementCtor = getTargetWindow(target)?.HTMLElement
   return HTMLElementCtor ? value instanceof HTMLElementCtor : value instanceof HTMLElement
-}
-
-const shouldPaginateOversizedDocxSections = (context?: FileRenderContext) => {
-  return context?.options?.docx?.visualPagination === true
 }
 
 const DOCX_RESPONSIVE_CSS = `
@@ -278,897 +233,13 @@ const DOCX_RESPONSIVE_CSS = `
   position: relative;
   z-index: 1;
 }
-.docx-fit-viewer .docx-vml-watermark {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.28;
-  filter: saturate(0.72) brightness(1.24);
-  pointer-events: none;
-  user-select: none;
-}
-.docx-fit-viewer .docx-vml-fallback,
-.docx-fit-viewer .docx-chart-fallback {
-  display: block;
-  max-width: 100%;
-  margin: 12px auto;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-.docx-fit-viewer .docx-vml-fallback {
-  text-align: center;
-}
-	.docx-fit-viewer .docx-vml-fallback img {
-	  display: block;
-	  max-width: 100%;
-	  height: auto;
-	  margin: 0 auto;
-	}
-	.docx-fit-viewer .docx-math-fallback {
-	  display: inline-block;
-	  max-width: 100%;
-	  margin: 0 4px;
-	  padding: 1px 6px 2px;
-	  border-bottom: 1px solid currentColor;
-	  color: #111827;
-	  font-family: "Cambria Math", "Times New Roman", serif;
-	  font-size: 0.95em;
-	  line-height: 1.15;
-	  text-align: right;
-	  white-space: pre;
-	  vertical-align: middle;
-	}
-	.docx-fit-viewer figure.docx-math-fallback {
-	  display: table;
-	  margin: 4px auto;
-	}
-	.docx-fit-viewer .docx-chart-fallback {
-	  box-sizing: border-box;
-  overflow: hidden;
-  border: 1px solid #d7dee8;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
-}
-.docx-fit-viewer .docx-chart-fallback svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
 `
-
-function getXmlLocalName(node: Element) {
-  return node.localName || node.tagName.split(':').pop() || node.tagName
-}
-
-function getXmlElements(root: ParentNode, localName: string) {
-  return Array.from(root.querySelectorAll('*')).filter(element => getXmlLocalName(element) === localName)
-}
-
-function getFirstXmlElement(root: ParentNode, localName: string) {
-  return getXmlElements(root, localName)[0]
-}
-
-function getXmlAttribute(element: Element, name: string, namespace?: string) {
-  return (namespace ? element.getAttributeNS(namespace, name) : null)
-    || element.getAttribute(name)
-    || element.getAttribute(`r:${name}`)
-}
-
-function getXmlText(element: Element | undefined) {
-  if (!element) {
-    return ''
-  }
-  return (element.textContent || '').replace(/\s+/g, ' ').trim()
-}
-
-function getXmlAncestor(element: Element | null, localName: string) {
-  let current = element?.parentElement || null
-  while (current) {
-    if (getXmlLocalName(current) === localName) {
-      return current
-    }
-    current = current.parentElement
-  }
-  return null
-}
-
-function getParagraphIndex(element: Element) {
-  const paragraph = getXmlLocalName(element) === 'p' ? element : getXmlAncestor(element, 'p')
-  if (!paragraph) {
-    return undefined
-  }
-
-  let index = 0
-  let sibling = paragraph.previousElementSibling
-  while (sibling) {
-    if (getXmlLocalName(sibling) === 'p') {
-      index += 1
-    }
-    sibling = sibling.previousElementSibling
-  }
-  return index
-}
-
-function parseXml(xml: string, target: HTMLDivElement) {
-  const Parser = getTargetWindow(target)?.DOMParser || globalThis.DOMParser
-  if (!Parser) {
-    return null
-  }
-
-  const doc = new Parser().parseFromString(xml, 'application/xml')
-  if (doc.querySelector('parsererror')) {
-    return null
-  }
-  return doc
-}
-
-function normalizeZipPath(path: string) {
-  const segments: string[] = []
-  path.split('/').forEach(segment => {
-    if (!segment || segment === '.') {
-      return
-    }
-    if (segment === '..') {
-      segments.pop()
-      return
-    }
-    segments.push(segment)
-  })
-  return segments.join('/')
-}
-
-function getDirectoryName(path: string) {
-  const index = path.lastIndexOf('/')
-  return index >= 0 ? path.slice(0, index) : ''
-}
-
-function getRelationshipPath(partPath: string) {
-  const directory = getDirectoryName(partPath)
-  const name = partPath.slice(directory ? directory.length + 1 : 0)
-  return normalizeZipPath(`${directory}/_rels/${name}.rels`)
-}
-
-function resolveRelationshipTarget(partPath: string, target: string) {
-  if (target.startsWith('/')) {
-    return normalizeZipPath(target.slice(1))
-  }
-  return normalizeZipPath(`${getDirectoryName(partPath)}/${target}`)
-}
-
-function getMimeType(path: string) {
-  const extension = getPathExtension(path)
-  switch (extension) {
-    case 'png':
-      return 'image/png'
-    case 'jpg':
-    case 'jpeg':
-      return 'image/jpeg'
-    case 'gif':
-      return 'image/gif'
-    case 'bmp':
-      return 'image/bmp'
-    case 'webp':
-      return 'image/webp'
-    case 'svg':
-      return 'image/svg+xml'
-    default:
-      return 'application/octet-stream'
-  }
-}
-
-function getPathExtension(path: string) {
-  return path.split('.').pop()?.toLowerCase() || ''
-}
-
-function isBrowserUnsupportedImagePath(path: string) {
-  const extension = getPathExtension(path)
-  return extension === 'wmf' || extension === 'emf'
-}
-
-function decodeBinaryText(bytes: Uint8Array) {
-  if (typeof TextDecoder !== 'undefined') {
-    return new TextDecoder('latin1').decode(bytes)
-  }
-
-  let output = ''
-  const chunkSize = 0x8000
-  for (let offset = 0; offset < bytes.length; offset += chunkSize) {
-    output += String.fromCharCode(...bytes.slice(offset, offset + chunkSize))
-  }
-  return output
-}
-
-function normalizeMathTextValue(value: string) {
-  const trimmed = value.replace(/\s+/g, ' ').trim()
-  if (/^[\d.,+\-\s]+$/.test(trimmed)) {
-    return trimmed.replace(/\s+/g, '')
-  }
-  return trimmed
-}
-
-function normalizeMathTypeTexFallback(tex: string) {
-  const rows: string[] = []
-  tex.replace(/(?:\\\\\s*)?([+\-])?\s*\\text\{([^}]*)\}/g, (_match, operator: string | undefined, value: string) => {
-    const normalized = normalizeMathTextValue(value)
-    if (normalized) {
-      rows.push(`${operator || ''}${normalized}`)
-    }
-    return ''
-  })
-  if (rows.length) {
-    return rows.join('\n')
-  }
-
-  return tex
-    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '($1)/($2)')
-    .replace(/\\text\{([^}]*)\}/g, '$1')
-    .replace(/\\begin\{[^}]+\}|\\end\{[^}]+\}/g, '')
-    .replace(/\\underline\{([^{}]*)\}/g, '$1')
-    .replace(/\\\\/g, '\n')
-    .replace(/\\[a-zA-Z]+\*?/g, '')
-    .replace(/[{}]/g, '')
-    .split('\n')
-    .map(line => normalizeMathTextValue(line))
-    .filter(Boolean)
-    .join('\n')
-}
-
-function extractMathTypeTextFromBytes(bytes: Uint8Array) {
-  const text = decodeBinaryText(bytes)
-  const marker = 'fjTeX Input Language'
-  const markerIndex = text.indexOf(marker)
-  const searchText = markerIndex >= 0 ? text.slice(markerIndex + marker.length) : text
-  const mathStart = searchText.search(/\\(?:underline|begin|frac|text|sqrt|sum|int|[a-zA-Z]+)/)
-  if (mathStart < 0) {
-    return undefined
-  }
-
-  const raw = searchText
-    .slice(mathStart)
-    .split('\0')[0]
-    .replace(/[\u0001-\u0008\u000b\u000c\u000e-\u001f\u007f]+/g, '')
-    .trim()
-  if (!raw || raw.length > 3000) {
-    return undefined
-  }
-
-  const normalized = normalizeMathTypeTexFallback(raw)
-  return normalized || undefined
-}
-
-function parseCssLengthToPixels(value: string | undefined) {
-  if (!value) {
-    return undefined
-  }
-  const match = value.trim().match(/^(-?\d+(?:\.\d+)?)(px|pt|in|cm|mm)?$/i)
-  if (!match) {
-    return undefined
-  }
-
-  const amount = Number(match[1])
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return undefined
-  }
-
-  const unit = (match[2] || 'px').toLowerCase()
-  switch (unit) {
-    case 'pt':
-      return amount * 96 / 72
-    case 'in':
-      return amount * 96
-    case 'cm':
-      return amount * 96 / 2.54
-    case 'mm':
-      return amount * 96 / 25.4
-    default:
-      return amount
-  }
-}
-
-function parseStyleDeclaration(style: string | undefined) {
-  const declarations = new Map<string, string>()
-  if (!style) {
-    return declarations
-  }
-
-  style.split(';').forEach(declaration => {
-    const separator = declaration.indexOf(':')
-    if (separator <= 0) {
-      return
-    }
-    declarations.set(
-      declaration.slice(0, separator).trim().toLowerCase(),
-      declaration.slice(separator + 1).trim()
-    )
-  })
-  return declarations
-}
-
-function parseShapeSize(style: string | undefined) {
-  const declarations = parseStyleDeclaration(style)
-  return {
-    width: parseCssLengthToPixels(declarations.get('width')),
-    height: parseCssLengthToPixels(declarations.get('height'))
-  }
-}
-
-function getExtentSize(element: Element) {
-  const inline = getXmlAncestor(element, 'inline') || getXmlAncestor(element, 'anchor')
-  const extent = inline ? getFirstXmlElement(inline, 'extent') : undefined
-  const width = Number(extent?.getAttribute('cx'))
-  const height = Number(extent?.getAttribute('cy'))
-  return {
-    width: Number.isFinite(width) && width > 0 ? width / DOCX_EMU_PER_CSS_PIXEL : undefined,
-    height: Number.isFinite(height) && height > 0 ? height / DOCX_EMU_PER_CSS_PIXEL : undefined
-  }
-}
-
-async function readDocxRelationships(zip: DocxZip, partPath: string, target: HTMLDivElement) {
-  const relFile = zip.file(getRelationshipPath(partPath))
-  const relationships = new Map<string, DocxRelationship>()
-  if (!relFile) {
-    return relationships
-  }
-
-  const relDoc = parseXml(await relFile.async('text'), target)
-  if (!relDoc) {
-    return relationships
-  }
-
-  getXmlElements(relDoc, 'Relationship').forEach(element => {
-    const id = element.getAttribute('Id')
-    const relationshipTarget = element.getAttribute('Target')
-    if (!id || !relationshipTarget) {
-      return
-    }
-    relationships.set(id, {
-      id,
-      type: element.getAttribute('Type') || '',
-      target: relationshipTarget,
-      targetMode: element.getAttribute('TargetMode') || undefined
-    })
-  })
-  return relationships
-}
-
-async function getDataUrlFromZipFile(file: DocxZipFile, sourcePath: string) {
-  const base64 = await file.async('base64')
-  return `data:${getMimeType(sourcePath)};base64,${base64}`
-}
-
-async function getMathTextFromZipFile(file: DocxZipFile) {
-  const buffer = await file.async('uint8array')
-  return extractMathTypeTextFromBytes(buffer)
-}
-
-async function getImageFallbackFromZip(zip: DocxZip, sourcePath: string) {
-  const file = zip.file(sourcePath)
-  if (!file) {
-    return undefined
-  }
-
-  if (isBrowserUnsupportedImagePath(sourcePath)) {
-    const text = await getMathTextFromZipFile(file)
-    if (text) {
-      return {
-        kind: 'math-text' as const,
-        text
-      }
-    }
-    return undefined
-  }
-
-  return {
-    kind: 'image' as const,
-    dataUrl: await getDataUrlFromZipFile(file, sourcePath)
-  }
-}
-
-function getDocxPartPaths(zip: DocxZip) {
-  return Object.keys(zip.files)
-    .filter(path => path === 'word/document.xml'
-      || /^word\/header\d+\.xml$/i.test(path)
-      || /^word\/footer\d+\.xml$/i.test(path))
-    .sort((left, right) => {
-      if (left === 'word/document.xml') {
-        return -1
-      }
-      if (right === 'word/document.xml') {
-        return 1
-      }
-      return left.localeCompare(right)
-    })
-}
-
-function inferVmlFallbackRole(partPath: string, shape: Element | null, style: string | undefined) {
-  const shapeId = `${shape?.getAttribute('id') || ''} ${shape?.getAttribute('o:spid') || ''}`.toLowerCase()
-  const normalizedStyle = (style || '').toLowerCase()
-
-  if (
-    partPath.includes('/header')
-    && (shapeId.includes('watermark') || normalizedStyle.includes('z-index:-') || normalizedStyle.includes('mso-position-horizontal:center'))
-  ) {
-    return 'watermark' as const
-  }
-
-  if (shape?.getAttribute('o:ole') === 't' || shape?.getAttribute('ole') === 't') {
-    return 'ole-preview' as const
-  }
-
-  return 'vml-image' as const
-}
-
-async function collectDocxVmlFallbacks(zip: DocxZip, target: HTMLDivElement) {
-  const fallbacks: DocxImageFallback[] = []
-  const seen = new Set<string>()
-
-  for (const partPath of getDocxPartPaths(zip)) {
-    const partFile = zip.file(partPath)
-    if (!partFile) {
-      continue
-    }
-
-    const doc = parseXml(await partFile.async('text'), target)
-    if (!doc) {
-      continue
-    }
-
-    const relationships = await readDocxRelationships(zip, partPath, target)
-    for (const imagedata of getXmlElements(doc, 'imagedata')) {
-      const relationshipId = getXmlAttribute(
-        imagedata,
-        'id',
-        'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
-      )
-      const relationship = relationshipId ? relationships.get(relationshipId) : undefined
-      if (!relationship || relationship.targetMode === 'External' || !relationship.type.includes('/image')) {
-        continue
-      }
-
-      const sourcePath = resolveRelationshipTarget(partPath, relationship.target)
-      const fallbackContent = await getImageFallbackFromZip(zip, sourcePath)
-      if (!fallbackContent) {
-        continue
-      }
-
-      const shape = getXmlAncestor(imagedata, 'shape')
-      const style = shape?.getAttribute('style') || undefined
-      const role = inferVmlFallbackRole(partPath, shape, style)
-      const key = role === 'watermark'
-        ? `${role}:${sourcePath}`
-        : `${role}:${partPath}:${sourcePath}:${getParagraphIndex(imagedata) ?? 'end'}`
-
-      if (seen.has(key)) {
-        continue
-      }
-      seen.add(key)
-
-      fallbacks.push({
-        role,
-        key,
-        ...fallbackContent,
-        sourcePath,
-        partPath,
-        title: imagedata.getAttribute('o:title') || imagedata.getAttribute('title') || undefined,
-        style,
-        ...parseShapeSize(style),
-        paragraphIndex: partPath === 'word/document.xml' ? getParagraphIndex(imagedata) : undefined
-      })
-    }
-  }
-
-  return fallbacks
-}
-
-function parseCacheValues(element: Element | undefined) {
-  if (!element) {
-    return []
-  }
-
-  return getXmlElements(element, 'pt')
-    .sort((left, right) => Number(left.getAttribute('idx') || 0) - Number(right.getAttribute('idx') || 0))
-    .map(point => getXmlText(getFirstXmlElement(point, 'v')))
-    .filter(Boolean)
-}
-
-function parseChartSeries(series: Element) {
-  const name = parseCacheValues(getFirstXmlElement(getFirstXmlElement(series, 'tx') || series, 'strCache'))[0]
-    || parseCacheValues(getFirstXmlElement(getFirstXmlElement(series, 'tx') || series, 'numCache'))[0]
-    || 'Series'
-  const categories = parseCacheValues(getFirstXmlElement(getFirstXmlElement(series, 'cat') || series, 'strCache'))
-  const numericCategories = parseCacheValues(getFirstXmlElement(getFirstXmlElement(series, 'cat') || series, 'numCache'))
-  const values = parseCacheValues(getFirstXmlElement(getFirstXmlElement(series, 'val') || series, 'numCache'))
-    .map(value => Number(value))
-    .filter(value => Number.isFinite(value))
-
-  return {
-    name,
-    categories: categories.length ? categories : numericCategories,
-    values
-  }
-}
-
-function parseChartFallback(chartDoc: XMLDocument, sourcePath: string, chartElement: Element, paragraphIndex?: number) {
-  const chartTypeElement = ['lineChart', 'barChart', 'pieChart', 'areaChart', 'scatterChart']
-    .map(type => getXmlElements(chartDoc, type)[0])
-    .find(Boolean)
-  const chartType = chartTypeElement ? getXmlLocalName(chartTypeElement) : 'chart'
-  const title = getXmlText(getFirstXmlElement(getFirstXmlElement(chartDoc, 'title') || chartDoc, 't'))
-    || sourcePath.split('/').pop() || 'Chart'
-  const series = (chartTypeElement ? getXmlElements(chartTypeElement, 'ser') : getXmlElements(chartDoc, 'ser'))
-    .map(parseChartSeries)
-    .filter(item => item.values.length)
-  const { width, height } = getExtentSize(chartElement)
-
-  if (!series.length) {
-    return undefined
-  }
-
-  return {
-    key: `chart:${sourcePath}:${paragraphIndex ?? 'end'}`,
-    title,
-    type: chartType,
-    sourcePath,
-    series,
-    width,
-    height,
-    paragraphIndex
-  } satisfies DocxChartFallback
-}
-
-async function collectDocxChartFallbacks(zip: DocxZip, target: HTMLDivElement) {
-  const partPath = 'word/document.xml'
-  const documentFile = zip.file(partPath)
-  if (!documentFile) {
-    return []
-  }
-
-  const documentDoc = parseXml(await documentFile.async('text'), target)
-  if (!documentDoc) {
-    return []
-  }
-
-  const relationships = await readDocxRelationships(zip, partPath, target)
-  const fallbacks: DocxChartFallback[] = []
-  const seen = new Set<string>()
-
-  for (const chart of getXmlElements(documentDoc, 'chart')) {
-    const relationshipId = getXmlAttribute(
-      chart,
-      'id',
-      'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
-    )
-    const relationship = relationshipId ? relationships.get(relationshipId) : undefined
-    if (!relationship || relationship.targetMode === 'External' || !relationship.type.includes('/chart')) {
-      continue
-    }
-
-    const sourcePath = resolveRelationshipTarget(partPath, relationship.target)
-    const chartFile = zip.file(sourcePath)
-    if (!chartFile) {
-      continue
-    }
-
-    const chartDoc = parseXml(await chartFile.async('text'), target)
-    const paragraphIndex = getParagraphIndex(chart)
-    const fallback = chartDoc ? parseChartFallback(chartDoc, sourcePath, chart, paragraphIndex) : undefined
-    if (!fallback || seen.has(fallback.key)) {
-      continue
-    }
-    seen.add(fallback.key)
-    fallbacks.push(fallback)
-  }
-
-  return fallbacks
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-function buildChartSvg(chart: DocxChartFallback) {
-  const width = Math.max(360, Math.round(chart.width || 520))
-  const height = Math.max(220, Math.round(chart.height || 320))
-  const padding = { top: 52, right: 30, bottom: 56, left: 54 }
-  const plotWidth = width - padding.left - padding.right
-  const plotHeight = height - padding.top - padding.bottom
-  const allValues = chart.series.flatMap(item => item.values)
-  const maxValue = Math.max(...allValues, 1)
-  const minValue = Math.min(...allValues, 0)
-  const valueSpan = Math.max(maxValue - minValue, 1)
-  const colors = ['#2563eb', '#10b981', '#f97316', '#8b5cf6', '#ef4444']
-  const maxPoints = Math.max(...chart.series.map(item => item.values.length), 1)
-
-  const pointX = (index: number) => padding.left + (maxPoints === 1 ? plotWidth / 2 : index * plotWidth / (maxPoints - 1))
-  const pointY = (value: number) => padding.top + plotHeight - ((value - minValue) / valueSpan) * plotHeight
-
-  const seriesPaths = chart.series.map((series, seriesIndex) => {
-    const color = colors[seriesIndex % colors.length]
-    const points = series.values.map((value, index) => `${pointX(index).toFixed(1)},${pointY(value).toFixed(1)}`).join(' ')
-    const circles = series.values.map((value, index) => {
-      const x = pointX(index).toFixed(1)
-      const y = pointY(value).toFixed(1)
-      return `<circle cx="${x}" cy="${y}" r="3.5" fill="${color}"><title>${escapeHtml(series.name)}: ${escapeHtml(String(value))}</title></circle>`
-    }).join('')
-    return `<polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${circles}`
-  }).join('')
-
-  const categories = chart.series.find(item => item.categories.length)?.categories || []
-  const labels = categories.slice(0, maxPoints).map((label, index) => {
-    const x = pointX(index)
-    const shown = label.length > 14 ? `${label.slice(0, 13)}...` : label
-    return `<text x="${x.toFixed(1)}" y="${height - 22}" text-anchor="middle" fill="#64748b" font-size="11">${escapeHtml(shown)}</text>`
-  }).join('')
-
-  const legend = chart.series.slice(0, 5).map((series, index) => {
-    const x = padding.left + index * 98
-    const y = 30
-    const color = colors[index % colors.length]
-    return `<g transform="translate(${x} ${y})"><rect width="10" height="10" rx="2" fill="${color}"/><text x="15" y="9" fill="#475569" font-size="11">${escapeHtml(series.name)}</text></g>`
-  }).join('')
-
-  return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(chart.title)}">
-    <rect x="0" y="0" width="${width}" height="${height}" rx="8" fill="#ffffff"/>
-    <text x="${padding.left}" y="22" fill="#0f172a" font-size="15" font-weight="700">${escapeHtml(chart.title)}</text>
-    ${legend}
-    <line x1="${padding.left}" y1="${padding.top + plotHeight}" x2="${padding.left + plotWidth}" y2="${padding.top + plotHeight}" stroke="#cbd5e1"/>
-    <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${padding.top + plotHeight}" stroke="#cbd5e1"/>
-    <text x="${padding.left - 8}" y="${padding.top + 4}" text-anchor="end" fill="#64748b" font-size="11">${escapeHtml(maxValue.toFixed(1))}</text>
-    <text x="${padding.left - 8}" y="${padding.top + plotHeight}" text-anchor="end" fill="#64748b" font-size="11">${escapeHtml(minValue.toFixed(1))}</text>
-    ${seriesPaths}
-    ${labels}
-  </svg>`
-}
-
-function getDocxSections(target: HTMLDivElement) {
-  return Array.from(target.querySelectorAll<HTMLElement>('section.docx'))
-}
-
-function getDocxArticles(target: HTMLDivElement) {
-  return Array.from(target.querySelectorAll<HTMLElement>('section.docx > article'))
-}
-
-function getDocxParagraphAnchor(target: HTMLDivElement, paragraphIndex: number | undefined) {
-  if (paragraphIndex === undefined) {
-    return undefined
-  }
-  const paragraphs = Array.from(target.querySelectorAll<HTMLElement>('section.docx > article p'))
-  return paragraphs[Math.min(Math.max(paragraphIndex, 0), Math.max(paragraphs.length - 1, 0))]
-}
-
-function insertDocxFallback(target: HTMLDivElement, node: HTMLElement, paragraphIndex: number | undefined) {
-  const anchor = getDocxParagraphAnchor(target, paragraphIndex)
-  if (anchor) {
-    anchor.after(node)
-    return
-  }
-
-  const article = getDocxArticles(target)[0]
-  if (article) {
-    article.appendChild(node)
-  }
-}
-
-function isUnsupportedDocxImageElement(image: HTMLImageElement) {
-  const alt = (image.getAttribute('alt') || '').toLowerCase()
-  const src = (image.getAttribute('src') || '').toLowerCase()
-  return alt.includes('embedded object') ||
-    src.startsWith('data:application/octet-stream') ||
-    src.startsWith('data:image/wmf') ||
-    src.startsWith('data:image/x-wmf') ||
-    src.startsWith('data:image/emf') ||
-    src.startsWith('data:image/x-emf')
-}
-
-function replaceDocxUnsupportedImage(
-  target: HTMLDivElement,
-  node: HTMLElement,
-  paragraphIndex: number | undefined
-) {
-  const anchor = getDocxParagraphAnchor(target, paragraphIndex)
-  if (!anchor) {
-    return false
-  }
-
-  const image = Array.from(anchor.querySelectorAll<HTMLImageElement>('img'))
-    .find(candidate => !candidate.dataset.docxFallbackReplaced && isUnsupportedDocxImageElement(candidate))
-  if (!image) {
-    return false
-  }
-
-  image.dataset.docxFallbackReplaced = 'true'
-  image.replaceWith(node)
-  return true
-}
-
-function createDocxMathFallbackNode(target: HTMLDivElement, fallback: DocxImageFallback) {
-  const node = target.ownerDocument.createElement('span')
-  node.className = 'docx-math-fallback'
-  node.dataset.docxFallback = fallback.key
-  node.setAttribute('role', 'img')
-  node.setAttribute('aria-label', fallback.title || 'MathType equation')
-  node.textContent = fallback.text || ''
-  if (fallback.width) {
-    node.style.minWidth = `${Math.round(Math.min(fallback.width, 180))}px`
-  }
-  return node
-}
-
-function injectDocxImageFallbacks(target: HTMLDivElement, fallbacks: DocxImageFallback[]) {
-  const sections = getDocxSections(target)
-  if (!sections.length) {
-    return
-  }
-
-  fallbacks.forEach(fallback => {
-    if (fallback.role === 'watermark') {
-      const dataUrl = fallback.dataUrl
-      if (!dataUrl) {
-        return
-      }
-      sections.forEach(section => {
-        const image = target.ownerDocument.createElement('img')
-        image.className = 'docx-vml-watermark'
-        image.src = dataUrl
-        image.alt = fallback.title || ''
-        image.dataset.docxFallback = fallback.key
-        section.prepend(image)
-      })
-      return
-    }
-
-    if (fallback.kind === 'math-text') {
-      const node = createDocxMathFallbackNode(target, fallback)
-      if (!replaceDocxUnsupportedImage(target, node, fallback.paragraphIndex)) {
-        const figure = target.ownerDocument.createElement('figure')
-        figure.className = 'docx-math-fallback'
-        figure.dataset.docxFallback = fallback.key
-        figure.textContent = fallback.text || ''
-        insertDocxFallback(target, figure, fallback.paragraphIndex)
-      }
-      return
-    }
-
-    if (!fallback.dataUrl) {
-      return
-    }
-
-    const figure = target.ownerDocument.createElement('figure')
-    figure.className = 'docx-vml-fallback'
-    figure.dataset.docxFallback = fallback.key
-    if (fallback.width) {
-      figure.style.width = `${Math.round(fallback.width)}px`
-    }
-
-    const image = target.ownerDocument.createElement('img')
-    image.src = fallback.dataUrl
-    image.alt = fallback.title || (fallback.role === 'ole-preview' ? 'Embedded object preview' : 'Document image')
-    if (fallback.width) {
-      image.style.width = `${Math.round(fallback.width)}px`
-    }
-    if (fallback.height) {
-      image.style.height = `${Math.round(fallback.height)}px`
-    }
-    figure.appendChild(image)
-    insertDocxFallback(target, figure, fallback.paragraphIndex)
-  })
-}
-
-function injectDocxChartFallbacks(target: HTMLDivElement, fallbacks: DocxChartFallback[]) {
-  fallbacks.forEach(fallback => {
-    const figure = target.ownerDocument.createElement('figure')
-    figure.className = 'docx-chart-fallback'
-    figure.dataset.docxFallback = fallback.key
-    if (fallback.width) {
-      figure.style.width = `${Math.round(fallback.width)}px`
-    }
-    figure.innerHTML = buildChartSvg(fallback)
-    insertDocxFallback(target, figure, fallback.paragraphIndex)
-  })
-}
-
-async function enhanceDocxFallbacks(buffer: ArrayBuffer, target: HTMLDivElement) {
-  try {
-    const JSZip = resolveJSZip(await import('jszip'))
-    const zip = await JSZip.loadAsync(buffer.slice(0))
-    const [imageFallbacks, chartFallbacks] = await Promise.all([
-      collectDocxVmlFallbacks(zip, target),
-      collectDocxChartFallbacks(zip, target)
-    ])
-
-    if (imageFallbacks.length) {
-      injectDocxImageFallbacks(target, imageFallbacks)
-    }
-    if (chartFallbacks.length) {
-      injectDocxChartFallbacks(target, chartFallbacks)
-    }
-  } catch (error) {
-    console.warn('[file-viewer] DOCX 兼容增强解析失败，已保留 @file-viewer/docx 原始渲染结果。', error)
-  }
-}
 
 function installResponsiveStyle(target: HTMLDivElement) {
   const style = target.ownerDocument.createElement('style')
   style.textContent = DOCX_RESPONSIVE_CSS
   target.prepend(style)
   return style
-}
-
-function clonePageShell(section: HTMLElement, article: HTMLElement, pageHeight: number) {
-  const nextPage = section.cloneNode(false) as HTMLElement
-  nextPage.innerHTML = ''
-  nextPage.dataset.docxPaginated = 'true'
-  nextPage.style.minHeight = `${pageHeight}px`
-  nextPage.style.height = `${pageHeight}px`
-  nextPage.style.overflow = 'hidden'
-
-  const nextArticle = article.cloneNode(false) as HTMLElement
-  nextPage.appendChild(nextArticle)
-
-  Array.from(section.children).forEach(child => {
-    if (child !== article) {
-      nextPage.appendChild(child.cloneNode(true))
-    }
-  })
-
-  return { page: nextPage, article: nextArticle }
-}
-
-function getDocxPageHeight(section: HTMLElement) {
-  const style = section.ownerDocument.defaultView?.getComputedStyle(section)
-  const minHeight = style ? parseFloat(style.minHeight) : 0
-  return Number.isFinite(minHeight) && minHeight > 0 ? minHeight : section.offsetHeight
-}
-
-function paginateOversizedSections(target: HTMLDivElement) {
-  const wrapper = target.querySelector('.docx-wrapper')
-  if (!wrapper) {
-    return
-  }
-
-  Array.from(wrapper.children).forEach(child => {
-    if (!isTargetHTMLElement(child, target) || !child.matches('section.docx')) {
-      return
-    }
-
-    const article = child.querySelector(':scope > article')
-    if (!isTargetHTMLElement(article, target)) {
-      return
-    }
-
-    const pageHeight = getDocxPageHeight(child)
-    const originalNodes = Array.from(article.childNodes)
-    if (!pageHeight || originalNodes.length < 2 || child.scrollHeight <= pageHeight * 1.15) {
-      return
-    }
-
-    // 新 DOCX 引擎会优先使用 Word 保存的分页；这里保留预览层兜底分页，覆盖缺少分页标记的旧文件。
-    let current = clonePageShell(child, article, pageHeight)
-    child.before(current.page)
-
-    originalNodes.forEach(node => {
-      current.article.appendChild(node)
-
-      if (current.page.scrollHeight <= pageHeight + 1 || current.article.childNodes.length === 1) {
-        return
-      }
-
-      current.article.removeChild(node)
-      current = clonePageShell(child, article, pageHeight)
-      child.before(current.page)
-      current.article.appendChild(node)
-    })
-
-    child.remove()
-  })
 }
 
 function wrapDocxSections(target: HTMLDivElement, pagedLayout: boolean) {
@@ -1193,10 +264,7 @@ function wrapDocxSections(target: HTMLDivElement, pagedLayout: boolean) {
 function makeDocxResponsive(target: HTMLDivElement, context?: FileRenderContext) {
   target.classList.add('docx-fit-viewer')
   const style = installResponsiveStyle(target)
-  const pagedLayout = shouldPaginateOversizedDocxSections(context)
-  if (pagedLayout) {
-    paginateOversizedSections(target)
-  }
+  const pagedLayout = context?.options?.docx?.visualPagination === true
   const frames = wrapDocxSections(target, pagedLayout)
   const view = getTargetWindow(target)
   const ResizeObserverCtor = view?.ResizeObserver
@@ -1407,7 +475,6 @@ export default async function(buffer: ArrayBuffer, target: HTMLDivElement, conte
   })
   notifyProgressiveRender()
 
-  await enhanceDocxFallbacks(buffer, target)
   const disposeResponsive = makeDocxResponsive(target, context)
   context?.registerExportAdapter?.({
     includeDocumentStyles: false,

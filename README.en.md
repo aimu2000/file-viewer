@@ -409,7 +409,7 @@ If npm 11 fails during tgz or dependency installation with `Cannot read properti
 
 This section is generated from `ecosystem/wrappers.json` and `packages/core/src/registry/formats.ts`. The open-source main repository carries the same index so users can find standard npm packages, historical compatibility packages, split component repositories, and release downloads from one place.
 
-Core foundation package: `@file-viewer/core`. Core source is public: https://github.com/flyfish-dev/file-viewer-core and https://gitee.com/flyfish-dev/file-viewer-core. The open-source aggregate repository provides runnable main demo source, core, standard component packages, compatibility aliases, documentation source, build artifacts, examples, and release tarballs; private Gitea `main` is the complete original aggregate workspace for unified automation, integration history, sponsorship, and priority support, and is not the same as the GitHub open-source aggregate.
+Core foundation package: `@file-viewer/core`. Core source is public: https://github.com/flyfish-dev/file-viewer-core and https://gitee.com/flyfish-dev/file-viewer-core. The open-source aggregate repository provides runnable main demo source, core, standard component packages, compatibility aliases, documentation source, and release indexes; full demo, component demo, docs, and sample-file builds are distributed through GitHub Releases or Cloudflare Pages so normal clones stay practical. Private Gitea `main` is the complete original aggregate workspace for unified automation, integration history, sponsorship, and priority support, and is not the same as the GitHub open-source aggregate.
 
 | Framework | Standard npm package | Entrypoints | GitHub | Gitee | Historical aliases |
 | --- | --- | --- | --- | --- | --- |
@@ -574,7 +574,7 @@ Flyfish Viewer remains Apache-2.0 open source. The open-source edition is design
 
 | WeChat reward                                                                               | Alipay collection                                                                        | Official account QR code                                                                                                | Community group                                                                                             |
 | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="Flyfish Open Source WorkShop official account QR code" /> | <img src="docs/_media/support/community-qr.png" width="150" alt="Flyfish Viewer community group QR code" /> |
+| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="Flyfish Open Source WorkShop official account QR code" /> | <img src="docs/_media/support/invite.svg" width="150" alt="Flyfish Viewer community group QR code" /> |
 
 The commercial edition comes from the Flyfish Office product line. It provides a self-developed native Office document engine for serious enterprise Word, Excel, and PowerPoint scenarios, with stronger fidelity for complex layout, large files, pagination, high-quality rendering, and stable performance. The open-source edition will continue to evolve; commercial support is mainly for faster maintainer response, private deployment evaluation, and custom delivery.
 
@@ -705,7 +705,7 @@ If you build the image yourself, use the provided `Dockerfile` and keep the stat
 
 ## Public Source and Aggregate Workspace
 
-This public repository now carries the open-source core, demo, standard component packages, compatibility aliases, documentation source, build output, sample files, documentation output, and npm tarballs. The Gitee mirror is synchronized from a clean latest snapshot when needed, so domestic users can clone the full expanded repository without inheriting oversized binary release history.
+This public repository now carries the open-source core, demo source, standard component packages, compatibility aliases, and documentation source. Full demo, component demo, docs, and sample-file builds are distributed through GitHub Releases or Cloudflare Pages instead of expanded git directories, so normal clones stay practical. The Gitee mirror is synchronized from a clean latest source snapshot when needed.
 
 The private Gitea workspace remains valuable as the complete aggregate repository with unified release automation, integration history, sponsorship, and priority support:
 
