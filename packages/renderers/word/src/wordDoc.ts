@@ -1,4 +1,4 @@
-import { defaultMsDocCss, parseMsDocToHtml } from 'msdoc-viewer'
+import { defaultMsDocCss, parseMsDocToHtml } from '@file-viewer/doc'
 
 import {
   applyPrintPageSize,

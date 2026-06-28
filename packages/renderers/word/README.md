@@ -32,7 +32,7 @@ const options = {
 ## 能力边界
 
 - DOCX / DOCM / DOTX / DOTM 使用自研 `@file-viewer/docx`，默认 Worker 解析、连续流式阅读、目录字段缓存和异步分批渲染。
-- DOC / DOT 使用 `msdoc-viewer`，并套用 Word 风格纸张阅读面、缩放、打印和 HTML 导出适配。
+- DOC / DOT 使用 `@file-viewer/doc`，并套用 Word 风格纸张阅读面、缩放、打印和 HTML 导出适配。
 - RTF 使用 `rtf.js`，ODT / ODP 读取 OpenDocument 包内 `content.xml` 做安全结构预览。
 - 继续复用 core 的统一搜索、缩放、打印、导出、生命周期和操作能力。
 
@@ -56,4 +56,4 @@ const options = {
 
 ## 迁移说明
 
-`@file-viewer/core` 已不再直接依赖 `@file-viewer/docx`、`msdoc-viewer`、`rtf.js`、`linkedom` 或 `@xmldom/xmldom`。需要 Word 完整预览时，请安装本包并通过 `renderers` 传入，或使用 `@file-viewer/preset-all`。
+`@file-viewer/core` 已不再直接依赖 `@file-viewer/docx`、`@file-viewer/doc`、`rtf.js`、`linkedom` 或 `@xmldom/xmldom`。需要 Word 完整预览时，请安装本包并通过 `renderers` 传入，或使用 `@file-viewer/preset-all`。

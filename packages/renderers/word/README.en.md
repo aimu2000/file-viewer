@@ -32,7 +32,7 @@ Use `@file-viewer/preset-all` when you want the same complete matrix as the offi
 ## Capabilities
 
 - DOCX / DOCM / DOTX / DOTM use the self-maintained `@file-viewer/docx` engine with Worker parsing, continuous reading layout, cached TOC fields, and async batched rendering.
-- DOC / DOT use `msdoc-viewer` with a Word-like paper surface, zoom, print, and HTML export adapters.
+- DOC / DOT use `@file-viewer/doc` with a Word-like paper surface, zoom, print, and HTML export adapters.
 - RTF uses `rtf.js`; ODT / ODP read `content.xml` from OpenDocument packages for safe structure previews.
 - The renderer reuses core search, zoom, print, export, lifecycle, and operation APIs.
 
@@ -56,4 +56,4 @@ const options = {
 
 ## Migration
 
-`@file-viewer/core` no longer depends on `@file-viewer/docx`, `msdoc-viewer`, `rtf.js`, `linkedom`, or `@xmldom/xmldom` directly. Install and pass this renderer for full Word preview, or use `@file-viewer/preset-all`.
+`@file-viewer/core` no longer depends on `@file-viewer/docx`, `@file-viewer/doc`, `rtf.js`, `linkedom`, or `@xmldom/xmldom` directly. Install and pass this renderer for full Word preview, or use `@file-viewer/preset-all`.
