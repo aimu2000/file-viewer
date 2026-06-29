@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-29T04:12:29.807Z",
+  "generatedAt": "2026-06-29T04:14:49.391Z",
   "version": "2.1.13",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "69f71914d851df7212b9db7f2fe969048b100330",
+      "hash": "920155550ff324e72a72c0eadf4c533a48e47603",
       "error": ""
     },
     "gitee": {
@@ -43,22 +43,22 @@
       "error": ""
     },
     "inSync": false,
-    "syncMode": "unchecked",
-    "treeChecked": false,
-    "referenceTree": "3710c64e95e29bc7d83acb34cbaeb60e26949122",
-    "giteeTree": "",
-    "treeError": "local public repository c1f41e9c862d does not match GitHub 69f71914d851",
+    "syncMode": "stale",
+    "treeChecked": true,
+    "referenceTree": "5c680f3b6ed599ca560b0c1e67a9cde2505b394a",
+    "giteeTree": "ef9e54e70ed3110034a0103cb80e8fee613104c3",
+    "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": false,
+    "ok": true,
     "tag": "v2.1.13",
-    "url": "",
-    "assetCount": 0,
-    "hasManifest": false,
-    "hasStatus": false,
-    "hasSchema": false,
-    "error": "release not found"
+    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.1.13",
+    "assetCount": 55,
+    "hasManifest": true,
+    "hasStatus": true,
+    "hasSchema": true,
+    "error": ""
   },
   "componentRepositories": [
     {
@@ -735,7 +735,6 @@
     }
   ],
   "gaps": [
-    "GitHub Release v2.1.13 missing",
     "@file-viewer/core npm 2.1.12 !== 2.1.13",
     "@file-viewer/renderer-pdf npm 2.1.12 !== 2.1.13",
     "@file-viewer/renderer-ofd npm 2.1.12 !== 2.1.13",
@@ -789,28 +788,18 @@
     "@file-viewer/svelte-full npm 2.1.12 !== 2.1.13"
   ],
   "gapSummary": {
-    "total": 52,
-    "externalBlockers": 52,
+    "total": 51,
+    "externalBlockers": 51,
     "localActionable": 0,
     "byChannel": {
-      "github-release": 1,
       "npm": 51
     },
     "externalBlockerChannels": [
-      "github-release",
       "npm"
     ],
     "localActionableChannels": []
   },
   "gapDetails": [
-    {
-      "id": "github-release-github-release-v2.1.13-missing",
-      "channel": "github-release",
-      "scope": "release-assets",
-      "externalBlocker": true,
-      "message": "GitHub Release v2.1.13 missing",
-      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
-    },
     {
       "id": "npm-@file-viewer-core-npm-2.1.12-2.1.13",
       "channel": "npm",
@@ -1221,7 +1210,6 @@
     }
   ],
   "nextActions": [
-    "Run `npm login` / passkey in an interactive terminal, then `pnpm release:ecosystem:publish`.",
-    "Create or update the GitHub Release assets, then rerun `pnpm release:public`."
+    "Run `npm login` / passkey in an interactive terminal, then `pnpm release:ecosystem:publish`."
   ]
 }
