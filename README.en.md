@@ -37,7 +37,7 @@
   <a href="https://linux.do"><img alt="Linux Do" src="https://img.shields.io/badge/Linux%20Do-community-1f2937" /></a>
   <a href="https://github.com/flyfish-dev/file-viewer/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/flyfish-dev/file-viewer?color=0f766e" /></a>
   <a href="https://hub.docker.com/r/flyfishdev/file-viewer"><img alt="Docker" src="https://img.shields.io/badge/docker-flyfishdev%2Ffile--viewer-2496ed?logo=docker" /></a>
-  <img alt="Supported formats" src="https://img.shields.io/badge/formats-206%2B-f59e0b" />
+  <img alt="Supported formats" src="https://img.shields.io/badge/formats-206-f59e0b" />
   <img alt="Modular architecture" src="https://img.shields.io/badge/architecture-modular%20renderers-7c3aed" />
   <img alt="Ecosystem packages" src="https://img.shields.io/badge/npm%20targets-50-0f766e" />
 </p>
@@ -48,14 +48,14 @@
 
 File Viewer is a browser-native file preview component for business applications. Its core use cases are internal tools, intranet systems, knowledge bases, approval workflows, attachment centers, engineering archives, and private deployments.
 
-It does not require a backend conversion service, and private files do not need to leave the browser path for a SaaS converter. One component and one API cover Office, PDF, OFD, Typst, CAD, XMind, archives, email, diagrams, media, source code, PSD, fonts, and structured data. The current matrix covers 206+ extensions across 24 preview pipelines.
+It does not require a backend conversion service, and private files do not need to leave the browser path for a SaaS converter. One component and one API cover Office, PDF, OFD, Typst, CAD, XMind, archives, email, diagrams, media, source code, PSD, fonts, and structured data. The current matrix covers 206 extensions across 24 preview pipelines.
 
 New projects should prefer `@file-viewer/*`; historical `@flyfish-group/*` packages remain synchronized.
 
 ## Highlights
 
 - **Fast integration.** Native packages for Vanilla JS, Vue, React, Svelte, and jQuery; full packages provide the complete capability set in one install.
-- **Broad coverage.** 206+ extensions across 24 preview pipelines for office, engineering, design, data, media, and code attachments.
+- **Broad coverage.** 206 extensions across 24 preview pipelines for office, engineering, design, data, media, and code attachments.
 - **Pure frontend.** Browser-side parsing and rendering with offline, intranet, Docker, private CDN, and self-hosted asset support.
 - **Modular.** Lightweight components, renderers, presets, and full packages are separated for clean dependency control.
 - **Lazy loaded.** Heavy PDF, Office, CAD, Typst, archive, drawing, PSD, Mermaid, and WASM paths load only when needed.
@@ -574,7 +574,7 @@ Flyfish Viewer remains Apache-2.0 open source. The open-source edition is design
 
 | WeChat reward                                                                               | Alipay collection                                                                        | Official account QR code                                                                                                | Community group                                                                                             |
 | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="Flyfish Open Source WorkShop official account QR code" /> | <img src="docs/_media/support/invite.svg" width="150" alt="Flyfish Viewer community group QR code" /> |
+| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="WeChat reward QR code" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="Alipay collection QR code" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="Flyfish Open Source WorkShop official account QR code" /> | <img src="docs/_media/support/invite.webp" width="150" alt="Flyfish Viewer community group QR code" /> |
 
 The commercial edition comes from the Flyfish Office product line. It provides a self-developed native Office document engine for serious enterprise Word, Excel, and PowerPoint scenarios, with stronger fidelity for complex layout, large files, pagination, high-quality rendering, and stable performance. The open-source edition will continue to evolve; commercial support is mainly for faster maintainer response, private deployment evaluation, and custom delivery.
 

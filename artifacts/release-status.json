@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-28T16:38:36.829Z",
+  "generatedAt": "2026-06-29T03:42:01.862Z",
   "version": "2.1.12",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "54a3433a05d8d42769a700e33ddfb65fbcd3a9d5",
+    "authoritativeCommit": "fba2247b561f6182aee98184d59fedb91c991364",
     "localBranch": "main",
-    "localCommit": "54a3433a05d8d42769a700e33ddfb65fbcd3a9d5",
+    "localCommit": "fba2247b561f6182aee98184d59fedb91c991364",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "54a3433a05d8d42769a700e33ddfb65fbcd3a9d5",
-    "shortCommit": "54a3433a",
+    "commit": "fba2247b561f6182aee98184d59fedb91c991364",
+    "shortCommit": "fba2247b",
     "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "54a3433a05d8d42769a700e33ddfb65fbcd3a9d5",
+    "hash": "fba2247b561f6182aee98184d59fedb91c991364",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "84b10e3d3ff405110ac2ed8e012d9b5cb73e57cc",
+      "hash": "52b8578e4e6d4c76d5481f88ebc7cb6dda588bd6",
       "error": ""
     },
     "gitee": {
@@ -45,7 +45,7 @@
     "inSync": false,
     "syncMode": "stale",
     "treeChecked": true,
-    "referenceTree": "144ce6fdfadafd50c69f3a0e6efac9fc1680d29a",
+    "referenceTree": "13b56e7b507312c269c1b19cbe30f60591ad0128",
     "giteeTree": "ef9e54e70ed3110034a0103cb80e8fee613104c3",
     "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
@@ -76,7 +76,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -94,7 +94,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -112,7 +112,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -130,7 +130,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -148,7 +148,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -166,7 +166,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -184,7 +184,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -202,7 +202,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -220,7 +220,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -238,7 +238,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -256,7 +256,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -274,7 +274,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -292,7 +292,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -310,7 +310,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -328,7 +328,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -346,7 +346,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     },
     {
@@ -364,7 +364,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "fatal: could not read Username for 'https://gitee.com': terminal prompts disabled"
       }
     }
   ],

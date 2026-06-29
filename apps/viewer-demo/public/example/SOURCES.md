@@ -8,8 +8,8 @@
 | `word.docx` | `https://www.basel.int/Portals/4/download.aspx?d=UNEP-CHW.15-6-Add.5-Rev.1.Chinese.docx` | Public Basel Convention document, source attribution required | Rich Chinese DOCX preview with headings, long-form text, tables, drawings, responsive white paper and print/export smoke tests |
 | `en/calibre-demo.docx` | `https://calibre-ebook.com/downloads/demos/demo.docx` | calibre public demo document by Kovid Goyal / calibre project | Rich English DOCX preview with typography, headings, lists, tables and conversion-oriented Word features |
 | `template.dot` | Copied from project `test.doc` fixture and saved with the Word 97-2003 template extension | Apache-2.0 | DOT extension routing smoke test for legacy Word template preview |
-| `ppt.pptx` | `https://github.com/hcp4715/R4Psy/blob/main/slides/chapter_1.pptx` | CC-BY-4.0 | Rich Chinese presentation smoke test for slide layout, images, theme styling and media-heavy PPTX rendering |
-| `en/sample-presentation.pptx` | `https://raw.githubusercontent.com/scanny/python-pptx/master/tests/test_files/test_slides.pptx` | MIT | English PPTX smoke test from python-pptx fixtures for OOXML presentation routing and slide rendering |
+| `ppt.pptx` | `https://science.nasa.gov/wp-content/uploads/2023/11/day2-1630-pac-lunarstrategy-noble-nov2023.pptx` | NASA public media usage guidelines; acknowledge NASA and do not imply endorsement | Professional NASA lunar science strategy deck for rich backgrounds, imagery, section pages, dense text, comparison layouts and multi-page PPTX rendering |
+| `en/sample-presentation.pptx` | Same NASA public deck as `ppt.pptx` | NASA public media usage guidelines; acknowledge NASA and do not imply endorsement | English PPTX smoke test with the same professional 20-slide deck used by the default presentation entry |
 | `en/financial-sample.xlsx` | `https://learn.microsoft.com/en-us/power-bi/create-reports/sample-financial-download` direct download `https://go.microsoft.com/fwlink/?LinkID=521962` | Microsoft public sample workbook | English XLSX workbook with multiple business fields for spreadsheet tabs, styles, column sizing and print smoke tests |
 | `pdf.pdf` | Project-owner provided `PDF沉浸式翻译技术说明.pdf` | Demo distribution authorized by project owner | 13-page PDF toolbar, scale, page/tree sidebar, print, export and dark-shell isolation smoke tests |
 | `en/prince-sample.pdf` | `https://www.princexml.com/samples/magic6/magic.pdf` | Prince / YesLogic public sample PDF | English PDF sample covering CSS print features, tables, columns, bookmarks, math and multi-page layout |
@@ -58,8 +58,7 @@
 - `word.docx` 来自 Basel Convention 公开中文正式文档，覆盖标题层级、长正文、表格、图示、白色纸张和完整打印回归；该样本保留真实文档复杂度，但避免默认 Demo 首屏触发超大 DOCX 保护。
 - `en/calibre-demo.docx` 来自 calibre 官方 DOCX demo，用于英文浏览器默认 Demo，覆盖英文排版、标题、列表、表格和富文本结构。
 - `template.dot` 复用 `test.doc` 的二进制内容，仅用于验证 Word 97-2003 模板扩展名能正确进入老 Word 渲染链路。
-- `ppt.pptx` 来自 `hcp4715/R4Psy` 的 CC-BY-4.0 中文课程课件，覆盖多页幻灯片、图片资源、主题样式、组合元素和富文本排版。
-- `en/sample-presentation.pptx` 来自 `python-pptx` MIT 测试夹具，用于英文 PPTX 路由、OOXML 包结构和幻灯片基础渲染回归。
+- `ppt.pptx` 与 `en/sample-presentation.pptx` 均来自 NASA Science 公开的 `Implementation Plan for a NASA Integrated Lunar Science Strategy in the Artemis Era` 演示稿，覆盖星云封面、深色引用页、分栏信息页、图文混排、正式页眉页脚和 20 页真实演示稿结构；使用时按 NASA 媒体使用说明注明来源，不暗示 NASA 对项目背书。
 - `en/financial-sample.xlsx` 来自 Microsoft Power BI Financial Sample Workbook，用于英文 Excel 多业务字段、sheet 标签、列宽和打印回归。
 - `pdf.pdf` 是项目方提供的 13 页真实技术说明 PDF，覆盖缩放、页侧边栏、树形导航、打印、导出和暗色外壳隔离回归。
 - `en/prince-sample.pdf` 来自 Prince 官方 Sample Documents，用于英文 PDF 默认样例，覆盖打印 CSS、分栏、目录、表格和多页布局。

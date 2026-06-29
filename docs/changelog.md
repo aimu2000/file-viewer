@@ -18,7 +18,7 @@
 
 ## 当前主线 GitHub 曝光与长期运营资产优化
 
-- README 首屏改为“面向企业后台、内网和私有化系统的纯前端文件预览组件”，把无需服务端转码、Demo、文档、快速开始和支持格式前置，把 206+ 扩展名作为可信度证据承接
+- README 首屏改为“面向企业后台、内网和私有化系统的纯前端文件预览组件”，把无需服务端转码、Demo、文档、快速开始和支持格式前置，把 206 个扩展名作为可信度证据承接
 - 新增 `CONTRIBUTING.md`、`SUPPORT.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md`、`ROADMAP.md`、根 `CHANGELOG.md`、Issue 模板和 PR 模板，方便收集真实业务文件兼容性反馈
 - 文档站新增方案对比页，克制说明 File Viewer、服务端转码和 Office Online / 云服务的适用边界
 - 新增 `RELEASE_TEMPLATE.md`，沉淀 Release 写法、Topics、Social Preview 和版本发布节奏
@@ -229,7 +229,7 @@
 - Demo 补充 Apache Tika `blocks_and_tables.dwf` 与 Autodesk 官方 Viewer 教程的 `House.dwfx`、`RobotArm1.dwfx` 样例，用于分别验证 DWF、DWFx/XPS、W2D/W3D native renderer 和大图纸按需加载体验
 - 入口组件在挂载重型渲染器前先释放浏览器绘制帧，确保 Loading 先显示，减少用户误以为页面无响应
 - `word.docx` 保持 Basel Convention 公开中文正式文档，覆盖长正文、标题层级、表格、图示、白色纸张和完整打印回归，避免默认 Demo 使用临时生成或过度病态的样例文件
-- `ppt.pptx` 替换为 `hcp4715/R4Psy` 的 CC-BY-4.0 中文课程课件，覆盖多页幻灯片、主题背景、图片资源、组合元素和富文本排版
+- `ppt.pptx` 与英文 `sample-presentation.pptx` 替换为 NASA Science 公开月球科学战略演示稿，覆盖星云封面、深色引用页、图文混排、正式页眉页脚和 20 页真实专业 PPTX 结构
 - `archive.zip` 与 `archive.tar.gz` 内部 DOCX 同步更新为当前公开中文 Word 样例，压缩包内继续预览时也能验证真实文档效果
 - 示例来源表、Demo 文档和公开样例 README 同步刷新，避免继续把 Word / PPT 误写成临时生成的 Demo 文件
 

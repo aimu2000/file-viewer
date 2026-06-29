@@ -37,7 +37,7 @@
   <a href="https://linux.do"><img alt="Linux Do" src="https://img.shields.io/badge/Linux%20Do-community-1f2937" /></a>
   <a href="https://github.com/flyfish-dev/file-viewer/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/flyfish-dev/file-viewer?color=0f766e" /></a>
   <a href="https://hub.docker.com/r/flyfishdev/file-viewer"><img alt="Docker" src="https://img.shields.io/badge/docker-flyfishdev%2Ffile--viewer-2496ed?logo=docker" /></a>
-  <img alt="Supported formats" src="https://img.shields.io/badge/formats-206%2B-f59e0b" />
+  <img alt="Supported formats" src="https://img.shields.io/badge/formats-206-f59e0b" />
   <img alt="Modular architecture" src="https://img.shields.io/badge/architecture-modular%20renderers-7c3aed" />
   <img alt="Ecosystem packages" src="https://img.shields.io/badge/npm%20targets-50-0f766e" />
 </p>
@@ -48,14 +48,14 @@
 
 File Viewer 是面向业务系统的浏览器原生文件预览组件。它的核心场景是企业后台、OA、知识库、工单系统、附件中心、工程资料库和私有化交付项目中的附件预览。
 
-无需后端转码服务，也不要求把私有文件交给云端转换。一个组件、一套 API，覆盖 Office、PDF、OFD、Typst、CAD、XMind、压缩包、邮件、绘图、音视频、代码、PSD、字体和结构化数据。当前内置 206+ 扩展名映射和 24 条预览链路。
+无需后端转码服务，也不要求把私有文件交给云端转换。一个组件、一套 API，覆盖 Office、PDF、OFD、Typst、CAD、XMind、压缩包、邮件、绘图、音视频、代码、PSD、字体和结构化数据。当前内置 206 个扩展名映射和 24 条预览链路。
 
 新项目优先使用 `@file-viewer/*`；`@flyfish-group/*` 历史包继续同步维护。
 
 ## 亮点
 
 - **接入快。** Vanilla JS、Vue、React、Svelte、jQuery 都有原生组件；full 包可一步拿到完整能力。
-- **覆盖广。** 206+ 扩展名，24 条预览链路，覆盖常见办公、工程、设计、数据和代码附件。
+- **覆盖广。** 206 个扩展名，24 条预览链路，覆盖常见办公、工程、设计、数据和代码附件。
 - **纯前端。** 浏览器内解析和渲染，支持离线、内网、Docker、私有 CDN 和严格资源自托管。
 - **模块化。** 轻量组件、renderer、preset、full 包分层清晰，既能极简安装，也能一键全量。
 - **按需加载。** PDF、Office、CAD、Typst、压缩包、图纸、PSD、Mermaid 等重型能力只在命中格式时加载。
@@ -562,7 +562,7 @@ Flyfish Viewer 会持续保持 Apache-2.0 开源。开源版适合通用 Web 预
 
 | 微信赞赏码                                                                       | 支付宝收款码                                                                | 微信公众号二维码                                                                                     | 用户交流群                                                                                           |
 | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="微信赞赏码" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="支付宝收款码" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="飞鱼开源 WorkShop 微信公众号二维码" /> | <img src="docs/_media/support/invite.svg" width="150" alt="Flyfish Viewer 用户交流群二维码" /> |
+| <img src="docs/_media/support/wechat-reward.jpg" width="150" alt="微信赞赏码" /> | <img src="docs/_media/support/alipay.jpg" width="150" alt="支付宝收款码" /> | <img src="docs/_media/support/wechat-mp.png" width="150" alt="飞鱼开源 WorkShop 微信公众号二维码" /> | <img src="docs/_media/support/invite.webp" width="150" alt="Flyfish Viewer 用户交流群二维码" /> |
 
 商业版来自 Flyfish Office 产品线，面向严肃企业场景提供自研原生 Office 文档引擎，重点解决 Word、Excel、PowerPoint 在复杂版式、大文件、分页布局、高保真渲染和稳定性能上的更高要求。开源版会继续维护，商业支持主要用于更快响应、私有化评估和定制交付。
 

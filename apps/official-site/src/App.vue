@@ -137,7 +137,7 @@ const copy = {
       primary: '立即体验',
       secondary: '阅读文档',
       commercial: '了解商业版',
-      proof: ['206 个扩展名', '24 条预览链路', '多框架原生组件', 'Apache-2.0 开源']
+      proof: ['206 个文件扩展名', '24 条预览链路', '多框架原生组件', 'Apache-2.0 开源']
     },
     matrixTitle: '覆盖广，不等于粗糙。每条链路都面向真实业务。',
     matrixIntro:
@@ -185,7 +185,7 @@ const copy = {
       primary: 'Try the Demo',
       secondary: 'Read the Docs',
       commercial: 'Commercial Edition',
-      proof: ['206 extensions', '24 preview pipelines', 'Native component packages', 'Apache-2.0 open source']
+      proof: ['206 file extensions', '24 preview pipelines', 'Native component packages', 'Apache-2.0 open source']
     },
     matrixTitle: 'Broad coverage, without treating fidelity as optional.',
     matrixIntro:
@@ -721,14 +721,14 @@ const qrItems = computed<QrItem[]>(() =>
         { label: '支付宝打赏', note: '支持开源持续迭代', image: '/donate-alipay.jpg' },
         { label: '客服微信', note: '优先支持与商业沟通', image: '/contact.jpg' },
         { label: '公众号', note: '关注更新与实践文章', image: '/wechat-mp.png' },
-        { label: '交流群', note: '加入用户交流群', image: '/invite.svg' }
+        { label: '交流群', note: '加入用户交流群', image: '/invite.webp' }
       ]
     : [
         { label: 'WeChat Sponsor', note: 'Buy us a lemonade', image: '/donate-wx.jpg' },
         { label: 'Alipay Sponsor', note: 'Support open-source work', image: '/donate-alipay.jpg' },
         { label: 'Support Contact', note: 'Priority support and business inquiries', image: '/contact.jpg' },
         { label: 'Official Account', note: 'Updates and engineering notes', image: '/wechat-mp.png' },
-        { label: 'Community Group', note: 'Join the user community', image: '/invite.svg' }
+        { label: 'Community Group', note: 'Join the user community', image: '/invite.webp' }
       ]
 )
 

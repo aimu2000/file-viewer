@@ -21,6 +21,33 @@ type TocItem = {
   label: string;
 };
 
+type EpubFactory = (buffer: ArrayBuffer, options?: {
+  openAs?: string;
+  replacements?: string;
+}) => Book;
+
+const isEpubFactory = (value: unknown): value is EpubFactory => {
+  return typeof value === 'function';
+};
+
+// epub.js can surface as `{ default: { default: ePub } }` in optimized builds.
+export const resolveEpubJs = (module: unknown): EpubFactory => {
+  const record = module as Record<string, unknown> | undefined;
+  const defaultRecord = record?.default as Record<string, unknown> | undefined;
+  const candidates = [
+    defaultRecord?.default,
+    record?.default,
+    module,
+  ];
+  const ePub = candidates.find(isEpubFactory);
+
+  if (!ePub) {
+    throw new Error('epubjs module does not expose a callable factory.');
+  }
+
+  return ePub;
+};
+
 const epubStyle = `
 .epub-viewer{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#eef1f4;color:#172033;box-sizing:border-box}
 .epub-viewer *{box-sizing:border-box}
@@ -296,7 +323,7 @@ export default async function renderEpub(
     syncUi();
 
     try {
-      const { default: ePub } = await import('epubjs');
+      const ePub = resolveEpubJs(await import('epubjs'));
       if (disposed) {
         return;
       }

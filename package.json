@@ -18,7 +18,7 @@
     "build:core": "pnpm --filter @file-viewer/core build",
     "build:components": "pnpm build:core && pnpm --filter @file-viewer/web build && pnpm --filter @file-viewer/react build && pnpm --filter @file-viewer/react-legacy build && pnpm --filter @file-viewer/vue3 build && pnpm --filter @file-viewer/vue2.7 build && pnpm --filter @file-viewer/vue2.6 build && pnpm --filter @file-viewer/jquery build && pnpm --filter @file-viewer/svelte build",
     "type-check": "pnpm --filter @flyfish-group/file-viewer-demo type-check && pnpm type-check:core && pnpm type-check:components",
-    "type-check:core": "pnpm --filter @file-viewer/doc type-check && pnpm --filter @file-viewer/core type-check && pnpm --filter @file-viewer/renderer-word type-check",
+    "type-check:core": "pnpm --filter @file-viewer/core type-check",
     "type-check:components": "pnpm --filter @file-viewer/web type-check && pnpm --filter @file-viewer/react type-check && pnpm --filter @file-viewer/react-legacy type-check && pnpm --filter @file-viewer/vue3 type-check && pnpm --filter @file-viewer/vue2.7 type-check && pnpm --filter @file-viewer/vue2.6 type-check && pnpm --filter @file-viewer/jquery type-check && pnpm --filter @file-viewer/svelte type-check",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",

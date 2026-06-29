@@ -114,7 +114,7 @@ const enSearch = {
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Flyfish Viewer',
-  description: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码，覆盖 206+ 扩展名和 24 条预览链路。',
+  description: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码，覆盖 206 个扩展名和 24 条预览链路。',
   cleanUrls: true,
   lastUpdated: true,
   locales: {
@@ -127,7 +127,7 @@ export default defineConfig({
       lang: 'en-US',
       link: '/en/',
       title: 'Flyfish Viewer',
-      description: 'Browser-native file preview for internal web apps, covering 206+ extensions across 24 preview pipelines without server-side conversion.',
+      description: 'Browser-native file preview for internal web apps, covering 206 extensions across 24 preview pipelines without server-side conversion.',
       themeConfig: {
         logo: '/_media/logo.svg',
         nav: enNav,
@@ -150,7 +150,7 @@ export default defineConfig({
   head: [
     ['meta', { name: 'theme-color', content: '#1d6fd6' }],
     ['meta', { property: 'og:title', content: 'Flyfish Viewer' }],
-    ['meta', { property: 'og:description', content: '面向企业后台、内网和私有化系统的纯前端文件预览组件，覆盖 206+ 扩展名和 24 条预览链路。' }]
+    ['meta', { property: 'og:description', content: '面向企业后台、内网和私有化系统的纯前端文件预览组件，覆盖 206 个扩展名和 24 条预览链路。' }]
   ],
   themeConfig: {
     logo: '/_media/logo.svg',

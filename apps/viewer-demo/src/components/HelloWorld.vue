@@ -266,7 +266,7 @@ const sampleGroupsZh: SampleGroup[] = [
     description: 'PPTX / CAD',
     family: 'cad',
     items: [
-      { name: 'PPTX 中文课件', url: '/example/ppt.pptx' },
+      { name: 'NASA 月球战略 PPTX', url: '/example/ppt.pptx' },
       { name: 'ODP', url: '/example/slides.odp' },
       { name: 'DXF', url: '/example/drawing.dxf' },
       { name: 'DWG', url: '/example/sample.dwg' },
@@ -288,8 +288,8 @@ const sampleGroupsZh: SampleGroup[] = [
     ]
   },
   {
-    title: '3D 模型',
-    description: 'GLTF / OBJ / STL / PLY / Geo',
+    title: '3D 模型和地理数据',
+    description: 'GLTF / OBJ / STL / GeoJSON / KML / GPX',
     family: 'model',
     items: [
       { name: 'GLTF', url: '/example/model.gltf' },
@@ -444,7 +444,7 @@ const englishGroupCopy: Array<Pick<SampleGroup, 'title' | 'description'>> = [
   { title: 'Spreadsheets', description: 'Excel / CSV / ODS' },
   { title: 'Slides & CAD', description: 'PPTX / CAD' },
   { title: 'Mindmaps & Diagrams', description: 'XMind / Mermaid / PlantUML / draw.io' },
-  { title: '3D & Geo Models', description: 'GLTF / OBJ / STL / PLY / Geo' },
+  { title: '3D Models & Geospatial Data', description: 'GLTF / OBJ / STL / GeoJSON / KML / GPX' },
   { title: 'Ebooks', description: 'EPUB / UMD' },
   { title: 'Archives', description: 'ZIP / TAR.GZ / Encrypted' },
   { title: 'Email & EDA', description: 'EML / MSG / OLB / DRA / GDS / OASIS' },
@@ -494,7 +494,7 @@ const englishSampleNameMap: Record<string, string> = {
   '/example/excel.ods': 'ODS spreadsheet',
   '/example/excel.fods': 'Flat ODS spreadsheet',
   '/example/excel.numbers': 'Numbers workbook',
-  '/example/en/sample-presentation.pptx': 'PPTX presentation',
+  '/example/en/sample-presentation.pptx': 'NASA lunar strategy PPTX',
   '/example/slides.odp': 'ODP presentation',
   '/example/drawing.dxf': 'DXF drawing',
   '/example/sample.dwg': 'DWG Autodesk sample',
@@ -562,16 +562,18 @@ const scenarioPicks = computed<ScenarioPick[]>(() => demoLocale.value === 'zh-CN
   ? [
       { title: '试试 Word 合同', description: 'DOCX 长文档', url: '/example/word.docx', family: 'word' },
       { title: '试试 Excel 报表', description: '多 sheet 表格', url: '/example/excel.xlsx', family: 'sheet' },
-      { title: '试试 PPT 材料', description: '演示文稿', url: '/example/ppt.pptx', family: 'slide' },
+      { title: '试试 NASA PPT', description: '专业演示稿', url: '/example/ppt.pptx', family: 'slide' },
       { title: '试试 DWG 图纸', description: '工程图纸', url: '/example/sample.dwg', family: 'cad' },
+      { title: '试试 GeoJSON', description: '地理数据叠加层', url: '/example/map.geojson', family: 'model' },
       { title: '试试压缩包', description: '嵌套预览', url: '/example/archive.zip', family: 'archive' },
       { title: '试试邮件', description: 'EML 附件', url: '/example/sample.eml', family: 'email' }
     ]
   : [
       { title: 'Try Word doc', description: 'Rich DOCX', url: '/example/en/calibre-demo.docx', family: 'word' },
       { title: 'Try Excel report', description: 'Workbook', url: '/example/en/financial-sample.xlsx', family: 'sheet' },
-      { title: 'Try slide deck', description: 'PPTX sample', url: '/example/en/sample-presentation.pptx', family: 'slide' },
+      { title: 'Try NASA deck', description: 'Professional PPTX', url: '/example/en/sample-presentation.pptx', family: 'slide' },
       { title: 'Try DWG drawing', description: 'CAD sample', url: '/example/sample.dwg', family: 'cad' },
+      { title: 'Try GeoJSON', description: 'Geospatial overlay', url: '/example/en/map.geojson', family: 'model' },
       { title: 'Try archive', description: 'Nested files', url: '/example/en/archive.zip', family: 'archive' },
       { title: 'Try email', description: 'EML message', url: '/example/sample.eml', family: 'email' }
     ])

@@ -18,7 +18,7 @@
 
 遇到接入问题、想交流真实业务场景，或者希望更快获取新版本信息，可以加入用户交流群。
 
-<img src="/_media/support/invite.svg" alt="Flyfish Viewer 用户交流群二维码" style="width: 260px;" />
+<img src="/_media/support/invite.webp" alt="Flyfish Viewer 用户交流群二维码" style="width: 260px;" />
 
 ### 微信赞赏
 

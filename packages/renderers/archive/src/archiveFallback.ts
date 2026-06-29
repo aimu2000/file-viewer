@@ -31,7 +31,14 @@ type JSZipLike = {
   }>;
 };
 
-const resolveJSZip = (module: unknown): JSZipLike => {
+const isJSZipLike = (value: unknown): value is JSZipLike => {
+  return !!value &&
+    (typeof value === 'object' || typeof value === 'function') &&
+    typeof (value as { loadAsync?: unknown }).loadAsync === 'function';
+};
+
+// Vite can expose the CJS constructor as a function-shaped default export.
+export const resolveJSZip = (module: unknown): JSZipLike => {
   const record = module as Record<string, unknown> | undefined;
   const defaultRecord = record?.default as Record<string, unknown> | undefined;
   const candidates = [
@@ -40,11 +47,7 @@ const resolveJSZip = (module: unknown): JSZipLike => {
     record?.JSZip,
     module,
   ];
-  const JSZip = candidates.find(candidate =>
-    !!candidate &&
-    typeof candidate === 'object' &&
-    typeof (candidate as { loadAsync?: unknown }).loadAsync === 'function'
-  ) as JSZipLike | undefined;
+  const JSZip = candidates.find(isJSZipLike);
 
   if (!JSZip) {
     throw new Error('JSZip module does not expose loadAsync.');
