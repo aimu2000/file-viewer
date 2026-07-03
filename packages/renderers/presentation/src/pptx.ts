@@ -1,6 +1,8 @@
 import { PptxViewer, RECOMMENDED_ZIP_LIMITS } from '@file-viewer/pptx';
 import {
+  createFileViewerTranslator,
   createFileViewerZoomChangeEmitter,
+  normalizeFileViewerErrorMessage,
   registerFileViewerZoomProvider,
   waitForFileViewerNextPaint,
   unregisterFileViewerZoomProvider,
@@ -72,11 +74,22 @@ const clampZoomPercent = (value: number) => {
   return Math.min(300, Math.max(25, Math.round(value)));
 };
 
-const formatErrorMessage = (error: unknown) => {
-  if (error instanceof Error) {
-    return error.message;
+const formatErrorMessage = (
+  error: unknown,
+  fallback: string,
+  context?: FileRenderContext
+) => {
+  if (error instanceof Error || typeof error === 'string') {
+    return normalizeFileViewerErrorMessage(error, context?.options);
   }
-  return String(error || 'PPTX 解析失败');
+  if (error === undefined || error === null) {
+    return fallback;
+  }
+  try {
+    return JSON.stringify(error) || fallback;
+  } catch {
+    return String(error || fallback);
+  }
 };
 
 const buildExportAdapter = (targetWindow?: Window | null): FileRenderExportAdapter => ({
@@ -93,6 +106,7 @@ export default async function renderPptx(
   _type?: string,
   context?: FileRenderContext
 ): Promise<FileViewerRenderedInstance> {
+  const t = createFileViewerTranslator(context?.options);
   const documentRef = target.ownerDocument || document;
   const targetWindow = documentRef.defaultView || (typeof window !== 'undefined' ? window : null);
   const zoomEmitter = createFileViewerZoomChangeEmitter();
@@ -111,11 +125,11 @@ export default async function renderPptx(
   loading.setAttribute('aria-live', 'polite');
   loading.append(
     createElement(documentRef, 'span', 'pptx-loading-dot'),
-    createElement(documentRef, 'span', undefined, '正在解析 PPTX...')
+    createElement(documentRef, 'span', undefined, t('presentation.state.loading'))
   );
 
   const error = createElement(documentRef, 'div', 'pptx-error');
-  const errorTitle = createElement(documentRef, 'strong', undefined, 'PPTX 预览失败');
+  const errorTitle = createElement(documentRef, 'strong', undefined, t('presentation.error.title'));
   const errorText = createElement(documentRef, 'p');
   error.append(errorTitle, errorText);
 
@@ -218,7 +232,7 @@ export default async function renderPptx(
             return;
           }
           state = 'error';
-          errorMessage = formatErrorMessage(error);
+          errorMessage = formatErrorMessage(error, t('presentation.error.parseFailed'), context);
           context?.registerExportAdapter?.(null);
           syncUi();
         },
@@ -241,7 +255,7 @@ export default async function renderPptx(
         return;
       }
       state = 'error';
-      errorMessage = formatErrorMessage(error);
+      errorMessage = formatErrorMessage(error, t('presentation.error.parseFailed'), context);
       context?.registerExportAdapter?.(null);
       syncUi();
     }

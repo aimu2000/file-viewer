@@ -1,5 +1,7 @@
 import {
+  createFileViewerTranslator,
   createFileViewerZoomChangeEmitter,
+  normalizeFileViewerErrorMessage,
   registerFileViewerZoomProvider,
   unregisterFileViewerZoomProvider,
 } from '@file-viewer/core';
@@ -61,17 +63,18 @@ const createElement = <K extends keyof HTMLElementTagNameMap>(
   return element;
 };
 
-const normalizeError = (reason: unknown) => {
-  if (reason instanceof Error) {
-    return reason.message;
-  }
-  if (typeof reason === 'string') {
-    return reason;
+const normalizeError = (
+  reason: unknown,
+  fallback: string,
+  context?: FileRenderContext
+) => {
+  if (reason instanceof Error || typeof reason === 'string') {
+    return normalizeFileViewerErrorMessage(reason, context?.options);
   }
   try {
     return JSON.stringify(reason);
   } catch {
-    return String(reason || 'OFD 文件解析失败');
+    return String(reason || fallback);
   }
 };
 
@@ -122,6 +125,7 @@ export default async function renderOfd(
   target: HTMLDivElement,
   context?: FileRenderContext
 ): Promise<FileViewerRenderedInstance> {
+  const t = createFileViewerTranslator(context?.options);
   const documentRef = target.ownerDocument || document;
   const targetWindow = documentRef.defaultView || (typeof window !== 'undefined' ? window : null);
   const zoomEmitter = createFileViewerZoomChangeEmitter();
@@ -138,7 +142,7 @@ export default async function renderOfd(
   const style = createStyle(documentRef);
   const viewer = createElement(documentRef, 'div', 'ofd-viewer');
   viewer.dataset.viewerZoomProvider = 'ofd';
-  const stateNode = createElement(documentRef, 'div', 'ofd-state', '正在解析 OFD...');
+  const stateNode = createElement(documentRef, 'div', 'ofd-state', t('ofd.state.loading'));
   stateNode.setAttribute('aria-live', 'polite');
   const stage = createElement(documentRef, 'div', 'ofd-stage');
   viewer.append(stateNode, stage);
@@ -151,7 +155,7 @@ export default async function renderOfd(
   const syncState = () => {
     stateNode.hidden = state === 'ready';
     stateNode.classList.toggle('error', state === 'error');
-    stateNode.textContent = state === 'error' ? errorMessage : '正在解析 OFD...';
+    stateNode.textContent = state === 'error' ? errorMessage : t('ofd.state.loading');
   };
 
   const getOfdDocument = async (ofd: OfdModule) => {
@@ -159,7 +163,7 @@ export default async function renderOfd(
     ofdDocumentPromise ||= parseWithOfdJs(ofd, buffer).then(documents => {
       const ofdDocument = documents[0];
       if (!ofdDocument) {
-        throw new Error('OFD 文件中没有可渲染的文档');
+        throw new Error(t('ofd.error.empty'));
       }
       return ofdDocument;
     });
@@ -273,7 +277,7 @@ export default async function renderOfd(
       }
       console.error(reason);
       state = 'error';
-      errorMessage = normalizeError(reason) || 'OFD 文件解析失败';
+      errorMessage = normalizeError(reason, t('ofd.error.parseFailed'), context) || t('ofd.error.parseFailed');
       syncState();
     }
   };

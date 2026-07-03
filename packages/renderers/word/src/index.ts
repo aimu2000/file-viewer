@@ -39,8 +39,9 @@ export const renderFileViewerWordDoc: FileRenderHandler<FileViewerRenderedInstan
 export const renderFileViewerOpenDocument: FileRenderHandler<FileViewerRenderedInstance, HTMLDivElement> = (
   buffer,
   target,
-  type
-) => import('./openDocument.js').then(({ default: renderOpenDocument }) => renderOpenDocument(buffer, target, type));
+  type,
+  context
+) => import('./openDocument.js').then(({ default: renderOpenDocument }) => renderOpenDocument(buffer, target, type, context));
 
 export const wordRenderer: FileViewerRendererPlugin<FileRenderHandler<FileViewerRenderedInstance, HTMLDivElement>> = {
   id: 'file-viewer-renderer-word',

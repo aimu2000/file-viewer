@@ -22,7 +22,7 @@ interface UseViewerErrorStateOptions {
   currentExtend: ComputedRef<string>;
   error: ComputedRef<string>;
   loadingTheme: ComputedRef<FileViewerStateTheme>;
-  getOptions: () => FileViewerOptions | undefined;
+  getOptions?: () => FileViewerOptions | undefined;
 }
 
 /**
@@ -54,7 +54,8 @@ export const useViewerPresentation = ({
     currentExtend,
     normalizedToolbar,
     viewerTheme,
-    formatErrorMessage: formatFileViewerErrorMessage
+    formatErrorMessage: (prefix: string, error: unknown) =>
+      formatFileViewerErrorMessage(prefix, error, getOptions())
   }
 }
 
@@ -64,5 +65,5 @@ export const useViewerErrorState = ({
   loadingTheme,
   getOptions
 }: UseViewerErrorStateOptions) => {
-  return computed(() => createFileViewerErrorState(currentExtend.value, error.value, loadingTheme.value, getOptions()))
+  return computed(() => createFileViewerErrorState(currentExtend.value, error.value, loadingTheme.value, getOptions?.()))
 }

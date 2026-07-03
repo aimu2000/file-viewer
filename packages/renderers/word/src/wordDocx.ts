@@ -7,6 +7,7 @@ import {
 import {
   applyPrintPageSize,
   buildPrintPageStyle,
+  createFileViewerTranslator,
   createFileViewerZoomChangeEmitter as createZoomChangeEmitter,
   formatCssPixels,
   getElementPrintPageSize,
@@ -51,13 +52,13 @@ const loadLibrary = (() => {
  * with a ZIP signature. This catches common enterprise download failures where
  * an object-storage XML error page is saved with a `.docx` extension.
  */
-const assertValidDocxPackage = (buffer: ArrayBuffer) => {
+const assertValidDocxPackage = (buffer: ArrayBuffer, context?: FileRenderContext) => {
   const signature = buffer.byteLength >= 4 ? new DataView(buffer).getUint16(0, false) : 0
   if (signature === ZIP_SIGNATURE_PK) {
     return
   }
 
-  throw new Error('文件不是有效的 DOCX/OOXML 压缩包，可能下载不完整或被服务端错误内容替换，请重新上传或检查文件源。')
+  throw new Error(createFileViewerTranslator(context?.options)('word.error.invalidDocx'))
 }
 
 const getTargetWindow = (target: HTMLDivElement) => {
@@ -473,7 +474,7 @@ function prepareDocxCloneForExport(target: HTMLDivElement) {
  * 渲染docx文件
  */
 export default async function(buffer: ArrayBuffer, target: HTMLDivElement, context?: FileRenderContext): Promise<AppWrapper> {
-  assertValidDocxPackage(buffer)
+  assertValidDocxPackage(buffer, context)
   target.innerHTML = ''
 
   let hasNotifiedProgressiveRender = false

@@ -326,6 +326,27 @@ const options = {
 
 Web Component users can set `locale="en-US"` directly on `<flyfish-file-viewer>`.
 
+You can read the complete `FileViewerMessageKey` mapping from core. The exported object is the same copy source used at runtime, so it is the safest way to generate translation sheets, coverage checks, or custom-copy tests for the installed version:
+
+```ts
+import {
+  FILE_VIEWER_BUILTIN_MESSAGES,
+  type FileViewerMessageKey
+} from '@file-viewer/core'
+
+const rows: Array<{
+  key: FileViewerMessageKey
+  zhCN: string
+  enUS: string
+}> = Object.keys(FILE_VIEWER_BUILTIN_MESSAGES['zh-CN']).map(key => ({
+  key: key as FileViewerMessageKey,
+  zhCN: FILE_VIEWER_BUILTIN_MESSAGES['zh-CN'][key as FileViewerMessageKey],
+  enUS: FILE_VIEWER_BUILTIN_MESSAGES['en-US'][key as FileViewerMessageKey]
+}))
+```
+
+`messages` only needs the keys you want to override. Missing keys continue to use the built-in copy for the active `locale`. Loading states, error states, toolbar controls, PDF / Office / OFD / archive surfaces, and standard renderer notices all follow the same `options.locale` / `options.i18n` path.
+
 ## Authenticated Files
 
 If your app must authenticate before downloading a file, fetch the file in the host app and pass a named `File` to the viewer:

@@ -553,7 +553,7 @@ export const resolveFileViewerBeforeOperationErrorMessage = ({
   prefix,
   i18n,
 }: ResolveFileViewerBeforeOperationErrorMessageInput) => {
-  return formatErrorMessage(prefix || translateFileViewerMessage(i18n, 'error.beforeOperation'), error);
+  return formatErrorMessage(prefix || translateFileViewerMessage(i18n, 'error.beforeOperation'), error, i18n);
 };
 
 export const resolveFileViewerLifecycleHookErrorMessage = ({

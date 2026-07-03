@@ -1,10 +1,16 @@
 import JSZip from 'jszip';
-import type { FileViewerRenderedInstance } from '@file-viewer/core';
+import {
+  createFileViewerTranslator,
+  type FileRenderContext,
+  type FileViewerRenderedInstance,
+} from '@file-viewer/core';
 
 interface OpenDocumentPage {
   title: string;
   blocks: string[];
 }
+
+type OpenDocumentTranslator = ReturnType<typeof createFileViewerTranslator>;
 
 const openDocumentStyle = `
 .odf-viewer{min-height:100%;padding:28px;overflow:auto;background:#dfe5eb;box-sizing:border-box}
@@ -41,16 +47,20 @@ const nodeText = (node: Element) => {
   return (node.textContent || '').replace(/\s+/g, ' ').trim();
 };
 
-const parseOdf = async (buffer: ArrayBuffer, type: string): Promise<OpenDocumentPage[]> => {
+const parseOdf = async (
+  buffer: ArrayBuffer,
+  type: string,
+  t: OpenDocumentTranslator
+): Promise<OpenDocumentPage[]> => {
   const zip = await JSZip.loadAsync(buffer);
   const content = await zip.file('content.xml')?.async('text');
   if (!content) {
-    throw new Error('ODF 文件缺少 content.xml');
+    throw new Error(t('word.error.missingOdfContent'));
   }
   const doc = new DOMParser().parseFromString(content, 'application/xml');
   const parseError = doc.querySelector('parsererror');
   if (parseError) {
-    throw new Error(parseError.textContent || 'ODF XML 解析失败');
+    throw new Error(t('word.error.odfXmlParseFailed'));
   }
   if (type === 'odp') {
     const slides = Array.from(doc.getElementsByTagName('draw:page'));
@@ -58,14 +68,17 @@ const parseOdf = async (buffer: ArrayBuffer, type: string): Promise<OpenDocument
       const blocks = Array.from(slide.getElementsByTagName('text:p'))
         .map(nodeText)
         .filter(Boolean);
-      return { title: `第 ${index + 1} 页`, blocks: blocks.length ? blocks : ['该页没有可提取文本'] };
+      return {
+        title: t('word.page.fallback', { page: index + 1 }),
+        blocks: blocks.length ? blocks : [t('word.page.empty')],
+      };
     });
   }
   const blocks = [
     ...Array.from(doc.getElementsByTagName('text:h')).map(nodeText),
     ...Array.from(doc.getElementsByTagName('text:p')).map(nodeText),
   ].filter(Boolean);
-  return [{ title: '正文', blocks: blocks.length ? blocks : ['没有提取到可读文本'] }];
+  return [{ title: t('word.body'), blocks: blocks.length ? blocks : [t('word.body.empty')] }];
 };
 
 const renderOdfPages = (type: string, title: string, pages: OpenDocumentPage[]) => {
@@ -95,7 +108,11 @@ const resolveRtfJs = async () => {
   return rtfModule.RTFJS || rtfModule.default || rtfModule;
 };
 
-const renderRtf = async (buffer: ArrayBuffer, target: HTMLDivElement): Promise<FileViewerRenderedInstance> => {
+const renderRtf = async (
+  buffer: ArrayBuffer,
+  target: HTMLDivElement,
+  t: OpenDocumentTranslator
+): Promise<FileViewerRenderedInstance> => {
   const RTFJS = await resolveRtfJs();
   RTFJS.loggingEnabled?.(false);
   const doc = new RTFJS.Document(buffer, {});
@@ -107,7 +124,7 @@ const renderRtf = async (buffer: ArrayBuffer, target: HTMLDivElement): Promise<F
   const header = document.createElement('div');
   header.className = 'flyfish-rtf-header';
   appendText(header, 'span', 'RTF');
-  appendText(header, 'strong', meta.title || 'RTF 文档预览');
+  appendText(header, 'strong', meta.title || t('word.title.rtf'));
   const paper = document.createElement('article');
   paper.className = 'flyfish-rtf-paper';
   elements.forEach((element: HTMLElement) => paper.appendChild(element));
@@ -125,14 +142,18 @@ const renderRtf = async (buffer: ArrayBuffer, target: HTMLDivElement): Promise<F
 export default async function renderOpenDocument(
   buffer: ArrayBuffer,
   target: HTMLDivElement,
-  type?: string
+  type?: string,
+  context?: FileRenderContext
 ): Promise<FileViewerRenderedInstance> {
+  const t = createFileViewerTranslator(context?.options);
   const normalizedType = (type || 'odt').toLowerCase();
   if (normalizedType === 'rtf') {
-    return renderRtf(buffer, target);
+    return renderRtf(buffer, target, t);
   }
-  const pages = await parseOdf(buffer, normalizedType);
-  const title = normalizedType === 'odp' ? 'OpenDocument 演示文稿预览' : 'OpenDocument 文档预览';
+  const pages = await parseOdf(buffer, normalizedType, t);
+  const title = normalizedType === 'odp'
+    ? t('word.title.openDocumentPresentation')
+    : t('word.title.openDocumentText');
   target.replaceChildren(createStyle(), renderOdfPages(normalizedType, title, pages));
 
   return {

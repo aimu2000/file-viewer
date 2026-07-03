@@ -404,7 +404,7 @@ export const resolveFileViewerPreviewLoadErrorMessage = ({
     : kind === 'stream'
       ? translateFileViewerMessage(i18n, 'error.stream')
       : translateFileViewerMessage(i18n, 'error.load');
-  return formatErrorMessage(prefixes?.[kind] ?? fallbackPrefix, error);
+  return formatErrorMessage(prefixes?.[kind] ?? fallbackPrefix, error, i18n);
 };
 
 export const resolveFileViewerMissingRemoteDataErrorMessage = ({

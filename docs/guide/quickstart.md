@@ -251,6 +251,27 @@ const options = {
 
 `locale`、`messages` 和 `i18n` 在 Vanilla JS / Pure Web、Vue、React、jQuery、Svelte 标准组件包中保持一致。
 
+完整 `FileViewerMessageKey` 对照可以直接从 core 的内置消息表读取。这个对象和运行时使用同一份文案源，适合生成业务覆盖清单、翻译表或测试断言:
+
+```ts
+import {
+  FILE_VIEWER_BUILTIN_MESSAGES,
+  type FileViewerMessageKey
+} from '@file-viewer/core'
+
+const rows: Array<{
+  key: FileViewerMessageKey
+  zhCN: string
+  enUS: string
+}> = Object.keys(FILE_VIEWER_BUILTIN_MESSAGES['zh-CN']).map(key => ({
+  key: key as FileViewerMessageKey,
+  zhCN: FILE_VIEWER_BUILTIN_MESSAGES['zh-CN'][key as FileViewerMessageKey],
+  enUS: FILE_VIEWER_BUILTIN_MESSAGES['en-US'][key as FileViewerMessageKey]
+}))
+```
+
+`messages` 只需要覆盖你关心的 key；未覆盖的文案会继续使用当前 `locale` 的内置翻译。加载态、错误态、内置工具栏、PDF / Office / OFD / 压缩包等标准 renderer 的用户可见文案都走同一个 `options.locale` / `options.i18n` 链路。
+
 ## 纯 JS 最短路径
 
 ```bash
