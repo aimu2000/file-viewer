@@ -40,6 +40,7 @@ import {
   ShieldCheck,
   ShoppingCart,
   Sparkles,
+  Star,
   Wrench,
   Zap
 } from '@lucide/vue'
@@ -139,7 +140,7 @@ const demoUrl = 'https://demo.file-viewer.app/'
 const compareUrl = 'https://demo.file-viewer.app/compare.html'
 const githubUrl = 'https://github.com/flyfish-dev/file-viewer'
 const githubApiUrl = 'https://api.github.com/repos/flyfish-dev/file-viewer'
-const githubStarCountFallback = 733
+const githubStarCountFallback = 739
 const releasesUrl = 'https://github.com/flyfish-dev/file-viewer/releases'
 const dockerDocsUrl = `${docsUrl}guide/docker`
 const sponsorUrl = 'https://dev.flyfish.group/sponsor?source=github'
@@ -1506,10 +1507,11 @@ onBeforeUnmount(() => {
           rel="noreferrer"
           :aria-label="githubStarsAriaLabel"
         >
-          <span class="github-star-icon" aria-hidden="true">
-            <GitHubMark />
+          <GitHubMark />
+          <span class="github-star-badge" aria-hidden="true">
+            <Star :size="9" fill="currentColor" :stroke-width="2.5" />
+            <span>{{ githubStarsLabel }}</span>
           </span>
-          <span class="github-star-count">{{ githubStarsLabel }}</span>
         </a>
         <button class="language-toggle" type="button" @click="toggleLocale">
           <Languages :size="16" />
