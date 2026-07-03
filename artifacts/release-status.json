@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-03T09:30:29.626Z",
+  "generatedAt": "2026-07-03T16:24:52.990Z",
   "version": "2.1.17",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,31 +8,31 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "",
+    "authoritativeCommit": "327068a42771eafba69553ad0464fb950844028d",
     "localBranch": "main",
-    "localCommit": "0f36ff0b26deaddeac2b8e31cec76f540dc2b83f",
-    "inSync": false,
+    "localCommit": "327068a42771eafba69553ad0464fb950844028d",
+    "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "0f36ff0b26deaddeac2b8e31cec76f540dc2b83f",
-    "shortCommit": "0f36ff0b",
+    "commit": "327068a42771eafba69553ad0464fb950844028d",
+    "shortCommit": "327068a4",
     "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
-    "ok": false,
-    "hash": "",
-    "error": "Timed out after 5000ms"
+    "ok": true,
+    "hash": "327068a42771eafba69553ad0464fb950844028d",
+    "error": ""
   },
   "openSourceMain": {
     "github": {
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "15b85973612499c2324cb6b44f081d055458dc24",
+      "hash": "29b5699ea61fbf33fd5cf7d02a152e5217f4d9f3",
       "error": ""
     },
     "gitee": {
@@ -43,11 +43,11 @@
       "error": ""
     },
     "inSync": false,
-    "syncMode": "stale",
-    "treeChecked": true,
-    "referenceTree": "3d64d7a23716f667062170f6359098cf478a7493",
-    "giteeTree": "ef9e54e70ed3110034a0103cb80e8fee613104c3",
-    "treeError": "",
+    "syncMode": "unchecked",
+    "treeChecked": false,
+    "referenceTree": "bd8ad244934747dc70050f63ffe453a30b8b59ff",
+    "giteeTree": "",
+    "treeError": "local public repository b19242e06d0b does not match GitHub 29b5699ea61f",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
@@ -76,7 +76,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-core/' not found"
       }
     },
     {
@@ -94,7 +94,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-web/' not found"
       }
     },
     {
@@ -112,7 +112,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-web-full/' not found"
       }
     },
     {
@@ -130,7 +130,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue3/' not found"
       }
     },
     {
@@ -148,7 +148,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue3-full/' not found"
       }
     },
     {
@@ -166,7 +166,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.7/' not found"
       }
     },
     {
@@ -184,7 +184,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.7-full/' not found"
       }
     },
     {
@@ -202,7 +202,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.6/' not found"
       }
     },
     {
@@ -220,7 +220,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-vue2.6-full/' not found"
       }
     },
     {
@@ -238,7 +238,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react/' not found"
       }
     },
     {
@@ -256,7 +256,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react-full/' not found"
       }
     },
     {
@@ -274,7 +274,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react-legacy/' not found"
       }
     },
     {
@@ -292,7 +292,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-react-legacy-full/' not found"
       }
     },
     {
@@ -310,7 +310,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-jquery/' not found"
       }
     },
     {
@@ -328,7 +328,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-jquery-full/' not found"
       }
     },
     {
@@ -346,7 +346,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-svelte/' not found"
       }
     },
     {
@@ -364,7 +364,7 @@
         "branch": "main",
         "ok": false,
         "hash": "",
-        "error": "fatal: could not read Username for 'https://gitee.com': Device not configured"
+        "error": "remote: [session-id] 404 not found!\nfatal: repository 'https://gitee.com/flyfish-dev/file-viewer-svelte-full/' not found"
       }
     }
   ],
@@ -735,32 +735,21 @@
     }
   ],
   "gaps": [
-    "source remote https://git.flyfish.dev/flyfish-group/file-viewer.git missing main",
     "GitHub Release v2.1.17 missing"
   ],
   "gapSummary": {
-    "total": 2,
-    "externalBlockers": 2,
+    "total": 1,
+    "externalBlockers": 1,
     "localActionable": 0,
     "byChannel": {
-      "source-remote": 1,
       "github-release": 1
     },
     "externalBlockerChannels": [
-      "github-release",
-      "source-remote"
+      "github-release"
     ],
     "localActionableChannels": []
   },
   "gapDetails": [
-    {
-      "id": "source-remote-source-remote-https-git.flyfish.dev-flyfish-group-file-viewer.git-missing-main",
-      "channel": "source-remote",
-      "scope": "private-gitea",
-      "externalBlocker": true,
-      "message": "source remote https://git.flyfish.dev/flyfish-group/file-viewer.git missing main",
-      "nextAction": "Restore the private Gitea source branch or push the expected release source."
-    },
     {
       "id": "github-release-github-release-v2.1.17-missing",
       "channel": "github-release",

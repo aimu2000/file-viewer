@@ -10871,28 +10871,6 @@
       ]
     },
     {
-      "id": "issue71-full-rendering",
-      "script": "verify:issue71-full-rendering-smoke",
-      "covers": [
-        "full-packages",
-        "pptx",
-        "docx",
-        "pdf",
-        "zip",
-        "vite"
-      ]
-    },
-    {
-      "id": "issue72-web-full-iife-custom-element",
-      "script": "verify:issue72-web-full-iife",
-      "covers": [
-        "web-component",
-        "script-iife",
-        "pptx-worker",
-        "floating-toolbar"
-      ]
-    },
-    {
       "id": "vite-plugin-auto-scan",
       "script": "verify:vite-plugin-auto-scan",
       "covers": [
