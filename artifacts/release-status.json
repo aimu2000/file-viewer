@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-05T15:29:29.064Z",
+  "generatedAt": "2026-07-05T15:32:24.516Z",
   "version": "2.1.21",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "0ea9f35fd3ca9c9c5c66efe5069f569f83832cdf",
+      "hash": "0bd896d2a6123398f9e7cfc62dcca1b32cde9e61",
       "error": ""
     },
     "gitee": {
@@ -45,20 +45,20 @@
     "inSync": false,
     "syncMode": "stale",
     "treeChecked": true,
-    "referenceTree": "1d1048211f2160b238444f8ba9a49f76e2a1f2f4",
+    "referenceTree": "ea7038338920ce930a7f1587627cdc446f02ea72",
     "giteeTree": "ef9e54e70ed3110034a0103cb80e8fee613104c3",
     "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": false,
+    "ok": true,
     "tag": "v2.1.21",
-    "url": "",
-    "assetCount": 0,
-    "hasManifest": false,
-    "hasStatus": false,
-    "hasSchema": false,
-    "error": "release not found"
+    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.1.21",
+    "assetCount": 58,
+    "hasManifest": true,
+    "hasStatus": true,
+    "hasSchema": true,
+    "error": ""
   },
   "componentRepositories": [
     {
@@ -734,32 +734,17 @@
       "error": ""
     }
   ],
-  "gaps": [
-    "GitHub Release v2.1.21 missing"
-  ],
+  "gaps": [],
   "gapSummary": {
-    "total": 1,
-    "externalBlockers": 1,
+    "total": 0,
+    "externalBlockers": 0,
     "localActionable": 0,
-    "byChannel": {
-      "github-release": 1
-    },
-    "externalBlockerChannels": [
-      "github-release"
-    ],
+    "byChannel": {},
+    "externalBlockerChannels": [],
     "localActionableChannels": []
   },
-  "gapDetails": [
-    {
-      "id": "github-release-github-release-v2.1.21-missing",
-      "channel": "github-release",
-      "scope": "release-assets",
-      "externalBlocker": true,
-      "message": "GitHub Release v2.1.21 missing",
-      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
-    }
-  ],
+  "gapDetails": [],
   "nextActions": [
-    "Create or update the GitHub Release assets, then rerun `pnpm release:public`."
+    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
   ]
 }
