@@ -2,6 +2,12 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## `v2.1.20` 压缩包中文文件名与 full 资产路径修复
+
+- 修复未声明 UTF-8 的 GBK/GB18030 ZIP 文件名乱码问题，兼容客户压缩包中中文文件名目录展示。
+- 区分旧编码 ZIP 的兼容解码路径和真正的 libarchive Worker 失败，避免错误显示 “libarchive Worker 未能启动” 提示。
+- Vue 3 / Vue 2.7 / Vue 2.6 full 包默认补齐 `/file-viewer/` 下的 Archive、PDF、Office、CAD、Typst 等离线资产 URL，并保留自定义 asset base URL 能力。
+
 ## 当前主线官方 Demo iframe 交付包
 
 - 新增 `iframe.html` 作为官方 Demo 的无外壳嵌入入口，支持 `?url=...` 直接预览业务文件，也支持 `?from=<父页面 origin>&name=<文件名>` 后由父页面 `postMessage(Blob)` 传入二进制文件；原主 Demo `index.html` 保留同一套协议，兼容既有集成。

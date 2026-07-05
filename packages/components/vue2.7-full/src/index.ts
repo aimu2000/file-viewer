@@ -6,8 +6,16 @@ import {
   type ViewerOptions
 } from '@file-viewer/vue2.7'
 import type { PluginObject, VueConstructor } from 'vue'
+import {
+  getDefaultFullAssetBaseUrl,
+  mergeFullAssetOptions
+} from './fullAssets.js'
 
 export * from '@file-viewer/vue2.7'
+export {
+  getDefaultFullAssetBaseUrl,
+  setDefaultFullAssetBaseUrl
+} from './fullAssets.js'
 
 export const fileViewerFullPreset = allRenderers
 
@@ -23,20 +31,26 @@ const baseMethods = (BaseFileViewer as unknown as {
   }
 }).options.methods
 
-export function withFullViewerOptions(options: ViewerOptions = {}): ViewerOptions {
+export function withFullViewerOptions(
+  options: ViewerOptions = {},
+  assetBaseUrl: string | URL | null | undefined = getDefaultFullAssetBaseUrl()
+): ViewerOptions {
   const { preset = allRenderers, rendererMode = 'replace', ...rest } = options
   return {
-    ...rest,
+    ...mergeFullAssetOptions(rest, assetBaseUrl),
     preset,
     rendererMode,
     autoRenderers: rest.autoRenderers ?? true
   }
 }
 
-export function withFullMountOptions(options: ViewerMountOptions = {}): ViewerMountOptions {
+export function withFullMountOptions(
+  options: ViewerMountOptions = {},
+  assetBaseUrl: string | URL | null | undefined = getDefaultFullAssetBaseUrl()
+): ViewerMountOptions {
   return {
     ...options,
-    options: withFullViewerOptions(options.options)
+    options: withFullViewerOptions(options.options, assetBaseUrl)
   }
 }
 

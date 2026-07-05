@@ -35,6 +35,7 @@ import {
 } from './archiveShared.js';
 import { readArchiveCache, writeArchiveCache } from './archiveCache.js';
 import {
+  hasLikelyGbkZipFilenames,
   isLikelyEncryptedArchive,
   loadArchiveEntriesWithoutWorker,
 } from './archiveFallback.js';
@@ -445,6 +446,7 @@ export default async function renderArchive(
   const maxEntryPreviewSize = archiveOptions?.maxEntryPreviewSize || DEFAULT_MAX_ENTRY_PREVIEW_SIZE;
   const cacheEnabled = archiveOptions?.cache !== false;
   const workerTimeoutMs = archiveOptions?.workerTimeoutMs || DEFAULT_WORKER_TIMEOUT_MS;
+  const hasLegacyGbkZipFilenames = hasLikelyGbkZipFilenames(buffer, filename);
   const objectUrls: string[] = [];
   const cleanups: Array<() => void> = [];
   let archiveReader: any = null;
@@ -840,6 +842,9 @@ export default async function renderArchive(
         targetWindow
       );
       archiveReader = archive;
+      if (hasLegacyGbkZipFilenames && typeof archive.setLocale === 'function') {
+        await archive.setLocale('zh_CN.GBK').catch(() => undefined);
+      }
       encrypted = await withTimeout<boolean | null>(
         archive.hasEncryptedData(),
         workerTimeoutMs,
@@ -867,8 +872,21 @@ export default async function renderArchive(
     }
   };
 
-  const tryOpenArchiveWithFallback = async () => {
-    setLoading(true, t('archive.loading.workerFallback'), t('archive.loading.workerFallbackHint'));
+  const tryOpenArchiveWithFallback = async (
+    options: {
+      showWorkerFallbackNotice?: boolean;
+    } = {}
+  ) => {
+    const showWorkerFallbackNotice = options.showWorkerFallbackNotice !== false;
+    setLoading(
+      true,
+      showWorkerFallbackNotice
+        ? t('archive.loading.workerFallback')
+        : t('archive.loading.readingDirectory'),
+      showWorkerFallbackNotice
+        ? t('archive.loading.workerFallbackHint')
+        : t('archive.loading.directoryReadyHint')
+    );
     const fallbackEntries = await loadArchiveEntriesWithoutWorker(buffer, filename);
 
     if (!fallbackEntries) {
@@ -877,7 +895,7 @@ export default async function renderArchive(
 
     entries = fallbackEntries.sort((left, right) => left.path.localeCompare(right.path));
     encrypted = null;
-    archiveNotice = t('archive.notice.workerFallback');
+    archiveNotice = showWorkerFallbackNotice ? t('archive.notice.workerFallback') : '';
     syncState();
     renderEntryList();
     renderEmptyState();
@@ -898,6 +916,12 @@ export default async function renderArchive(
     archiveNotice = '';
 
     try {
+      if (hasLegacyGbkZipFilenames && !isLikelyEncryptedArchive(buffer, filename)) {
+        if (await tryOpenArchiveWithFallback({ showWorkerFallbackNotice: false })) {
+          return;
+        }
+      }
+
       const [{ Archive }, candidates] = await Promise.all([
         import('libarchive.js'),
         resolveWorkerCandidates(documentRef, archiveOptions),

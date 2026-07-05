@@ -11,6 +11,11 @@ const TAR_BLOCK_SIZE = 512;
 const ZIP_CENTRAL_FILE_HEADER = 0x02014b50;
 const ZIP_LOCAL_FILE_HEADER = 0x04034b50;
 const ZIP_GENERAL_PURPOSE_ENCRYPTED_FLAG = 0x0001;
+const ZIP_GENERAL_PURPOSE_UTF8_FLAG = 0x0800;
+
+const UTF8_DECODER = new TextDecoder('utf-8');
+const UTF8_FATAL_DECODER = new TextDecoder('utf-8', { fatal: true });
+const CJK_TEXT_PATTERN = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
 
 type DecompressionFormat = ConstructorParameters<typeof DecompressionStream>[0];
 
@@ -22,7 +27,9 @@ type FallbackEntrySource = {
 };
 
 type JSZipLike = {
-  loadAsync(data: ArrayBuffer): Promise<{
+  loadAsync(data: ArrayBuffer, options?: {
+    decodeFileName?: (bytes: Uint8Array | number[]) => string;
+  }): Promise<{
     forEach(callback: (relativePath: string, file: {
       dir?: boolean;
       date?: Date;
@@ -35,6 +42,47 @@ const isJSZipLike = (value: unknown): value is JSZipLike => {
   return !!value &&
     (typeof value === 'object' || typeof value === 'function') &&
     typeof (value as { loadAsync?: unknown }).loadAsync === 'function';
+};
+
+const createTextDecoder = (label: string) => {
+  try {
+    return new TextDecoder(label);
+  } catch {
+    return null;
+  }
+};
+
+const GBK_DECODER = createTextDecoder('gbk') || createTextDecoder('gb18030');
+
+const decodeUtf8Strict = (bytes: Uint8Array) => {
+  try {
+    return UTF8_FATAL_DECODER.decode(bytes);
+  } catch {
+    return null;
+  }
+};
+
+const decodeGbk = (bytes: Uint8Array) => {
+  try {
+    return GBK_DECODER?.decode(bytes) || null;
+  } catch {
+    return null;
+  }
+};
+
+export const decodeZipFilename = (bytes: Uint8Array | number[]) => {
+  const data = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const utf8 = decodeUtf8Strict(data);
+  if (utf8 !== null) {
+    return utf8;
+  }
+
+  const gbk = decodeGbk(data);
+  if (gbk && CJK_TEXT_PATTERN.test(gbk)) {
+    return gbk;
+  }
+
+  return UTF8_DECODER.decode(data);
 };
 
 // Vite can expose the CJS constructor as a function-shaped default export.
@@ -196,6 +244,42 @@ const hasEncryptedZipEntries = (data: ArrayBuffer) => {
   return false;
 };
 
+export const hasLikelyGbkZipFilenames = (data: ArrayBuffer, filename: string) => {
+  const extension = getArchiveExtension(filename);
+  if (!ZIP_LIKE_EXTENSIONS.has(extension)) {
+    return false;
+  }
+
+  const view = new DataView(data);
+  for (let offset = 0; offset + 46 <= view.byteLength; offset += 1) {
+    if (readUint32(view, offset) !== ZIP_CENTRAL_FILE_HEADER) {
+      continue;
+    }
+
+    const flag = readUint16(view, offset + 8);
+    const nameLength = readUint16(view, offset + 28);
+    const extraLength = readUint16(view, offset + 30);
+    const commentLength = readUint16(view, offset + 32);
+    const nameStart = offset + 46;
+    const nameEnd = nameStart + nameLength;
+    if (nameEnd > view.byteLength) {
+      return false;
+    }
+
+    if ((flag & ZIP_GENERAL_PURPOSE_UTF8_FLAG) === 0) {
+      const rawName = new Uint8Array(data, nameStart, nameLength);
+      const decoded = decodeZipFilename(rawName);
+      if (CJK_TEXT_PATTERN.test(decoded)) {
+        return true;
+      }
+    }
+
+    offset = nameEnd + extraLength + commentLength - 1;
+  }
+
+  return false;
+};
+
 export const isLikelyEncryptedArchive = (data: ArrayBuffer, filename: string) => {
   const extension = getArchiveExtension(filename);
   if (ZIP_LIKE_EXTENSIONS.has(extension)) {
@@ -217,7 +301,9 @@ const getGzipEntryName = (filename: string) => {
 
 const loadZipEntries = async (data: ArrayBuffer) => {
   const JSZip = resolveJSZip(await import('jszip'));
-  const zip = await JSZip.loadAsync(data);
+  const zip = await JSZip.loadAsync(data, {
+    decodeFileName: decodeZipFilename,
+  });
   const entries: ArchiveEntryView[] = [];
 
   zip.forEach((relativePath, file) => {
