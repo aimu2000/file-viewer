@@ -34,7 +34,7 @@ const options = {
 - 优先使用 `libarchive.js` Worker + WASM，避免大压缩包阻塞主线程。
 - Worker 不可用时自动回退到 ZIP / TAR / GZIP 兼容模式，适合手机 WebView、本地临时服务器和内网静态部署排障；加密压缩包不会走 fallback，必须发布 libarchive Worker/WASM。
 - 点击内部文件后才按需解压，并通过 `renderNestedBuffer` 或 core dispatcher 复用 PDF、Office、CAD、XMind、图片、代码等现有 renderer。
-- 内置体积上限、单文件预览上限、Worker 超时、IndexedDB 缓存和下载入口，避免一次性把压缩包全部展开到内存。
+- 内置体积上限、单文件预览上限、Worker 超时、IndexedDB 缓存和可配置的内部条目下载入口，避免一次性把压缩包全部展开到内存。
 
 ## 离线资产
 
@@ -55,6 +55,36 @@ const options = {
   },
 }
 ```
+
+## 内部条目下载权限
+
+压缩包内部文件预览栏的下载按钮默认保持可见。需要隐藏时可以配置全局布尔值：
+
+```ts
+const options = {
+  archive: {
+    entryActions: {
+      download: false,
+    },
+  },
+}
+```
+
+也可以按内部路径、扩展名、大小等元数据做判断：
+
+```ts
+const options = {
+  archive: {
+    entryActions: {
+      download(entry) {
+        return entry.path.startsWith('public/')
+      },
+    },
+  },
+}
+```
+
+这个选项只影响压缩包内部条目的下载按钮，不会关闭顶层 viewer 下载原始压缩包的工具栏动作。
 
 ## 加密压缩包
 

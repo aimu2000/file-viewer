@@ -24,7 +24,7 @@
 | PDF | Page thumbnails, outline tree, floating toolbar, fit-to-width, search highlights, and side panel toggling |
 | Word | Stream-style document reading, correct text flow, printing without clipped first-page-only output |
 | Spreadsheet | Sheet tabs remain readable on desktop and mobile; optional column resize can be enabled |
-| Archive | Nested entries preview through the same renderer registry, with safe metadata filtering and cache support |
+| Archive | Nested entries preview through the same renderer registry, with safe metadata filtering, cache support, optional compact `ui.density:'compact'` spacing via `?density=compact`, and `archive.entryActions.download` checks for hiding nested entry downloads independently from the viewer-level original download |
 | Mobile | Content stays central, controls move to compact floating actions, and heavy renderers remain lazy |
 
 ## Language-Aware Samples

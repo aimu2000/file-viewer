@@ -18,6 +18,9 @@ export const viewerOptions = {
   rendererMode: 'replace',
   theme: 'light',
   styleIsolation: 'shadow',
+  ui: {
+    density: 'compact'
+  },
   toolbar: {
     position: 'bottom-right',
     download: true,
@@ -35,7 +38,12 @@ export const viewerOptions = {
   },
   archive: {
     cache: true,
-    workerTimeoutMs: 30000
+    workerTimeoutMs: 30000,
+    entryActions: {
+      download(entry) {
+        return entry.path.startsWith('public/')
+      }
+    }
   },
   pdf: {
     toolbar: true,
@@ -52,6 +60,7 @@ export const viewerOptions = {
 | --- | --- |
 | `theme` | Viewer theme: `light`, `dark`, or `system`. Default is `system`; pass `light` when embedding in a fixed light business UI. |
 | `styleIsolation` | Style isolation mode: `auto`, `shadow`, `scoped`, or `none`. With `auto`, Web Component / Web full / IIFE entries use Shadow DOM by default; Vue, React, Svelte, and jQuery keep historical compatibility. Use `shadow` when host CSS is uncontrolled, and customize with `--file-viewer-*` tokens plus `::part()`. See [Style Isolation And Customization](/en/guide/style-isolation). |
+| `ui.density` | UI chrome density: `comfortable` or `compact`. The default `comfortable` keeps existing spacing; `compact` tightens toolbars, archive lists, nested preview headers, badges, small buttons, and search inputs while keeping document content readable. |
 | `preset` | Bundler-neutral preset assembly. Pass the default export from `@file-viewer/preset-lite`, `@file-viewer/preset-office`, `@file-viewer/preset-engineering`, or `@file-viewer/preset-all`; compose with `preset: [officePreset, engineeringPreset]`. `presets` is kept only as a compatibility alias for early 2.x drafts. |
 | `renderers` / `rendererMode` | Exact renderer or custom renderer assembly. `rendererMode:'replace'` starts from an empty registry, so `preset` / `renderers` define the active capability set; `extend` appends to the current built-in baseline. |
 | `builtinRenderers` | Advanced built-in baseline switch: `all`, `lite`, or `none`. Most quick starts do not need it. |
@@ -120,6 +129,7 @@ Every renderer below can be passed through `options.renderers`:
 | `archive.workerTimeoutMs` | Timeout for worker startup, encryption checks, and directory reading; the viewer falls back to ZIP/TAR/GZIP-compatible paths when possible. |
 | `archive.cache` | Enables IndexedDB cache for extracted nested files. |
 | `archive.maxArchiveSize` / `archive.maxEntryPreviewSize` | Memory and safety limits for archive directory reading and nested preview. |
+| `archive.entryActions.download` | Controls the download button shown while previewing a file from inside an archive. Pass `false` to hide it globally, or `(entry) => boolean` to decide by path, extension, size, and other metadata. This only affects nested archive entries; the viewer-level original archive download remains controlled by `toolbar` and operation guards. |
 | `docx.worker` | Auto-detects the safest DOCX parsing path by default: HTTP/HTTPS keeps the worker enabled, while Electron `file://`, `about:`, and `data:` documents fall back to the main thread. Explicit `true` / `false` values still take precedence. |
 | `docx.workerUrl` / `docx.workerJsZipUrl` | Self-host DOCX worker and JSZip assets. |
 | `docx.workerTimeout` | Worker startup timeout. The default is 5000ms so unsupported paths, MIME, CSP, or WebView environments fall back quickly. |

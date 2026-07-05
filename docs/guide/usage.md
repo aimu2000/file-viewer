@@ -145,6 +145,9 @@ const url = ref('/example/archive.zip')
 const options = {
   theme: 'light',
   styleIsolation: 'shadow',
+  ui: {
+    density: 'compact'
+  },
   preset: officePreset,
   rendererMode: 'replace',
   toolbar: {
@@ -163,7 +166,12 @@ const options = {
     cache: true,
     workerTimeoutMs: 30000,
     maxArchiveSize: 320 * 1024 * 1024,
-    maxEntryPreviewSize: 64 * 1024 * 1024
+    maxEntryPreviewSize: 64 * 1024 * 1024,
+    entryActions: {
+      download(entry) {
+        return entry.path.startsWith('public/')
+      }
+    }
   },
   search: {
     maxMatches: 1000,
@@ -200,6 +208,7 @@ const options = {
 | --- | --- |
 | `theme` | 预览器主题，支持 `light`、`dark`、`system`。默认 `system`，继续跟随浏览器 `prefers-color-scheme`；浅色业务系统建议显式传 `light`，避免操作系统深色模式把预览区、工具栏或支持主题切换的渲染器自动切成深色 |
 | `styleIsolation` | 样式隔离策略，支持 `auto`、`shadow`、`scoped`、`none`。`auto` 下 Web Component / Web full / IIFE 默认使用 Shadow DOM 强隔离；Vue、React、Svelte、jQuery 默认保持历史兼容。宿主 CSS 不可控时推荐显式传 `shadow`，主题定制使用 `--file-viewer-*` tokens 和 `::part()`，完整说明见 [样式隔离与主题定制](/guide/style-isolation) |
+| `ui.density` | 操作界面密度，支持 `comfortable` 和 `compact`。默认 `comfortable` 保持历史间距；`compact` 会收紧工具栏、压缩包目录、嵌套预览头部、徽标、小按钮和搜索输入等操作 chrome，不压缩文档正文渲染 |
 | `preset` | 通用 preset 装配入口，支持传入 `@file-viewer/preset-lite`、`@file-viewer/preset-office`、`@file-viewer/preset-engineering`、`@file-viewer/preset-all` 的默认导出，也支持 `preset: [officePreset, engineeringPreset]` 数组组合。这个方式不依赖 Vite，适合 Webpack、Rspack、Rollup、Umi、传统多页应用、微前端和内部组件库；`presets` 仅作为早期 2.x 草案的兼容 alias 保留 |
 | `renderers` / `rendererMode` | 按需单 renderer package 或自定义 renderer 装配入口。`rendererMode: 'replace'` 从空 registry 开始，适合与 `preset` / `renderers` 组成清晰的显式能力集；`extend` 会在当前内置集合上追加 |
 | `builtinRenderers` | 高级内置基线开关，支持 `all`、`lite`、`none`。普通快速接入无需设置；只有需要保留历史全量基线、只启用 core 原生低成本链路，或做极细 registry 控制时再使用 |
@@ -214,6 +223,7 @@ const options = {
 | `archive.cache` | 是否使用 IndexedDB 缓存已解压的压缩包内文件 |
 | `archive.maxArchiveSize` | 单个压缩包允许读取目录的最大体积，默认 320MB |
 | `archive.maxEntryPreviewSize` | 压缩包内单文件允许预览的最大体积，默认 64MB |
+| `archive.entryActions.download` | 控制压缩包内部文件预览栏的下载按钮，可传 `false` 全局隐藏，也可传 `(entry) => boolean` 按路径、扩展名、大小等元数据判断；它只影响压缩包内部条目，不会关闭顶层 viewer 下载原始压缩包的能力 |
 | `docx.worker` | 是否启用 `@file-viewer/renderer-word` 内部的 `@file-viewer/docx` Worker 解析，默认自动检测：HTTP/HTTPS 启用 Worker，Electron `file://`、`about:`、`data:` 等不安全本地协议自动回退主线程；显式设为 `true` / `false` 时按业务配置执行 |
 | `docx.workerUrl` | 自定义 DOCX Worker 地址，默认尝试当前部署 base 下的 `vendor/docx/docx.worker.js` |
 | `docx.workerJsZipUrl` | 自定义 DOCX Worker 内加载的 JSZip 地址，默认尝试当前部署 base 下的 `vendor/docx/jszip.min.js` |
@@ -555,7 +565,7 @@ async function useLocal(blob: Blob) {
 
 `.xmind` 会使用 `@file-viewer/renderer-mindmap` + `@ljheee/xmind-parser` 解析 XMind 8 XML 和 XMind 2020+ JSON 文件包，并展示多 sheet、节点、标签、备注、链接、标记、目录侧栏。画布交互由轻量 `@panzoom/panzoom` 承接，支持拖拽平移、移动端双指缩放、适配画布、搜索和缩放。它是只读预览能力，不会修改脑图文件；需要编辑、协作批注或复杂布局重排时仍建议回到专业脑图软件。
 
-`.zip`、`.7z`、`.rar`、`.tar`、`.gz`、`.xz`、`.cab`、`.iso`、`.jar`、`.apk`、`.cbz`、`.cbr` 等压缩包会使用 `libarchive.js` Worker 读取目录。内部文件在点击后按需解压，并继续交给对应格式预览器。私有化部署一般不需要手动配置 `archive.workerUrl`；如果静态目录或资源前缀特殊，可把 `worker-bundle.js` 与同目录的 `libarchive.wasm` 发布出来后配置 `options.archive.workerUrl`。当手机 WebView、本地临时服务器、MIME 或 CSP 导致 Worker 初始化失败时，组件会自动切换到 ZIP/TAR/GZIP 兼容模式，避免停留在 loading。
+`.zip`、`.7z`、`.rar`、`.tar`、`.gz`、`.xz`、`.cab`、`.iso`、`.jar`、`.apk`、`.cbz`、`.cbr` 等压缩包会使用 `libarchive.js` Worker 读取目录。内部文件在点击后按需解压，并继续交给对应格式预览器。`archive.entryActions.download` 可以隐藏内部文件预览栏里的单文件下载按钮，或用回调按 `entry.path`、`entry.extension`、`entry.size` 等信息做权限判断；顶层 viewer 工具栏里的原始压缩包下载仍由 `toolbar` / `beforeOperation` 控制。私有化部署一般不需要手动配置 `archive.workerUrl`；如果静态目录或资源前缀特殊，可把 `worker-bundle.js` 与同目录的 `libarchive.wasm` 发布出来后配置 `options.archive.workerUrl`。当手机 WebView、本地临时服务器、MIME 或 CSP 导致 Worker 初始化失败时，组件会自动切换到 ZIP/TAR/GZIP 兼容模式，避免停留在 loading。
 
 `.eml` 使用 `postal-mime`，`.msg` 使用 `@kenjiuno/msgreader`。邮件正文会在隔离沙箱文档中展示，附件可以下载，也可以继续在线预览。
 

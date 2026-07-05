@@ -34,7 +34,7 @@ const options = {
 - Uses `libarchive.js` Worker + WASM first to keep large archive parsing off the main thread.
 - Falls back to ZIP / TAR / GZIP parsing when the Worker cannot be started, which helps mobile WebViews, local static servers, and private intranet deployments. Encrypted archives never use the fallback path and require the libarchive Worker/WASM assets.
 - Extracts internal files on demand, then delegates nested previews through `renderNestedBuffer` or the core dispatcher.
-- Includes archive size limits, entry preview limits, worker timeout, IndexedDB cache, and single-entry download.
+- Includes archive size limits, entry preview limits, worker timeout, IndexedDB cache, and configurable nested-entry download.
 
 ## Offline Assets
 
@@ -55,6 +55,36 @@ const options = {
   },
 }
 ```
+
+## Nested Entry Download Policy
+
+The download button in the archive entry preview toolbar stays visible by default. Hide it globally with a boolean:
+
+```ts
+const options = {
+  archive: {
+    entryActions: {
+      download: false,
+    },
+  },
+}
+```
+
+Or decide per entry from path, extension, size, and other metadata:
+
+```ts
+const options = {
+  archive: {
+    entryActions: {
+      download(entry) {
+        return entry.path.startsWith('public/')
+      },
+    },
+  },
+}
+```
+
+This option only controls nested archive entries. The viewer-level toolbar action that downloads the original archive remains controlled by `toolbar` and operation guards.
 
 ## Encrypted Archives
 

@@ -28,6 +28,7 @@ import type {
   FileViewerOptions,
   FileViewerPublicApi as FileViewerExpose,
   FileViewerSearchState,
+  FileViewerUiDensity,
   FileViewerZoomState
 } from '@file-viewer/core'
 import brandLogo from '@/assets/logo.png'
@@ -50,6 +51,10 @@ const normalizeDemoLocale = (value?: string | null): DemoLocale => {
   return String(value || '').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en-US'
 }
 
+const normalizeDemoDensity = (value?: string | null): FileViewerUiDensity => {
+  return value === 'compact' ? 'compact' : 'comfortable'
+}
+
 const resolveInitialDemoLocale = (): DemoLocale => {
   const queryParams = new URLSearchParams(window.location.search)
   const explicitLocale = queryParams.get('locale') || queryParams.get('lang')
@@ -63,7 +68,13 @@ const resolveInitialDemoLocale = (): DemoLocale => {
   return normalizeDemoLocale(navigator.languages?.[0] || navigator.language)
 }
 
+const resolveInitialDemoDensity = (): FileViewerUiDensity => {
+  const queryParams = new URLSearchParams(window.location.search)
+  return normalizeDemoDensity(queryParams.get('density') || queryParams.get('uiDensity'))
+}
+
 const demoLocale = ref<DemoLocale>(resolveInitialDemoLocale())
+const demoDensity = ref<FileViewerUiDensity>(resolveInitialDemoDensity())
 const url = ref(demoFileHandoff.isEmbedRequest && !demoFileHandoff.initialUrl ? '' : DEFAULT_DEMO_URL_BY_LOCALE[demoLocale.value])
 const preview = ref('')
 const scenarioPickerOpen = ref(false)
@@ -1006,6 +1017,12 @@ const fitModeOptions = computed<Array<{ value: FileViewerFitMode | 'default'; la
 
 const viewerActionDisabled = computed(() => !file.value && !preview.value)
 
+const viewerDensity = computed<FileViewerUiDensity>(() => {
+  return runtimeOptions.value.ui?.density
+    ? normalizeDemoDensity(runtimeOptions.value.ui.density)
+    : demoDensity.value
+})
+
 const viewerSearchSummary = computed(() => {
   if (!viewerSearchQuery.value.trim()) {
     return '0/0'
@@ -1020,6 +1037,14 @@ const viewerOptions = computed((): FileViewerOptions => {
   options.renderers = runtime.renderers ?? allRenderers
   if (!options.locale && !options.i18n?.locale) {
     options.locale = demoLocale.value
+  }
+  if (runtime.ui || viewerDensity.value === 'compact') {
+    options.ui = {
+      ...runtime.ui,
+      density: viewerDensity.value
+    }
+  } else {
+    delete options.ui
   }
 
   options.archive = {
@@ -1425,6 +1450,7 @@ function updateSampleMenuGeometry() {
 <template>
   <div
     class='demo-shell'
+    :data-demo-density='viewerDensity'
     :class="{
       hidden,
       'mobile-controls-open': mobileControlsOpen,
@@ -1962,6 +1988,64 @@ function updateSampleMenuGeometry() {
 .demo-shell {
   height: 100vh;
   overflow: hidden;
+  --demo-shell-padding: 16px;
+  --demo-layout-gap: 16px;
+  --demo-panel-radius: 28px;
+  --demo-panel-padding: 12px;
+  --demo-panel-gap: 12px;
+  --demo-card-padding: 16px;
+  --demo-card-gap: 12px;
+  --demo-brand-card-radius: 22px;
+  --demo-brand-pill-padding: 0 11px;
+  --demo-control-gap: 4px;
+  --demo-control-card-gap: 9px;
+  --demo-control-padding: 7px 10px;
+  --demo-control-radius: 16px;
+  --demo-control-height: 46px;
+  --demo-current-card-padding: 12px;
+  --demo-current-card-radius: 20px;
+  --demo-field-gap: 7px;
+  --demo-field-padding: 0 14px;
+  --demo-field-radius: 17px;
+  --demo-panel-body-gap: 14px;
+  --demo-panel-body-padding: 2px 4px 4px 2px;
+  --demo-popover-offset: 8px;
+  --demo-popover-gap: 8px;
+  --demo-popover-padding: 10px;
+  --demo-popover-radius: 18px;
+  --demo-scenario-card-gap: 8px;
+  --demo-scenario-card-padding: 8px;
+  --demo-scenario-card-radius: 14px;
+  --demo-small-gap: 6px;
+  --demo-small-padding: 3px;
+  --demo-sample-trigger-min-height: 70px;
+  --demo-sample-trigger-gap: 12px;
+  --demo-sample-trigger-padding: 11px;
+  --demo-sample-trigger-radius: 17px;
+  --demo-viewer-toolbar-gap: 16px;
+  --demo-viewer-toolbar-padding: 14px 18px;
+  --demo-viewer-tools-gap: 8px;
+  --demo-viewer-copy-gap: 9px;
+  --demo-viewer-type-padding: 5px 8px;
+  --demo-viewer-fit-gap: 6px;
+  --demo-viewer-fit-height: 38px;
+  --demo-viewer-fit-padding: 3px 4px 3px 10px;
+  --demo-viewer-select-height: 30px;
+  --demo-viewer-select-padding: 0 28px 0 10px;
+  --demo-viewer-search-top: 76px;
+  --demo-viewer-search-gap: 6px;
+  --demo-viewer-search-padding: 6px;
+  --demo-viewer-search-radius: 18px;
+  --demo-viewer-search-control-radius: 12px;
+  --demo-viewer-search-input-padding: 0 12px;
+  --demo-action-group-gap: 4px;
+  --demo-action-group-padding: 3px;
+  --demo-viewer-tool-height: 32px;
+  --demo-viewer-tool-padding: 0 12px;
+  --demo-action-tool-min-width: 48px;
+  --demo-action-icon-size: 32px;
+  --demo-action-meter-min-width: 52px;
+  --demo-action-meter-padding: 0 8px;
   background:
     radial-gradient(circle at 12% 12%, rgba(37, 171, 111, 0.22), transparent 28%),
     radial-gradient(circle at 86% 0%, rgba(43, 126, 238, 0.16), transparent 24%),
@@ -1969,11 +2053,71 @@ function updateSampleMenuGeometry() {
   color: #142335;
 }
 
+.demo-shell[data-demo-density='compact'] {
+  --demo-shell-padding: 10px;
+  --demo-layout-gap: 8px;
+  --demo-panel-radius: 18px;
+  --demo-panel-padding: 8px;
+  --demo-panel-gap: 8px;
+  --demo-card-padding: 8px;
+  --demo-card-gap: 5px;
+  --demo-brand-card-radius: 16px;
+  --demo-brand-pill-padding: 0 8px;
+  --demo-control-card-gap: 5px;
+  --demo-control-padding: 4px 5px;
+  --demo-control-radius: 12px;
+  --demo-control-height: 34px;
+  --demo-current-card-padding: 8px;
+  --demo-current-card-radius: 14px;
+  --demo-field-gap: 4px;
+  --demo-field-padding: 0 8px;
+  --demo-field-radius: 12px;
+  --demo-panel-body-gap: 8px;
+  --demo-panel-body-padding: 2px;
+  --demo-popover-offset: 5px;
+  --demo-popover-gap: 5px;
+  --demo-popover-padding: 5px;
+  --demo-popover-radius: 14px;
+  --demo-scenario-card-gap: 5px;
+  --demo-scenario-card-padding: 5px;
+  --demo-scenario-card-radius: 10px;
+  --demo-small-gap: 3px;
+  --demo-small-padding: 2px 3px;
+  --demo-sample-trigger-min-height: 54px;
+  --demo-sample-trigger-gap: 5px;
+  --demo-sample-trigger-padding: 8px;
+  --demo-sample-trigger-radius: 12px;
+  --demo-viewer-toolbar-gap: 5px;
+  --demo-viewer-toolbar-padding: 5px;
+  --demo-viewer-tools-gap: 5px;
+  --demo-viewer-copy-gap: 5px;
+  --demo-viewer-type-padding: 3px 5px;
+  --demo-viewer-fit-gap: 3px;
+  --demo-viewer-fit-height: 28px;
+  --demo-viewer-fit-padding: 2px 3px;
+  --demo-viewer-select-height: 26px;
+  --demo-viewer-select-padding: 0 24px 0 8px;
+  --demo-viewer-search-top: 48px;
+  --demo-viewer-search-gap: 3px;
+  --demo-viewer-search-padding: 3px;
+  --demo-viewer-search-radius: 14px;
+  --demo-viewer-search-control-radius: 9px;
+  --demo-viewer-search-input-padding: 0 8px;
+  --demo-action-group-gap: 3px;
+  --demo-action-group-padding: 2px 3px;
+  --demo-viewer-tool-height: 28px;
+  --demo-viewer-tool-padding: 0 5px;
+  --demo-action-tool-min-width: 38px;
+  --demo-action-icon-size: 28px;
+  --demo-action-meter-min-width: 46px;
+  --demo-action-meter-padding: 0 5px;
+}
+
 .workspace {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  padding: 16px;
+  padding: var(--demo-shell-padding);
 }
 
 .layout-shell {
@@ -1981,13 +2125,13 @@ function updateSampleMenuGeometry() {
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(276px, 320px) minmax(0, 1fr);
-  gap: 16px;
+  gap: var(--demo-layout-gap);
 }
 
 .control-panel,
 .viewer-panel {
   min-height: 0;
-  border-radius: 28px;
+  border-radius: var(--demo-panel-radius);
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 22px 60px rgba(18, 35, 50, 0.1);
@@ -2001,8 +2145,8 @@ function updateSampleMenuGeometry() {
   flex-direction: column;
   max-height: 100%;
   overflow: visible;
-  padding: 12px;
-  gap: 12px;
+  padding: var(--demo-panel-padding);
+  gap: var(--demo-panel-gap);
 }
 
 .brand-card {
@@ -2013,8 +2157,8 @@ function updateSampleMenuGeometry() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
-  border-radius: 22px;
+  padding: var(--demo-card-padding);
+  border-radius: var(--demo-brand-card-radius);
   background:
     linear-gradient(135deg, rgba(19, 42, 57, 0.94), rgba(17, 91, 65, 0.9)),
     radial-gradient(circle at top right, rgba(94, 255, 182, 0.38), transparent 42%);
@@ -2068,7 +2212,7 @@ function updateSampleMenuGeometry() {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--demo-control-gap);
 }
 
 .brand-copy span {
@@ -2093,7 +2237,7 @@ function updateSampleMenuGeometry() {
   height: 28px;
   align-items: center;
   justify-content: center;
-  padding: 0 11px;
+  padding: var(--demo-brand-pill-padding);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   color: rgba(255, 255, 255, 0.82);
@@ -2107,14 +2251,14 @@ function updateSampleMenuGeometry() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--demo-card-gap);
 }
 
 .locale-switch {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 3px;
+  padding: var(--demo-small-padding);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
@@ -2143,9 +2287,9 @@ function updateSampleMenuGeometry() {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 20px;
+  gap: var(--demo-card-gap);
+  padding: var(--demo-current-card-padding);
+  border-radius: var(--demo-current-card-radius);
   background: rgba(255, 255, 255, 0.78);
   box-shadow: inset 0 0 0 1px rgba(20, 35, 53, 0.06);
 }
@@ -2247,8 +2391,8 @@ function updateSampleMenuGeometry() {
   scrollbar-gutter: stable;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 2px 4px 4px 2px;
+  gap: var(--demo-panel-body-gap);
+  padding: var(--demo-panel-body-padding);
 }
 
 .sample-picker-open .panel-body {
@@ -2266,9 +2410,9 @@ function updateSampleMenuGeometry() {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 9px;
-  padding: 7px 10px;
-  border-radius: 16px;
+  gap: var(--demo-control-card-gap);
+  padding: var(--demo-control-padding);
+  border-radius: var(--demo-control-radius);
   border: 1px solid rgba(20, 35, 53, 0.08);
   background: rgba(255, 255, 255, 0.78);
   color: #142335;
@@ -2323,17 +2467,17 @@ function updateSampleMenuGeometry() {
 .scenario-popover {
   position: absolute;
   z-index: 28;
-  top: calc(100% + 8px);
+  top: calc(100% + var(--demo-popover-offset));
   right: 0;
   left: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--demo-popover-gap);
   max-height: min(46vh, 360px);
-  padding: 10px;
+  padding: var(--demo-popover-padding);
   overflow: auto;
   border: 1px solid rgba(20, 35, 53, 0.08);
-  border-radius: 18px;
+  border-radius: var(--demo-popover-radius);
   background: rgba(255, 255, 255, 0.96);
   box-shadow:
     0 22px 50px rgba(18, 35, 55, 0.16),
@@ -2347,9 +2491,9 @@ function updateSampleMenuGeometry() {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 14px;
+  gap: var(--demo-scenario-card-gap);
+  padding: var(--demo-scenario-card-padding);
+  border-radius: var(--demo-scenario-card-radius);
   border: 1px solid rgba(20, 35, 53, 0.08);
   background: rgba(255, 255, 255, 0.74);
   color: #142335;
@@ -2472,7 +2616,7 @@ function updateSampleMenuGeometry() {
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--demo-field-gap);
 }
 
 .field-label {
@@ -2483,9 +2627,9 @@ function updateSampleMenuGeometry() {
 }
 
 .compact-field {
-  min-height: 46px;
-  padding: 0 14px;
-  border-radius: 17px;
+  min-height: var(--demo-control-height);
+  padding: var(--demo-field-padding);
+  border-radius: var(--demo-field-radius);
   border: 1px solid rgba(20, 35, 53, 0.08);
   background: rgba(255, 255, 255, 0.86);
   color: #142335;
@@ -2509,13 +2653,13 @@ function updateSampleMenuGeometry() {
 .sample-trigger {
   width: 100%;
   flex-shrink: 0;
-  min-height: 70px;
+  min-height: var(--demo-sample-trigger-min-height);
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  padding: 11px;
-  border-radius: 17px;
+  gap: var(--demo-sample-trigger-gap);
+  padding: var(--demo-sample-trigger-padding);
+  border-radius: var(--demo-sample-trigger-radius);
   border: 1px solid rgba(20, 35, 53, 0.08);
   background: rgba(255, 255, 255, 0.88);
   color: #142335;
@@ -2941,8 +3085,8 @@ function updateSampleMenuGeometry() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 18px;
+  gap: var(--demo-viewer-toolbar-gap);
+  padding: var(--demo-viewer-toolbar-padding);
   border-bottom: 1px solid rgba(20, 35, 53, 0.06);
 }
 
@@ -2950,7 +3094,7 @@ function updateSampleMenuGeometry() {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 9px;
+  gap: var(--demo-viewer-copy-gap);
 }
 
 .viewer-status {
@@ -2975,7 +3119,7 @@ function updateSampleMenuGeometry() {
 
 .viewer-type {
   flex-shrink: 0;
-  padding: 5px 8px;
+  padding: var(--demo-viewer-type-padding);
   border-radius: 999px;
   background: rgba(20, 35, 53, 0.06);
   color: #718193;
@@ -2997,15 +3141,15 @@ function updateSampleMenuGeometry() {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 8px;
+  gap: var(--demo-viewer-tools-gap);
 }
 
 .viewer-fit-control {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 3px 4px 3px 10px;
+  gap: var(--demo-viewer-fit-gap);
+  min-height: var(--demo-viewer-fit-height);
+  padding: var(--demo-viewer-fit-padding);
   border: 1px solid rgba(20, 35, 53, 0.08);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.7);
@@ -3016,11 +3160,11 @@ function updateSampleMenuGeometry() {
 
 .viewer-fit-control select,
 .mobile-fit-control select {
-  height: 30px;
+  height: var(--demo-viewer-select-height);
   min-width: 96px;
   border: 0;
   border-radius: 999px;
-  padding: 0 28px 0 10px;
+  padding: var(--demo-viewer-select-padding);
   background: rgba(20, 35, 53, 0.06);
   color: #23465e;
   font: inherit;
@@ -3032,16 +3176,16 @@ function updateSampleMenuGeometry() {
 .viewer-search-popover {
   position: absolute;
   z-index: 40;
-  top: 76px;
+  top: var(--demo-viewer-search-top);
   right: 24px;
   display: inline-grid;
   grid-template-columns: minmax(180px, 260px) auto auto auto auto;
   align-items: center;
-  gap: 6px;
+  gap: var(--demo-viewer-search-gap);
   max-width: calc(100% - 48px);
-  padding: 6px;
+  padding: var(--demo-viewer-search-padding);
   border: 1px solid rgba(20, 35, 53, 0.09);
-  border-radius: 18px;
+  border-radius: var(--demo-viewer-search-radius);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 18px 42px rgba(18, 35, 50, 0.18);
   backdrop-filter: blur(18px);
@@ -3056,7 +3200,7 @@ function updateSampleMenuGeometry() {
 .viewer-search-summary {
   height: 34px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--demo-viewer-search-control-radius);
   background: transparent;
   color: #526174;
   font: inherit;
@@ -3066,7 +3210,7 @@ function updateSampleMenuGeometry() {
 
 .viewer-search-popover input {
   min-width: 0;
-  padding: 0 12px;
+  padding: var(--demo-viewer-search-input-padding);
   outline: none;
   background: rgba(20, 35, 53, 0.04);
 }
@@ -3108,17 +3252,17 @@ function updateSampleMenuGeometry() {
 .viewer-action-group {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px;
+  gap: var(--demo-action-group-gap);
+  padding: var(--demo-action-group-padding);
   border: 1px solid rgba(20, 35, 53, 0.07);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.66);
 }
 
 .viewer-tool-button {
-  height: 32px;
+  height: var(--demo-viewer-tool-height);
   flex-shrink: 0;
-  padding: 0 12px;
+  padding: var(--demo-viewer-tool-padding);
   border: 1px solid rgba(20, 35, 53, 0.08);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.84);
@@ -3130,14 +3274,14 @@ function updateSampleMenuGeometry() {
 }
 
 .viewer-action-group .viewer-tool-button {
-  min-width: 48px;
+  min-width: var(--demo-action-tool-min-width);
   border-color: transparent;
   background: transparent;
 }
 
 .viewer-action-group .viewer-tool-button--icon {
-  width: 32px;
-  min-width: 32px;
+  width: var(--demo-action-icon-size);
+  min-width: var(--demo-action-icon-size);
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -3145,8 +3289,8 @@ function updateSampleMenuGeometry() {
 }
 
 .viewer-action-group .viewer-tool-button--meter {
-  min-width: 52px;
-  padding: 0 8px;
+  min-width: var(--demo-action-meter-min-width);
+  padding: var(--demo-action-meter-padding);
   color: #23465e;
 }
 

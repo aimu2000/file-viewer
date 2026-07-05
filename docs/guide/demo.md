@@ -190,8 +190,8 @@ pnpm --filter @flyfish-group/file-viewer-component-demo preview
 | `process.drawio` | 使用官方 draw.io 示例验证官方 diagrams.net 离线 viewer 与内置 SVG fallback 链路 | `drawio` |
 | `book.epub` | 使用 Project Gutenberg 公开 EPUB 验证电子书目录和滚动阅读 | `epub` |
 | `book.umd` | 使用项目内生成的 UMD 电子书验证元数据、目录和 zlib 正文解析 | `umd` |
-| `archive.zip` | 验证 ZIP 目录读取、按需解压、缓存和压缩包内文档预览 | `zip` |
-| `archive.tar.gz` | 验证 TAR.GZ 压缩包兼容入口和内部文件预览 | `gz` |
+| `archive.zip` | 验证 ZIP 目录读取、按需解压、缓存、内部文档预览和 `archive.entryActions.download` 单条下载按钮策略 | `zip` |
+| `archive.tar.gz` | 验证 TAR.GZ 压缩包兼容入口、内部文件预览和内部下载按钮隐藏策略 | `gz` |
 | `sample.eml` | 验证 EML 头信息、HTML/文本正文、附件下载和附件预览 | `eml` |
 | `sample.msg` | 使用 msgreader 上游公开样例验证 Outlook MSG 解析 | `msg` |
 | `sample.mbox` | 验证 MBOX 归档识别和首封邮件预览 | `mbox` |
@@ -275,7 +275,7 @@ pnpm --filter @flyfish-group/file-viewer-component-demo preview
 
 Excalidraw 默认使用 `roughjs` 生成只读 SVG，运行环境提供官方 Excalidraw ESM 模块时会优先尝试 `restore` 与 `exportToSvg`；draw.io / diagrams.net 文件默认使用随 viewer assets 分发的官方 `GraphViewer` 离线预览，styles、shapes、stencils、img、mxgraph 和 math 资源都来自本地 `vendor/drawio/`。如果官方 viewer 加载异常，会自动回退内置 SVG 预览；内网路径特殊时可通过 `options.drawing.viewerScriptUrl` 指定自托管脚本。
 
-压缩包样例用于验证 `libarchive.js` Worker、目录读取、按需解压、IndexedDB 缓存和内部文件继续预览。邮件样例用于验证 EML / MSG / MBOX 的头信息、正文切换、附件下载和附件预览。地理数据样例用于验证 GeoJSON/KML/GPX 到 MapLibre 矢量叠加层、CRS 归一化和 SVG fallback 的链路；在线 Demo 默认启用 OpenFreeMap 公开底图，私有化或内网接入仍可把 `options.geo.basemap` / `options.geo.tileUrl` 改成离线、自托管或镜像地址。OLB / DRA 样例用于验证 EDA 文件结构树、对象候选、属性、诊断和可读字符串索引；GDS 样例用于验证标准 GDSII 记录解析和 SVG 版图预览；OAS / OASIS 样例用于验证可读 OASIS 文本夹具 SVG 版图与真实二进制 OASIS 的安全结构诊断边界。SQLite、WASM 和 ICO 样例用于验证资产/数据预览链路不会影响普通文档首屏。
+Demo 默认保持 `comfortable` 密度，避免首次打开就进入紧凑版；需要验证效率型外壳、工具栏、压缩包目录、嵌套预览头部、小按钮和搜索输入时，可在 URL 上追加 `?density=compact` 显式切换。压缩包样例用于验证 `libarchive.js` Worker、目录读取、按需解压、IndexedDB 缓存和内部文件继续预览。接入方可以用同一组样例把 `options.archive.entryActions.download` 设为 `false` 或回调，确认内部文件预览栏的下载按钮隐藏，而顶层 viewer 下载原始压缩包的动作仍然可独立控制。邮件样例用于验证 EML / MSG / MBOX 的头信息、正文切换、附件下载和附件预览。地理数据样例用于验证 GeoJSON/KML/GPX 到 MapLibre 矢量叠加层、CRS 归一化和 SVG fallback 的链路；在线 Demo 默认启用 OpenFreeMap 公开底图，私有化或内网接入仍可把 `options.geo.basemap` / `options.geo.tileUrl` 改成离线、自托管或镜像地址。OLB / DRA 样例用于验证 EDA 文件结构树、对象候选、属性、诊断和可读字符串索引；GDS 样例用于验证标准 GDSII 记录解析和 SVG 版图预览；OAS / OASIS 样例用于验证可读 OASIS 文本夹具 SVG 版图与真实二进制 OASIS 的安全结构诊断边界。SQLite、WASM 和 ICO 样例用于验证资产/数据预览链路不会影响普通文档首屏。
 
 ## 公开样例来源
 

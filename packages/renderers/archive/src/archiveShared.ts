@@ -4,6 +4,7 @@ import {
 } from '@file-viewer/core';
 import type {
   FileRenderContext,
+  FileViewerArchiveEntryActionContext,
   FileViewerArchiveOptions,
   FileViewerOptions,
 } from '@file-viewer/core';
@@ -123,6 +124,36 @@ export const createArchiveCacheKey = (archiveName: string, archiveSize: number, 
     entry.size,
     entry.lastModified || 0,
   ].join(':');
+};
+
+export const createArchiveEntryActionContext = (
+  entry: ArchiveEntryView
+): FileViewerArchiveEntryActionContext => ({
+  path: entry.path,
+  name: entry.name,
+  extension: entry.extension,
+  size: entry.size,
+  lastModified: entry.lastModified,
+  depth: entry.depth,
+  previewable: entry.previewable,
+});
+
+export const isArchiveEntryDownloadAllowed = (
+  entry: ArchiveEntryView,
+  archiveOptions: FileViewerArchiveOptions | undefined
+) => {
+  const policy = archiveOptions?.entryActions?.download;
+  if (policy === undefined) {
+    return true;
+  }
+  if (typeof policy === 'boolean') {
+    return policy;
+  }
+  try {
+    return policy(createArchiveEntryActionContext(entry)) !== false;
+  } catch {
+    return false;
+  }
 };
 
 const buildNestedOptions = (
