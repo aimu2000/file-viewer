@@ -30,6 +30,7 @@ const options = {
 ## Capabilities
 
 - Previews ZIP, TAR, GZIP, RAR, 7z, and common archive directories.
+- Decodes legacy ZIP entry names that omit the UTF-8 flag but are actually encoded as GBK/GB18030.
 - Supports encrypted archives: encrypted content is handled through the unified `libarchive.js` path, the built-in dialog asks for a password, and a correct password unlocks directory reading or nested entry previews.
 - Uses `libarchive.js` Worker + WASM first to keep large archive parsing off the main thread.
 - Falls back to ZIP / TAR / GZIP parsing when the Worker cannot be started, which helps mobile WebViews, local static servers, and private intranet deployments. Encrypted archives never use the fallback path and require the libarchive Worker/WASM assets.
@@ -44,6 +45,7 @@ Default asset paths are:
 - `vendor/libarchive/libarchive.wasm`
 
 For private deployments, override them with `options.archive.workerUrl` and `options.archive.wasmUrl`.
+The Vue 3 / Vue 2.7 / Vue 2.6 full packages default their viewer asset root to `/file-viewer/` and automatically point to these libarchive files. When deploying under another static prefix, call the matching full package export `setDefaultFullAssetBaseUrl('/your-prefix/')` first.
 
 ```ts
 const options = {

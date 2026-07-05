@@ -203,6 +203,18 @@ import '@file-viewer/jquery-full'
 $('#viewer').fileViewer({ url: '/files/report.pdf' })
 ```
 
+### full 包离线资产路径
+
+Vue 3 / Vue 2.7 / Vue 2.6 full 包默认把 Archive、PDF、DOCX、Excel、PPTX、CAD、Typst、Draw.io、SQLite 等运行时资产指向 `/file-viewer/`。把 `file-viewer-copy-assets` 产物发布到这个目录后，通常不需要再手写 `archive.workerUrl` / `archive.wasmUrl`。
+
+```ts
+import { setDefaultFullAssetBaseUrl } from '@file-viewer/vue3-full'
+
+setDefaultFullAssetBaseUrl('/static/file-viewer/')
+```
+
+显式传入的 `options.archive.*`、`options.pdf.*`、`options.typst.*` 等配置仍然优先，便于内网网关、租户路径或灰度静态资源覆盖。
+
 ### 按需组合
 
 ```bash
@@ -281,7 +293,7 @@ Vite 项目可额外安装 `@file-viewer/vite-plugin`，自动发现已安装 pr
 | PDF            | `pdf`                                                                                                                                                                                                                                                                                                                          | 基于 `pdfjs-dist` 预览，同源 URL 默认渐进读取；服务端支持 Range 时自动分片加载，支持缩放工具栏、旋转页、页侧边栏/目录树侧边栏切换、宽度自适应、完整打印和导出 HTML                                                  | 合同、票据、版式成品                        |
 | OFD            | `ofd`                                                                                                                                                                                                                                                                                                                          | 基于 `DLTech21/ofd.js` 仓库源码在线预览国产版式文档，避开 npm dist 授权 wasm 分支                                                                                                                                   | 电子发票、公文、归档材料                    |
 | Typst          | `typ`、`typst`                                                                                                                                                                                                                                                                                                                 | 直接读取 Typst 源文件，按需加载 `@myriaddreamin/typst.ts` 浏览器 WASM 编译器、SVG 渲染器和本地字体资产；支持完整预览、打印和导出 HTML                                                                                          | 技术报告、论文草稿、工程文档模板            |
-| 压缩包         | `zip`、`zipx`、`7z`、`rar`、`tar`、`gz`、`gzip`、`tgz`、`bz2`、`bzip2`、`tbz`、`tbz2`、`xz`、`txz`、`lzma`、`zst`、`tzst`、`cab`、`ar`、`cpio`、`iso`、`xar`、`lha`、`lzh`、`jar`、`war`、`ear`、`apk`、`cbz`、`cbr`                                                                                                           | `@file-viewer/renderer-archive` 基于 `libarchive.js` WASM Worker 读取目录，点击后按需解压内部文件并复用统一预览器，支持 IndexedDB 缓存、ZIP/TAR/GZIP fallback 和体积上限                                            | 归档附件、批量交付包、压缩包内文档快速查看  |
+| 压缩包         | `zip`、`zipx`、`7z`、`rar`、`tar`、`gz`、`gzip`、`tgz`、`bz2`、`bzip2`、`tbz`、`tbz2`、`xz`、`txz`、`lzma`、`zst`、`tzst`、`cab`、`ar`、`cpio`、`iso`、`xar`、`lha`、`lzh`、`jar`、`war`、`ear`、`apk`、`cbz`、`cbr`                                                                                                           | `@file-viewer/renderer-archive` 基于 `libarchive.js` WASM Worker 读取目录，点击后按需解压内部文件并复用统一预览器，支持 IndexedDB 缓存、GBK/GB18030 旧 ZIP 中文文件名、ZIP/TAR/GZIP 兼容降级和体积上限                         | 归档附件、批量交付包、压缩包内文档快速查看  |
 | 邮件           | `eml`、`msg`、`mbox`                                                                                                                                                                                                                                                                                                           | `@file-viewer/renderer-email` 独立承接邮件链路；EML/MBOX 使用 `postal-mime`，MSG 使用 `@kenjiuno/msgreader`，支持头信息、HTML/文本正文、附件下载与附件预览                                                          | 邮件归档、工单邮件、客户来信附件            |
 | EDA            | `olb`、`dra`、`gds`、`oas`、`oasis`                                                                                                                                                                                                                                                                                            | `@file-viewer/renderer-eda` 独立承接；使用 `cfb` 解析 OrCAD/Allegro 常见 CFB 容器；标准 GDSII 会读取 structure、boundary、path、text、reference，小图输出 SVG，大元素集自动切到 WebGL canvas；OAS/OASIS 可读文本版图夹具会输出 SVG 预览，真实 SEMI 二进制 OASIS 先做安全结构索引、可读字符串、实体候选和诊断，不虚标专业电气/几何校核 | 元件库、封装图纸、芯片版图附件初筛          |
 | CAD            | `dwg`、`dxf`、`dwf`、`dwfx`、`xps`                                                                                                                                                                                                                                                                                             | 基于 `@flyfish-dev/cad-viewer` 预览图纸；DWG 通过 Worker + LibreDWG WASM 解析，DXF 使用 JS parser，DWF/DWFx/XPS 使用 native `dwf-viewer` 渲染 W2D/W3D/XPS 图形                                                      | 工程图纸、二维 CAD 附件、AutoCAD 归档文件   |
@@ -554,7 +566,7 @@ const options = {
 - 想要最小包体时，可以不用 preset，直接安装 `@file-viewer/renderer-pdf`、`@file-viewer/renderer-word` 等单个 renderer，并通过 `options.renderers` 手动注入。
 - `fileViewerRenderers()` 或 `fileViewerRenderers({ copyAssets:true })` 会免配置自动发现已安装 preset；如果同时开启 `scan:true`，请使用 `preset:'auto'` 或 `autoPresets:true` 保留 preset 自动发现。
 - `scan:true` 会识别 `fileViewerFormats`、`data-file-viewer-formats` 和上传控件 `accept`，调试与打包时自动选择 renderer。
-- `copyAssets:true` 会复制 PDF/CAD/Typst/Archive/Data 等 worker、WASM 和 vendor 资源，满足离线和企业内网部署。
+- `copyAssets:true` 会复制 PDF/CAD/Typst/Archive/Data 等 worker、WASM 和 vendor 资源，满足离线和企业内网部署；压缩包目录会优先使用 `vendor/libarchive/worker-bundle.js` / `libarchive.wasm`，Worker 不可用时只对 ZIP/TAR/GZIP 进入兼容路径。
 - `builtinRenderers` 仍可用于高级基线控制或历史兼容；普通快速接入只需要 `preset` / `renderers` 与 `rendererMode`。
 - 如果打开的是支持矩阵内但未装配的格式，预览器会提示应安装的 preset / renderer；只有真正不在矩阵中的扩展名才提示不支持。
 - `@file-viewer/preset-all` 是全量一键方案，适合 demo、后台运维工具和企业全格式附件中心；普通业务仍建议优先选择更窄的 preset。

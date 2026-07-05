@@ -129,6 +129,18 @@ import FileViewer from '@file-viewer/vue3-full'
 
 React, Vue 2, Svelte, and jQuery keep the same component shape; only the package name changes.
 
+The Vue 3 / Vue 2.7 / Vue 2.6 full packages default their runtime asset base to `/file-viewer/` and pre-fill Archive, PDF, DOCX, Excel, PPTX, CAD, Typst, Draw.io, and SQLite asset URLs. After publishing the `vendor/`, `wasm/`, and related directories copied by `file-viewer-copy-assets` under `/file-viewer/`, `@file-viewer/vue3-full`, `@file-viewer/vue2.7-full`, and `@file-viewer/vue2.6-full` do not need hand-written `archive.workerUrl` / `archive.wasmUrl` values.
+
+If your static prefix is different, set the default base once during application startup:
+
+```ts
+import { setDefaultFullAssetBaseUrl } from '@file-viewer/vue3-full'
+
+setDefaultFullAssetBaseUrl('/static/file-viewer/')
+```
+
+Explicit options such as `options.archive.workerUrl` or `options.pdf.workerUrl` still win, which keeps tenant-specific or staged static paths easy to override.
+
 ### CDN Full: Complete Script-Tag Trial
 
 No-build pages can load the full CDN bundle directly. It avoids local package installation and is useful for demos, POCs, and classic admin pages:

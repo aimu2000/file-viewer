@@ -275,7 +275,7 @@ const copy = {
     },
     matrixTitle: '覆盖广，不等于粗糙。每条链路都面向真实业务。',
     matrixIntro:
-      '格式识别、资源加载、Worker/WASM、主题、水印、搜索、缩放、打印和导出都由预览器内部统一适配；PPTX 已由独立开源的 @file-viewer/pptx 原生引擎承接，业务侧可以选 preset-lite、preset-office、preset-engineering 或单 renderer 精确裁剪。',
+      '格式识别、资源加载、Worker/WASM、主题、水印、搜索、缩放、打印和导出都由预览器内部统一适配；PPTX 已由独立开源的 @file-viewer/pptx 原生引擎承接，Archive 已兼容 GBK/GB18030 旧 ZIP 中文文件名和 libarchive/ZIP fallback 边界，业务侧可以选 preset-lite、preset-office、preset-engineering 或单 renderer 精确裁剪。',
     formatsTitle: '支持矩阵',
     solutionsTitle: '适合长期运行在企业系统里',
     solutionsIntro:
@@ -323,7 +323,7 @@ const copy = {
     },
     matrixTitle: 'Broad coverage, without treating fidelity as optional.',
     matrixIntro:
-      'Format detection, assets, Worker/WASM loading, themes, watermarking, search, zoom, print, and export are adapted inside the viewer. PPTX is handled by the standalone open-source @file-viewer/pptx native engine, and applications can choose preset-lite, preset-office, preset-engineering, or exact single-renderer cuts.',
+      'Format detection, assets, Worker/WASM loading, themes, watermarking, search, zoom, print, and export are adapted inside the viewer. PPTX is handled by the standalone open-source @file-viewer/pptx native engine, Archive handles legacy GBK/GB18030 ZIP entry names plus the libarchive/ZIP fallback boundary, and applications can choose preset-lite, preset-office, preset-engineering, or exact single-renderer cuts.',
     formatsTitle: 'Format matrix',
     solutionsTitle: 'Built for long-running enterprise workspaces',
     solutionsIntro:
@@ -837,8 +837,8 @@ export default defineConfig({
     install: isZh.value ? '复制 worker / wasm / font / vendor 资产' : 'Copy worker / wasm / font / vendor assets',
     title: isZh.value ? '企业内网和严格 CSP 场景可自托管' : 'Self-host assets for intranet and strict CSP',
     summary: isZh.value
-      ? 'PDF、CAD、Typst、Archive、Draw.io、DOCX、表格和 SQLite 等资源都可复制到业务自己的静态目录。'
-      : 'PDF, CAD, Typst, Archive, Draw.io, DOCX, spreadsheet, and SQLite assets can live under your own static path.',
+      ? 'PDF、CAD、Typst、Archive、Draw.io、DOCX、表格和 SQLite 等资源都可复制到业务自己的静态目录；Vue full 包默认使用 /file-viewer/ 作为资源根。'
+      : 'PDF, CAD, Typst, Archive, Draw.io, DOCX, spreadsheet, and SQLite assets can live under your own static path; Vue full packages default to /file-viewer/ as the asset root.',
     language: 'Shell',
     highlightLanguage: 'bash',
     href: `${docsUrl}guide/distribution`,

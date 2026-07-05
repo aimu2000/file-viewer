@@ -144,6 +144,18 @@ import FileViewer from '@file-viewer/vue3-full'
 
 React / Vue2 / Svelte / jQuery 只需要把包名替换为对应 full 包，组件写法保持一致。
 
+Vue 3 / Vue 2.7 / Vue 2.6 full 包会默认把离线资产根设为 `/file-viewer/`，并自动补齐 Archive、PDF、DOCX、Excel、PPTX、CAD、Typst、Draw.io 和 SQLite 等资源 URL。也就是说，把 `file-viewer-copy-assets` 复制出的 `vendor/`、`wasm/` 等目录发布到 `/file-viewer/` 后，`@file-viewer/vue3-full`、`@file-viewer/vue2.7-full` 和 `@file-viewer/vue2.6-full` 不需要再手写 `archive.workerUrl` / `archive.wasmUrl`。
+
+如果你的静态目录不是 `/file-viewer/`，在应用启动前改一次默认 base 即可：
+
+```ts
+import { setDefaultFullAssetBaseUrl } from '@file-viewer/vue3-full'
+
+setDefaultFullAssetBaseUrl('/static/file-viewer/')
+```
+
+显式传入的 `options.archive.workerUrl`、`options.pdf.workerUrl` 等仍然优先级更高，方便灰度或多租户静态路径覆盖。
+
 ### CDN full：完整能力快速试跑
 
 无构建工具或临时验证页面可以直接使用 CDN full 包。CDN 不占用本地项目安装体积，适合演示、POC 和传统后台页面快速试跑：

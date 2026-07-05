@@ -30,6 +30,7 @@ const options = {
 ## 能力边界
 
 - 支持 ZIP、TAR、GZIP、RAR、7z 等常见压缩包目录预览。
+- 自动兼容未声明 UTF-8、实际使用 GBK/GB18030 编码的旧 ZIP 中文文件名。
 - 支持加密压缩包：检测到加密内容后使用 `libarchive.js` 统一解密，默认弹框要求用户输入密码，密码正确后继续读取目录或预览内部文件。
 - 优先使用 `libarchive.js` Worker + WASM，避免大压缩包阻塞主线程。
 - Worker 不可用时自动回退到 ZIP / TAR / GZIP 兼容模式，适合手机 WebView、本地临时服务器和内网静态部署排障；加密压缩包不会走 fallback，必须发布 libarchive Worker/WASM。
@@ -44,6 +45,7 @@ const options = {
 - `vendor/libarchive/libarchive.wasm`
 
 私有化部署时可以通过 `options.archive.workerUrl` 和 `options.archive.wasmUrl` 覆盖。
+Vue 3 / Vue 2.7 / Vue 2.6 full 包默认把 viewer assets 根设为 `/file-viewer/`，会自动指向这两个 libarchive 文件；如果部署在其它静态前缀，先调用对应 full 包导出的 `setDefaultFullAssetBaseUrl('/your-prefix/')` 即可。
 
 ```ts
 const options = {

@@ -149,6 +149,8 @@ npx file-viewer-copy-assets ./public/file-viewer
 
 This copies and verifies worker, WASM, PDF, CAD, Typst WASM/fonts, SQLite, archive, Office, Draw.io, and other renderer assets. Runtime options can point each renderer to those self-hosted URLs.
 
+Vue full packages use `/file-viewer/` as their default static prefix. When those copied assets are published there, `@file-viewer/vue3-full`, `@file-viewer/vue2.7-full`, and `@file-viewer/vue2.6-full` automatically point to `/file-viewer/vendor/libarchive/worker-bundle.js`, `/file-viewer/vendor/libarchive/libarchive.wasm`, PDF.js, DOCX, PPTX, CAD, Typst, Draw.io, SQLite, and related assets. If you deploy under a different prefix, call `setDefaultFullAssetBaseUrl('/your-prefix/')` during startup, or keep using explicit `options.archive.*`, `options.pdf.*`, `options.typst.*`, and other asset URL overrides.
+
 For Cloudflare Pages, edge compression is enabled according to the visitor `Accept-Encoding` header. `scripts/deploy-cloudflare-pages.mjs` also Brotli-compresses oversized WASM files before Direct Upload and writes `Content-Encoding: br`, `Vary: Accept-Encoding`, `Content-Type: application/wasm`, and long-term cache headers into `_headers`. This keeps large assets such as the Typst compiler WASM deployable under the original `.wasm` URL. After deployment, verify the live headers with:
 
 ```bash

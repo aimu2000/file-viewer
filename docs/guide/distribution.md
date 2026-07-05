@@ -169,6 +169,8 @@ Core、独立 renderer、preset、PPTX 原生引擎、Vanilla JS / Pure Web、Vu
 
 纯离线部署时，除了 npm tarball，也要把 viewer assets 一起发布到业务静态目录。运行 `file-viewer-copy-assets` 会复制 PDF.js worker/CMap/WASM/standard fonts、CAD WASM、Typst WASM/默认字体、SQLite WASM、压缩包 worker 和 Office worker，并生成 `flyfish-viewer-assets.json` 供验收。运行时默认不会访问公共 CDN 或第三方在线静态资源；路径特殊时通过各格式的 `options.*Url` 指向自托管地址。
 
+Vue full 包的默认静态前缀是 `/file-viewer/`。如果你把资产发布到这个目录，`@file-viewer/vue3-full`、`@file-viewer/vue2.7-full` 和 `@file-viewer/vue2.6-full` 会自动指向 `/file-viewer/vendor/libarchive/worker-bundle.js`、`/file-viewer/vendor/libarchive/libarchive.wasm`、PDF.js、DOCX、PPTX、CAD、Typst、Draw.io 和 SQLite 等资源。部署在其它前缀时，启动前调用 `setDefaultFullAssetBaseUrl('/your-prefix/')`，或继续使用对应的 `options.archive.*`、`options.pdf.*`、`options.typst.*` 等显式配置。
+
 ## 官方 Demo iframe 交付包
 
 客户需要“直接拿官方 Demo 构建产物做 iframe 集成”时，使用 GitHub Release 中的 `file-viewer-v2-*-official-demo-iframe.tar.gz`。这个包不要求业务项目安装 npm 包，解压后把所有文件发布到同一个静态目录即可，目录中的 `assets/`、`vendor/`、`wasm/` 和 `example/` 必须保持相对位置不变。

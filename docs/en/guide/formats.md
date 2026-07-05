@@ -32,6 +32,7 @@
 - Patch files are rendered with `diff2html` in side-by-side mode. Git bundles parse the bundle header, refs, commit objects, trees, readable blobs, and regular OFS_DELTA / REF_DELTA pack objects directly in the browser; very large packs or bundles that depend on external prerequisites surface a clear boundary notice instead of being silently misrepresented.
 - EDA uses `@file-viewer/renderer-eda`. OLB and DRA are safe structure previews over common CFB/OLE2 containers, standard GDSII renders small layouts as SVG and larger element sets through WebGL typed-array batches, readable OASIS text fixtures render as SVG, and real SEMI binary OASIS remains a safe structure-index preview until the dedicated WASM/WebGL layout kernel is split out.
 - CAD uses `@file-viewer/renderer-cad` and `@flyfish-dev/cad-viewer`; DWG, DWF, and DWFx assets remain self-hostable for offline deployments.
+- Archives use `@file-viewer/renderer-archive` with `libarchive.js` Worker + WASM first, then ZIP/TAR/GZIP compatibility fallback when the Worker cannot start. Legacy ZIP files without the UTF-8 filename flag are decoded with GBK/GB18030 detection so Chinese entry names remain readable in the compatibility path.
 - STEP, IGES, IFC, 3DM, and BREP use the `@file-viewer/renderer-3d` entry plus the lightweight `@file-viewer/geometry-engine` route package for signature detection and accurate conversion guidance. Full visual decoding still belongs in dedicated OpenCascade / web-ifc / rhino3dm WASM paths, not in core or default component installs.
 
 ## Capability Model
