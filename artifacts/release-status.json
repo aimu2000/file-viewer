@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-06T06:54:41.160Z",
+  "generatedAt": "2026-07-06T07:41:22.739Z",
   "version": "2.1.23",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -10,14 +10,14 @@
     "policy": "private-complete-original-workspace",
     "authoritativeCommit": "904202e5610816bd5fb21b2dbd5d4fced1b8bd94",
     "localBranch": "main",
-    "localCommit": "904202e5610816bd5fb21b2dbd5d4fced1b8bd94",
-    "inSync": true,
+    "localCommit": "832103d3a4137ff8900f56ca4a1c9ea4388d60e3",
+    "inSync": false,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "904202e5610816bd5fb21b2dbd5d4fced1b8bd94",
-    "shortCommit": "904202e5",
+    "commit": "832103d3a4137ff8900f56ca4a1c9ea4388d60e3",
+    "shortCommit": "832103d3",
     "dirty": false
   },
   "sourceRemote": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "fa6e1fd6c40a9a227149e44b79f940a1b38c98c0",
+      "hash": "d869d72041d547c52cde904d1eaafce830f2057f",
       "error": ""
     },
     "gitee": {
@@ -734,17 +734,32 @@
       "error": ""
     }
   ],
-  "gaps": [],
+  "gaps": [
+    "local HEAD 832103d3 does not match origin/main 904202e56108"
+  ],
   "gapSummary": {
-    "total": 0,
+    "total": 1,
     "externalBlockers": 0,
-    "localActionable": 0,
-    "byChannel": {},
+    "localActionable": 1,
+    "byChannel": {
+      "source-worktree": 1
+    },
     "externalBlockerChannels": [],
-    "localActionableChannels": []
+    "localActionableChannels": [
+      "source-worktree"
+    ]
   },
-  "gapDetails": [],
+  "gapDetails": [
+    {
+      "id": "source-worktree-local-head-832103d3-does-not-match-origin-main-904202e56108",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local HEAD 832103d3 does not match origin/main 904202e56108",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    }
+  ],
   "nextActions": [
-    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
+    "Commit and push the local source/public repository changes, then regenerate the release status report."
   ]
 }

@@ -367,7 +367,7 @@ export default defineConfig({
       title: 'Flyfish Viewer',
       description: '面向企业后台、内网和私有化系统的纯前端文件预览组件，无需服务端转码，覆盖 206 个扩展名和 24 条预览链路。',
       themeConfig: {
-        logo: '/_media/logo.svg',
+        logo: '/_media/logo.png',
         nav: zhNav,
         sidebar: zhSidebar,
         outline: { level: [2, 3], label: '本页导航' },
@@ -391,7 +391,7 @@ export default defineConfig({
       title: 'Flyfish Viewer',
       description: 'Browser-native file preview for internal web apps, covering 206 extensions across 24 preview pipelines without server-side conversion.',
       themeConfig: {
-        logo: '/_media/logo.svg',
+        logo: '/_media/logo.png',
         nav: enNav,
         sidebar: enSidebar,
         outline: { level: [2, 3], label: 'On This Page' },
@@ -415,7 +415,7 @@ export default defineConfig({
     ['meta', { property: 'og:description', content: 'Browser-native file preview for internal web apps, covering 206 extensions across 24 preview pipelines without server-side conversion.' }]
   ],
   themeConfig: {
-    logo: '/_media/logo.svg',
+    logo: '/_media/logo.png',
     nav: rootEnNav,
     sidebar: rootEnSidebar,
     outline: { level: [2, 3], label: 'On This Page' },

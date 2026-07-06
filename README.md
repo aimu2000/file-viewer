@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://file-viewer.app">
-    <img src="docs/public/_media/logo.png" width="92" alt="Flyfish File Viewer logo" />
+    <img src="docs/public/_media/logo.png" width="92" alt="File Viewer logo" />
   </a>
 </p>
 
