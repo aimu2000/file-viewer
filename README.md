@@ -818,4 +818,10 @@ npm publish --access public
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=flyfish-dev/file-viewer&type=Date)](https://star-history.com/#flyfish-dev/file-viewer&Date)
+<a href="https://www.star-history.com/?repos=flyfish-dev%2Ffile-viewer&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=flyfish-dev/file-viewer&type=date&theme=dark&legend=top-left&sealed_token=kC8tme1y0yJcd6I-06OnZ30j1dV87szS4iubNZ5B70Nc5Dm-4mQ_CLrbVxb7sIVejK-51wQu0YbsnyDoQJi7BjtAlruLoTlPpVVu4pzCBIriSckqLHUVz57BUz2TTMi1pcWHvcGfuyXdtwuEXitdEohxvkTWc2zMxhlJbVDFuY1Agvy69p4o3ghcsqJs" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=flyfish-dev/file-viewer&type=date&legend=top-left&sealed_token=kC8tme1y0yJcd6I-06OnZ30j1dV87szS4iubNZ5B70Nc5Dm-4mQ_CLrbVxb7sIVejK-51wQu0YbsnyDoQJi7BjtAlruLoTlPpVVu4pzCBIriSckqLHUVz57BUz2TTMi1pcWHvcGfuyXdtwuEXitdEohxvkTWc2zMxhlJbVDFuY1Agvy69p4o3ghcsqJs" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=flyfish-dev/file-viewer&type=date&legend=top-left&sealed_token=kC8tme1y0yJcd6I-06OnZ30j1dV87szS4iubNZ5B70Nc5Dm-4mQ_CLrbVxb7sIVejK-51wQu0YbsnyDoQJi7BjtAlruLoTlPpVVu4pzCBIriSckqLHUVz57BUz2TTMi1pcWHvcGfuyXdtwuEXitdEohxvkTWc2zMxhlJbVDFuY1Agvy69p4o3ghcsqJs" />
+ </picture>
+</a>
