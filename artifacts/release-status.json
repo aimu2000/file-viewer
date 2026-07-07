@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-07T06:46:03.412Z",
+  "generatedAt": "2026-07-07T06:46:45.727Z",
   "version": "2.1.23",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -45,9 +45,9 @@
     "inSync": false,
     "syncMode": "unchecked",
     "treeChecked": false,
-    "referenceTree": "1c8a55c0feb1f68fbcf56a03fc4e341bc40aff4b",
+    "referenceTree": "4192b776762c792a5920d54abe63f6bfd4bae063",
     "giteeTree": "",
-    "treeError": "local public repository 453f6cff02ff does not match GitHub d869d72041d5",
+    "treeError": "local public repository 292890814aea does not match GitHub d869d72041d5",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
