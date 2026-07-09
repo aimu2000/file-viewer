@@ -208,9 +208,9 @@ const renderSealPage = function (pageDiv, pages, tpls, isStampAnnot, stampAnnot,
         let divBoundary = converterBox(stampAnnotBoundary);
         let div = document.createElement('div');
         div.setAttribute("name","seal_img_div");
-        div.setAttribute('style', `cursor: pointer; position:relative; left: ${divBoundary.x}px; top: ${divBoundary.y}px; width: ${divBoundary.w}px; height: ${divBoundary.h}px`)
-        div.setAttribute('data-ses-signature', `${JSON.stringify(SES_Signature)}`);
-        div.setAttribute('data-signed-info', `${JSON.stringify(signedInfo)}`);
+        div.setAttribute('style', `cursor: pointer; overflow: hidden; position:absolute; left: ${divBoundary.x}px; top: ${divBoundary.y}px; width: ${divBoundary.w}px; height: ${divBoundary.h}px`)
+        div.setAttribute('data-ses-signature', `${JSON.stringify(SES_Signature || {})}`);
+        div.setAttribute('data-signed-info', `${JSON.stringify(signedInfo || {})}`);
         const template = page[pageId]['json']['ofd:Template'];
         if (template) {
             const layers = tpls[template['@_TemplateID']]['json']['ofd:Content']['ofd:Layer'];
@@ -339,8 +339,8 @@ export const renderImageOnDiv = function (pageWidth, pageHeight, imgSrc, boundar
     if(isStampAnnot)
     {
         div.setAttribute("name","seal_img_div");
-        div.setAttribute('data-ses-signature', `${JSON.stringify(SES_Signature)}`);
-        div.setAttribute('data-signed-info', `${JSON.stringify(signedInfo)}`);
+        div.setAttribute('data-ses-signature', `${JSON.stringify(SES_Signature || {})}`);
+        div.setAttribute('data-signed-info', `${JSON.stringify(signedInfo || {})}`);
     }
     let img = document.createElement('img');
     img.src = imgSrc;

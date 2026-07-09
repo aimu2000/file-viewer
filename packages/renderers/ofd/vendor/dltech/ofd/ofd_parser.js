@@ -21,6 +21,8 @@
 import JsZip from "jszip";
 import {parseStBox, getExtensionByPath, replaceFirstSlash} from "./ofd_util.js";
 import {Jbig2Image} from '../jbig2/jbig2.js';
+import {pipeline} from "./pipeline.js";
+import {parseSesSignature} from "./ses_signature_parser.js";
 
 const ensureBrowserGlobal = () => {
     // DLTech21/ofd.js 的一部分遗留逻辑读取 Node 风格 global。
@@ -257,6 +259,30 @@ export const parseSingleDoc = async function ([zip, array]) {
     return docs;
 }
 
+const uint8ArrayToBase64 = function (bytes) {
+    const chunkSize = 0x8000;
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        const chunk = bytes.subarray(i, i + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk);
+    }
+    return btoa(binary);
+}
+
+const sealImageMime = function (type) {
+    const normalized = String(type || '').toLowerCase();
+    if (normalized === 'jpg' || normalized === 'jpeg') {
+        return 'image/jpeg';
+    }
+    if (normalized === 'gif') {
+        return 'image/gif';
+    }
+    if (normalized === 'bmp') {
+        return 'image/bmp';
+    }
+    return 'image/png';
+}
+
 export const doGetDocRoot = async function (zip, docbody) {
     let docRoot = docbody['ofd:DocRoot'];
     docRoot = normalizeZipPath(replaceFirstSlash(docRoot));
@@ -267,18 +293,33 @@ export const doGetDocRoot = async function (zip, docbody) {
     for (const stamp of stampAnnot) {
         if (stamp.sealObj && Object.keys(stamp.sealObj).length > 0) {
             if (stamp.sealObj.type === 'ofd') {
-                const stampObjs = await getSealDocumentObj(stamp);
-                for (let stampObj of stampObjs) {
-                    stamp.stampAnnot.boundary = parseStBox(stamp.stampAnnot['@_Boundary']);
-                    //console.log(stamp.stampAnnot.boundary)
-                    stamp.stampAnnot.pageRef = stamp.stampAnnot['@_PageRef'];
-                    if (!stampAnnotArray[stamp.stampAnnot['@_PageRef']]) {
-                        stampAnnotArray[stamp.stampAnnot['@_PageRef']] = [];
+                try {
+                    const stampObjs = await getSealDocumentObj(stamp);
+                    let annotArray = [];
+                    annotArray = annotArray.concat(stamp.stampAnnot);
+                    for (const annot of annotArray) {
+                        if (!annot) {
+                            continue;
+                        }
+                        annot.boundary = parseStBox(annot['@_Boundary']);
+                        annot.pageRef = annot['@_PageRef'];
+                        for (let stampObj of stampObjs) {
+                            if (!stampAnnotArray[annot['@_PageRef']]) {
+                                stampAnnotArray[annot['@_PageRef']] = [];
+                            }
+                            stampAnnotArray[annot['@_PageRef']].push({
+                                type: 'ofd',
+                                obj: stampObj,
+                                stamp: {...stamp, stampAnnot: annot},
+                            });
+                        }
                     }
-                    stampAnnotArray[stamp.stampAnnot['@_PageRef']].push({type: 'ofd', obj: stampObj, stamp});
+                } catch (e) {
+                    console.warn('[ofd] nested OFD seal parse failed', e);
                 }
-            } else if (stamp.sealObj.type === 'png') {
-                let img = 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, stamp.sealObj.ofdArray));
+            } else if (stamp.sealObj.ofdArray?.length) {
+                const mime = sealImageMime(stamp.sealObj.type);
+                let img = `data:${mime};base64,` + uint8ArrayToBase64(stamp.sealObj.ofdArray);
                 let stampArray = [];
                 stampArray = stampArray.concat(stamp.stampAnnot);
                 for (const annot of stampArray) {
@@ -523,16 +564,93 @@ const parsePage = async function (zip, obj, doc) {
 }
 
 const getSignature = async function (zip, signatures, doc) {
-    // 签章解析依赖 ASN.1、国密算法和证书校验链路。在线预览先跳过签章校验，
-    // 以免个别签章解析失败阻断正文页渲染；业务如需验签可在服务端独立处理。
-    void zip;
-    void signatures;
-    void doc;
-    return [];
+    // 预览只解析签章外观（SES 印章图片 / 嵌套 OFD），不做国密/证书验签，
+    // 单个签章失败不影响正文页渲染。
+    let stampAnnot = [];
+    if (!signatures) {
+        return stampAnnot;
+    }
+    try {
+        let signaturesPath = normalizeZipPath(replaceFirstSlash(signatures));
+        if (!startsWithZipRoot(signaturesPath, doc)) {
+            signaturesPath = joinZipPath(doc, signaturesPath);
+        }
+        if (!getZipEntry(zip, signaturesPath)) {
+            return stampAnnot;
+        }
+        let data = await getJsonFromXmlContent(zip, signaturesPath);
+        let signature = data['json']['ofd:Signatures']['ofd:Signature'];
+        let signatureArray = [];
+        signatureArray = signatureArray.concat(signature);
+        for (const sign of signatureArray) {
+            if (!sign) {
+                continue;
+            }
+            try {
+                let signatureLoc = normalizeZipPath(replaceFirstSlash(sign['@_BaseLoc']));
+                let signatureID = sign['@_ID'];
+                if (signatureLoc && signatureLoc.indexOf('Signs') === -1 && !startsWithZipRoot(signatureLoc, doc)) {
+                    signatureLoc = joinZipPath('Signs', signatureLoc);
+                }
+                if (!startsWithZipRoot(signatureLoc, doc)) {
+                    signatureLoc = joinZipPath(doc, signatureLoc);
+                }
+                const parsed = await getSignatureData(zip, signatureLoc, signatureID);
+                if (parsed) {
+                    stampAnnot.push(parsed);
+                }
+            } catch (e) {
+                console.warn('[ofd] signature entry parse failed', sign?.['@_ID'], e);
+            }
+        }
+    } catch (e) {
+        console.warn('[ofd] signatures.xml parse failed', e);
+    }
+    return stampAnnot;
 }
 
-const getSealDocumentObj = function () {
-    return Promise.resolve([]);
+const getSignatureData = async function (zip, signature, signatureID) {
+    const data = await getJsonFromXmlContent(zip, signature);
+    let signedValue = data['json']['ofd:Signature']['ofd:SignedValue'];
+    if (signedValue == null) {
+        return null;
+    }
+    signedValue = normalizeZipPath(replaceFirstSlash(String(signedValue)));
+    if (!getZipEntry(zip, signedValue)) {
+        signedValue = joinZipPath(signature.substring(0, signature.lastIndexOf('/')), signedValue);
+    }
+    if (!getZipEntry(zip, signedValue)) {
+        console.warn('[ofd] SignedValue not found', signedValue);
+        return null;
+    }
+    let sealObj = await parseSesSignature(zip, signedValue, getZipEntry);
+    if (!sealObj || !Object.keys(sealObj).length) {
+        return null;
+    }
+    const signedInfoNode = data['json']['ofd:Signature']['ofd:SignedInfo'] || {};
+    return {
+        'stampAnnot': signedInfoNode['ofd:StampAnnot'],
+        'sealObj': sealObj,
+        'signedInfo': {
+            'signatureID': signatureID,
+            'VerifyRet': sealObj.verifyRet,
+            'Provider': signedInfoNode['ofd:Provider'],
+            'SignatureMethod': signedInfoNode['ofd:SignatureMethod'],
+            'SignatureDateTime': signedInfoNode['ofd:SignatureDateTime'],
+        },
+    };
+}
+
+const getSealDocumentObj = function (stampAnnot) {
+    return new Promise((resolve, reject) => {
+        pipeline.call(this, async () => await unzipOfd(stampAnnot.sealObj.ofdArray), getDocRoots, parseSingleDoc)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(res => {
+                reject(res);
+            });
+    });
 }
 
 const getJsonFromXmlContent = async function (zip, xmlName) {

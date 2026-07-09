@@ -2,6 +2,24 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## 当前主线 OFD 电子签章预览
+
+- 修复 OFD 预览不显示电子签章的问题（GitHub #94）：恢复 SES `SignedValue` 签章外观解析，支持 PNG/JPEG 印章图片与嵌套 OFD 印章，并按 `StampAnnot` 边界叠加到对应页面。
+- 预览路径只提取印章外观，不做国密/证书验签，单个签章失败不会阻断正文渲染；新增 `seal-png.ofd` / `seal-ofd.ofd` 回归与 `pnpm --filter @file-viewer/renderer-ofd verify:github-94`。
+
+## 当前主线 DOCX/导出 HTML 图片修复
+
+- 修复 DOCX 导出 HTML / 打印时图片空白的问题（GitHub #90）：`@file-viewer/docx` 预览默认使用会话级 `blob:` URL，导出克隆后在新文档中失效。
+- 在 core 导出/打印统一链路把 `blob:` 内联为可移植的 `data:` URL，并在 adapter 导出前等待图片就绪；同一修复覆盖打印窗口与 HTML 下载。
+
+## 当前主线打印水印与打印掩膜
+
+- 打印链路默认附带当前水印样式（`print-color-adjust: exact`），避免浏览器打印时丢掉水印层（GitHub #92）。
+- 工具栏打印改为紧凑下拉：点击「打印」后可选「直接打印」或「掩膜打印」；掩膜打印进入拖拽黑块设计流程，确认后再打印。
+- 移动端底部操作面板与浮动工具栏的打印下拉改为向上展开，避免盖住底部快捷入口或被裁切。
+- 掩膜设计器通过 core 内部动态 `import('./print-mask')` 异步加载，不打进主包；组件侧统一调用 `printWithMask()` / `printRenderedHtml({ mask })`，安装组件即可开箱使用，无需用户配置 `@file-viewer/core/print-mask` 子路径 alias。
+- 打印 HTML 在内容之上、水印之下叠加黑色遮盖块。
+
 ## 当前主线 `.doc` 内嵌图片解析修复
 
 - 按 MS-DOC `PICFAndOfficeArtData` / MS-ODRAW OfficeArt BLIP 规范解析内嵌图片，不再只靠魔数扫描；修复把 OfficeArt 内嵌 PNG/JPEG 误判为 `image/emf` 或 `application/octet-stream`，导致浏览器空白占位的问题（GitHub #87）。

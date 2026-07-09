@@ -54,13 +54,16 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.json",
-    "type-check": "tsc -b tsconfig.json"
+    "type-check": "tsc -b tsconfig.json",
+    "verify:github-94": "node scripts/verify-github-94.mjs"
   },
   "dependencies": {
     "@file-viewer/core": "workspace:2.1.23",
+    "@lapo/asn1js": "^1.2.1",
     "jszip": "^3.10.1"
   },
   "devDependencies": {
+    "linkedom": "^0.18.12",
     "typescript": "^6.0.3"
   },
   "license": "Apache-2.0"

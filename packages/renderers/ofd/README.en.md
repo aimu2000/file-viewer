@@ -35,6 +35,7 @@ const options = {
 ## Features
 
 - Preview `.ofd` documents in the browser.
+- Preview electronic seal appearance (SES seal images and nested OFD seals) using `StampAnnot` boundaries; preview does not perform cryptographic verification.
 - Lazy-load the OFD parser and renderer at the format boundary.
 - Ship the vendor files inside the npm package for offline and intranet deployments.
 - Support unified zoom, print, HTML export, and lifecycle context integration.
