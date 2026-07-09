@@ -43,7 +43,7 @@ const appendChildValue = function (target, key, value) {
     target[key] = value;
 }
 
-const parseXmlElement = function (element, options) {
+const parseXmlElement = function (element, options, order) {
     const attrPrefix = options.attributeNamePrefix ?? '@_';
     const result = {};
     if (options.ignoreAttributes !== true) {
@@ -55,7 +55,16 @@ const parseXmlElement = function (element, options) {
     const textParts = [];
     for (const child of Array.from(element.childNodes || [])) {
         if (child.nodeType === 1) {
-            appendChildValue(result, child.nodeName, parseXmlElement(child, options));
+            // 渲染层按 pfIndex 做绘制顺序（CSS z-index），这里用前序遍历给每个元素编号，
+            // 还原 Image/Path/Text/PageBlock 在原始文档里交错出现的先后关系。
+            // 若不记录，解析结果会把同名标签分组成数组，渲染时只能按“类型”整批绘制
+            // （所有图片一起、所有路径一起……），导致本该压在图片下方的装饰路径盖住图片。
+            const pfIndex = order ? order.next++ : undefined;
+            const parsedChild = parseXmlElement(child, options, order);
+            if (parsedChild && typeof parsedChild === 'object' && pfIndex !== undefined) {
+                parsedChild.pfIndex = pfIndex;
+            }
+            appendChildValue(result, child.nodeName, parsedChild);
             continue;
         }
         if (child.nodeType === 3 || child.nodeType === 4) {
@@ -94,7 +103,7 @@ const parseXmlToJson = function (xmlData, options = {}) {
         return {};
     }
     return {
-        [root.nodeName]: parseXmlElement(root, options)
+        [root.nodeName]: parseXmlElement(root, options, { next: 0 })
     };
 }
 

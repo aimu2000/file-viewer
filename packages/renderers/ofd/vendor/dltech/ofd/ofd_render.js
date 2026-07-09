@@ -125,6 +125,43 @@ export const calPageBoxScale = function (document, page) {
     return box;
 }
 
+// OFD 的 PathObject/TextObject/Layer 通常通过 DrawParam 引用共享颜色/线宽，
+// 而不是在对象上直接写 ofd:FillColor / ofd:StrokeColor；DrawParam 之间还能通过
+// Relative 相互继承。三处（Layer、PathObject、TextObject）都需要同样的解析规则，
+// 否则引用 DrawParam 取色的对象会因为拿不到颜色而被当成透明，完全不可见。
+const resolveDrawParamStyle = function (drawParamResObj, drawParamId, base) {
+    let fillColor = base?.fillColor ?? null;
+    let strokeColor = base?.strokeColor ?? null;
+    let lineWith = base?.lineWith;
+    if (!drawParamId || !drawParamResObj || !drawParamResObj[drawParamId]) {
+        return { fillColor, strokeColor, lineWith };
+    }
+    let drawParam = drawParamId;
+    if (drawParamResObj[drawParam]['relative']) {
+        drawParam = drawParamResObj[drawParam]['relative'];
+        if (drawParamResObj[drawParam] && drawParamResObj[drawParam]['FillColor']) {
+            fillColor = parseColor(drawParamResObj[drawParam]['FillColor']);
+        }
+        if (drawParamResObj[drawParam] && drawParamResObj[drawParam]['StrokeColor']) {
+            strokeColor = parseColor(drawParamResObj[drawParam]['StrokeColor']);
+        }
+        if (drawParamResObj[drawParam] && drawParamResObj[drawParam]['LineWidth']) {
+            lineWith = converterDpi(drawParamResObj[drawParam]['LineWidth']);
+        }
+        drawParam = drawParamId;
+    }
+    if (drawParamResObj[drawParam]['FillColor']) {
+        fillColor = parseColor(drawParamResObj[drawParam]['FillColor']);
+    }
+    if (drawParamResObj[drawParam]['StrokeColor']) {
+        strokeColor = parseColor(drawParamResObj[drawParam]['StrokeColor']);
+    }
+    if (drawParamResObj[drawParam]['LineWidth']) {
+        lineWith = converterDpi(drawParamResObj[drawParam]['LineWidth']);
+    }
+    return { fillColor, strokeColor, lineWith };
+}
+
 // 根据模板来渲染层节点
 const renderLayerFromTemplate = function (tpls, template, pageDiv, fontResObj, drawParamResObj, multiMediaResObj) {
     let array = [];
@@ -235,33 +272,14 @@ const renderSealPage = function (pageDiv, pages, tpls, isStampAnnot, stampAnnot,
 }
 
 const renderLayer = function (pageDiv, fontResObj, drawParamResObj, multiMediaResObj, layer, isStampAnnot) {
-    let fillColor = null;
-    let strokeColor = null;
-    let lineWith = converterDpi(0.353);
-    let drawParam = layer?.['@_DrawParam'];
-    if (drawParam && Object.keys(drawParamResObj).length > 0 && drawParamResObj[drawParam]) {
-        if (drawParamResObj[drawParam]['relative']) {
-            drawParam = drawParamResObj[drawParam]['relative'];
-            if (drawParamResObj[drawParam]['FillColor']) {
-                fillColor = parseColor(drawParamResObj[drawParam]['FillColor']);
-            }
-            if (drawParamResObj[drawParam]['StrokeColor']) {
-                strokeColor = parseColor(drawParamResObj[drawParam]['StrokeColor']);
-            }
-            if (drawParamResObj[drawParam]['LineWidth']) {
-                lineWith = converterDpi(drawParamResObj[drawParam]['LineWidth']);
-            }
-        }
-        if (drawParamResObj[drawParam]['FillColor']) {
-            fillColor = parseColor(drawParamResObj[drawParam]['FillColor']);
-        }
-        if (drawParamResObj[drawParam]['StrokeColor']) {
-            strokeColor = parseColor(drawParamResObj[drawParam]['StrokeColor']);
-        }
-        if (drawParamResObj[drawParam]['LineWidth']) {
-            lineWith = converterDpi(drawParamResObj[drawParam]['LineWidth']);
-        }
-    }
+    const layerStyle = resolveDrawParamStyle(drawParamResObj, layer?.['@_DrawParam'], {
+        fillColor: null,
+        strokeColor: null,
+        lineWith: converterDpi(0.353),
+    });
+    let fillColor = layerStyle.fillColor;
+    let strokeColor = layerStyle.strokeColor;
+    let lineWith = layerStyle.lineWith;
     const imageObjects = layer?.['ofd:ImageObject'];
     let imageObjectArray = [];
     imageObjectArray = imageObjectArray.concat(imageObjects);
@@ -285,15 +303,55 @@ const renderLayer = function (pageDiv, fontResObj, drawParamResObj, multiMediaRe
     textObjectArray = textObjectArray.concat(textObjects);
     for (const textObject of textObjectArray) {
         if (textObject) {
-            let svg = renderTextObject(fontResObj, textObject, fillColor, strokeColor);
+            let svg = renderTextObject(drawParamResObj, fontResObj, textObject, fillColor, strokeColor);
             pageDiv.appendChild(svg);
+        }
+    }
+    const pageBlocks = layer?.['ofd:PageBlock'];
+    let pageBlockArray = [];
+    pageBlockArray = pageBlockArray.concat(pageBlocks);
+    for (const pageBlock of pageBlockArray) {
+        if (pageBlock) {
+            // 部分 OFD（如 OFD R&W 导出的版式）把正文对象包在 PageBlock 里，需递归渲染。
+            renderLayer(pageDiv, fontResObj, drawParamResObj, multiMediaResObj, pageBlock, isStampAnnot);
         }
     }
 }
 
+// 部分 OFD 导出工具（如 OFD R&W）会让同一图层内所有图像共享同一个整页 Boundary，
+// 图像的真实位置和尺寸完全由 CTM 决定；此时必须优先按 CTM 计算矩形，否则所有图像会被拉伸铺满整页并互相重叠。
+const parseImageCtm = function (ctm) {
+    if (!ctm) {
+        return null;
+    }
+    const values = String(ctm).trim().split(/\s+/).map(Number);
+    return values.length === 6 && values.every(value => Number.isFinite(value)) ? values : null;
+}
+
+const resolveImageGeometry = function (imageObject) {
+    const boundary = converterBox(parseStBox(imageObject['@_Boundary']));
+    const ctmValues = parseImageCtm(imageObject['@_CTM']);
+    if (!ctmValues) {
+        return { boundary, matrix: null };
+    }
+    const [a, b, c, d, e, f] = ctmValues;
+    const isAxisAligned = Math.abs(b) < 1e-6 && Math.abs(c) < 1e-6;
+    if (isAxisAligned) {
+        // CTM 把单位正方形映射到页面坐标系，a/d 为宽高、e/f 为左上角，单位与 Boundary 一致（mm）。
+        const ctmBoundary = converterBox({
+            x: Math.min(e, e + a),
+            y: Math.min(f, f + d),
+            w: Math.abs(a),
+            h: Math.abs(d),
+        });
+        return { boundary: ctmBoundary, matrix: null };
+    }
+    // 存在旋转/斜切时，退化为整页 Boundary 无法给出正确外框，改用矩阵直接变换单位方块。
+    return { boundary, matrix: ctmValues };
+}
+
 export const renderImageObject = function (pageWidth, pageHeight, multiMediaResObj, imageObject){
-    let boundary = parseStBox(imageObject['@_Boundary']);
-    boundary = converterBox(boundary);
+    const { boundary, matrix } = resolveImageGeometry(imageObject);
     const resId = imageObject['@_ResourceID'];
     const imageResource = multiMediaResObj ? multiMediaResObj[resId] : null;
     if (!imageResource || typeof imageResource !== 'object') {
@@ -304,9 +362,22 @@ export const renderImageObject = function (pageWidth, pageHeight, multiMediaResO
         const width = imageResource.width;
         const height = imageResource.height;
         return renderImageOnCanvas(img, width, height, boundary, imageObject['pfIndex']);
+    } else if (matrix) {
+        return renderImageWithMatrix(imageResource.img, matrix, imageObject['pfIndex']);
     } else {
         return renderImageOnDiv(pageWidth, pageHeight, imageResource.img, boundary, false, false, null, null, imageObject['pfIndex']);
     }
+}
+
+const renderImageWithMatrix = function (imgSrc, ctmValues, oid) {
+    const [a, b, c, d, e, f] = ctmValues;
+    const unit = converterDpi(1);
+    let img = document.createElement('img');
+    img.src = imgSrc;
+    img.setAttribute('width', `${unit}`);
+    img.setAttribute('height', `${unit}`);
+    img.setAttribute('style', `position:absolute;left:0;top:0;transform-origin:0 0;transform:matrix(${a}, ${b}, ${c}, ${d}, ${converterDpi(e)}, ${converterDpi(f)});z-index:${oid}`);
+    return img;
 }
 
 const renderMissingImageObject = function (boundary, oid){
@@ -360,7 +431,7 @@ export const renderImageOnDiv = function (pageWidth, pageHeight, imgSrc, boundar
     return div;
 }
 
-export const renderTextObject = function (fontResObj, textObject, defaultFillColor, defaultStrokeColor) {
+export const renderTextObject = function (drawParamResObj, fontResObj, textObject, defaultFillColor, defaultStrokeColor) {
     let defaultFillOpacity = 1;
     let boundary = parseStBox(textObject['@_Boundary']);
     boundary = converterBox(boundary);
@@ -374,6 +445,12 @@ export const renderTextObject = function (fontResObj, textObject, defaultFillCol
     const textCodePointList = calTextPoint(array);
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('version', '1.1');
+    const objectStyle = resolveDrawParamStyle(drawParamResObj, textObject['@_DrawParam'], {
+        fillColor: defaultFillColor,
+        strokeColor: defaultStrokeColor,
+    });
+    defaultFillColor = objectStyle.fillColor;
+    defaultStrokeColor = objectStyle.strokeColor;
     const fillColor = textObject['ofd:FillColor'];
     if (fillColor) {
         defaultFillColor = parseColor(fillColor['@_Value']);
@@ -412,6 +489,83 @@ export const renderTextObject = function (fontResObj, textObject, defaultFillCol
     return svg;
 }
 
+const buildSvgPathData = function (points) {
+    let d = '';
+    for (const point of points) {
+        if (point.type === 'M') {
+            d += `M${point.x} ${point.y} `;
+        } else if (point.type === 'L') {
+            d += `L${point.x} ${point.y} `;
+        } else if (point.type === 'Q') {
+            d += `Q${point.x1} ${point.y1} ${point.x2} ${point.y2} `;
+        } else if (point.type === 'B') {
+            d += `C${point.x1} ${point.y1} ${point.x2} ${point.y2} ${point.x3} ${point.y3} `;
+        } else if (point.type === 'C') {
+            d += `Z`;
+        }
+    }
+    return d;
+}
+
+// OFD 的装饰性 PathObject（如色带、圆角背景）经常共用一个近乎整页的 Boundary，
+// 真正可见的形状由 Clips 裁剪出来；不处理 Clips 会让这些路径以整块矩形铺满并
+// 盖住下层图片/文字。Clips 下可以有多个 Clip（依次相交），每个 Clip 下可以有
+// 多个 Area（在该 Clip 内取并集），语义上等价于 SVG 里逐层嵌套 clip-path。
+const appendClipAreaPath = function (clipPathEl, area) {
+    const clipShape = area?.['ofd:Path'];
+    const abbreviatedData = clipShape?.['ofd:AbbreviatedData'];
+    if (!clipShape || !abbreviatedData) {
+        return;
+    }
+    const clipPoints = calPathPoint(convertPathAbbreviatedDatatoPoint(abbreviatedData));
+    const clipPathShape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    clipPathShape.setAttribute('d', buildSvgPathData(clipPoints));
+    const clipCtm = clipShape['@_CTM'];
+    if (clipCtm) {
+        const ctms = parseCtm(clipCtm);
+        clipPathShape.setAttribute('transform', `matrix(${ctms[0]} ${ctms[1]} ${ctms[2]} ${ctms[3]} ${converterDpi(ctms[4])} ${converterDpi(ctms[5])})`);
+    }
+    clipPathEl.appendChild(clipPathShape);
+}
+
+const applyClips = function (svgRoot, contentEl, clips) {
+    const clipList = clips?.['ofd:Clip'];
+    if (!clipList) {
+        return contentEl;
+    }
+    let clipArray = [];
+    clipArray = clipArray.concat(clipList);
+    let defs = null;
+    let current = contentEl;
+    let clipIndex = 0;
+    for (const clip of clipArray) {
+        const areas = clip?.['ofd:Area'];
+        if (!clip || !areas) {
+            continue;
+        }
+        if (!defs) {
+            defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            svgRoot.appendChild(defs);
+        }
+        const clipPathEl = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
+        const clipId = `ofd-clip-${clipIndex++}-${Math.random().toString(36).slice(2, 8)}`;
+        clipPathEl.setAttribute('id', clipId);
+        let areaArray = [];
+        areaArray = areaArray.concat(areas);
+        for (const area of areaArray) {
+            if (area) {
+                appendClipAreaPath(clipPathEl, area);
+            }
+        }
+        defs.appendChild(clipPathEl);
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttribute('clip-path', `url(#${clipId})`);
+        group.appendChild(current);
+        current = group;
+    }
+    return current;
+}
+
 export const renderPathObject = function (drawParamResObj, pathObject, defaultFillColor, defaultStrokeColor, defaultLineWith, isStampAnnot) {
     let boundary = parseStBox(pathObject['@_Boundary']);
     boundary = converterBox(boundary);
@@ -427,11 +581,20 @@ export const renderPathObject = function (drawParamResObj, pathObject, defaultFi
     }
     const drawParam = pathObject['@_DrawParam'];
     if (drawParam) {
-        lineWidth = drawParamResObj[drawParam].LineWidth;
+        lineWidth = drawParamResObj[drawParam]?.LineWidth;
         if (lineWidth) {
             defaultLineWith = converterDpi(lineWidth);
         }
     }
+    // PathObject 自身没有内联 ofd:FillColor/StrokeColor 时，颜色通常来自其引用的 DrawParam；
+    // 先按 DrawParam 解析出默认色，再让内联颜色（若存在）覆盖，否则文字/图形轮廓会因为
+    // 拿不到颜色而按 fill:none 处理，变成不可见。
+    const objectStyle = resolveDrawParamStyle(drawParamResObj, drawParam, {
+        fillColor: defaultFillColor,
+        strokeColor: defaultStrokeColor,
+    });
+    defaultFillColor = objectStyle.fillColor;
+    defaultStrokeColor = objectStyle.strokeColor;
     if (ctm) {
         const ctms = parseCtm(ctm);
         path.setAttribute('transform', `matrix(${ctms[0]} ${ctms[1]} ${ctms[2]} ${ctms[3]} ${converterDpi(ctms[4])} ${converterDpi(ctms[5])})`)
@@ -460,20 +623,8 @@ export const renderPathObject = function (drawParamResObj, pathObject, defaultFi
         fillStyle = `fill:${isStampAnnot ? 'none' : defaultFillColor ? defaultFillColor : 'none'};`;
     }
     path.setAttribute('style', `${strokeStyle};${fillStyle}`)
-    let d = '';
-    for (const point of points) {
-        if (point.type === 'M') {
-            d += `M${point.x} ${point.y} `;
-        } else if (point.type === 'L') {
-            d += `L${point.x} ${point.y} `;
-        } else if (point.type === 'B') {
-            d += `C${point.x1} ${point.y1} ${point.x2} ${point.y2} ${point.x3} ${point.y3} `;
-        } else if (point.type === 'C') {
-            d += `Z`;
-        }
-    }
-    path.setAttribute('d', d);
-    svg.appendChild(path);
+    path.setAttribute('d', buildSvgPathData(points));
+    svg.appendChild(applyClips(svg, path, pathObject['ofd:Clips']));
     let width = isStampAnnot ? boundary.w : Math.ceil(boundary.w);
     let height = isStampAnnot ? boundary.h : Math.ceil(boundary.h);
     let left = boundary.x;

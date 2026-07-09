@@ -61,6 +61,19 @@ export const convertPathAbbreviatedDatatoPoint = abbreviatedData => {
             }
             i = i + 7;
             pointList.push(point);
+        } else if (array[i] === 'Q') {
+            // Q x1 y1 x2 y2：以(x1,y1)为控制点画二次贝塞尔到(x2,y2)。
+            // 大量中文字形轮廓（本身是路径而非 TextObject）都靠 Q 描述笔画弧线，
+            // 之前完全未识别，会导致后续 token 错位、字形整体丢失。
+            let point = {
+                'type': 'Q',
+                'x1': parseFloat(array[i + 1]),
+                'y1': parseFloat(array[i + 2]),
+                'x2': parseFloat(array[i + 3]),
+                'y2': parseFloat(array[i + 4])
+            }
+            i = i + 5;
+            pointList.push(point);
         } else {
             i++;
         }
@@ -88,6 +101,13 @@ export const calPathPoint = function (abbreviatedPoint) {
                 'type': 'B', 'x1': converterDpi(x1), 'y1': converterDpi(y1),
                 'x2': converterDpi(x2), 'y2': converterDpi(y2),
                 'x3': converterDpi(x3), 'y3': converterDpi(y3)
+            }
+            pointList.push(realPoint);
+        } else if (point.type === 'Q') {
+            let realPoint = {
+                'type': 'Q',
+                'x1': converterDpi(point.x1), 'y1': converterDpi(point.y1),
+                'x2': converterDpi(point.x2), 'y2': converterDpi(point.y2)
             }
             pointList.push(realPoint);
         }

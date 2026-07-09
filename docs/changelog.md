@@ -2,6 +2,15 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## `v2.1.24` OFD 签章、DOC/PPTX 修复与打印体验
+
+- 全仓版本、workspace 依赖和 release matrix 推进到 `2.1.24`。
+- 修复 OFD 预览不显示电子签章（GitHub #94）：恢复 SES 签章外观解析，支持 PNG/JPEG 与嵌套 OFD 印章叠加。
+- 修复 DOCX 导出/打印 HTML 图片空白（GitHub #90）：`blob:` 图片自动内联为 `data:` URL。
+- 打印链路默认携带水印；新增掩膜打印与移动端打印下拉向上展开。
+- 修复 `.doc` 内嵌 OfficeArt 图片解析（GitHub #87）与工具栏缩放按钮位移（GitHub #88）。
+- 修复 PPTX Origin OLE EMF 图表渲染与空白 run 保留；DOCX 暗黑模式与远程 URL 规范化。
+
 ## 当前主线 OFD 电子签章预览
 
 - 修复 OFD 预览不显示电子签章的问题（GitHub #94）：恢复 SES `SignedValue` 签章外观解析，支持 PNG/JPEG 印章图片与嵌套 OFD 印章，并按 `StampAnnot` 边界叠加到对应页面。

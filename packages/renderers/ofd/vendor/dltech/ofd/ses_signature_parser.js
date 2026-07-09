@@ -21,9 +21,9 @@
  * so ASN.1/国密校验不会进入预览主路径。
  */
 
-import Hex from '@lapo/asn1js/hex.js';
-import Base64 from '@lapo/asn1js/base64.js';
-import ASN1 from '@lapo/asn1js';
+import Hex from '../../lapo-asn1js/hex.js';
+import Base64 from '../../lapo-asn1js/base64.js';
+import ASN1 from '../../lapo-asn1js/asn1.js';
 
 const reHex = /^\s*(?:[0-9A-Fa-f][0-9A-Fa-f]\s*)+$/;
 

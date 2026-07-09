@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-image",
-  "version": "2.1.23",
+  "version": "2.1.24",
   "private": false,
   "type": "module",
   "description": "Standalone image renderer plugin for Flyfish File Viewer with native image preview, HEIC/HEIF conversion, lightbox, and unified zoom support.",
@@ -58,7 +58,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:2.1.23",
+    "@file-viewer/core": "workspace:2.1.24",
     "heic2any": "^0.0.4"
   },
   "devDependencies": {

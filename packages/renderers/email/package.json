@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-email",
-  "version": "2.1.23",
+  "version": "2.1.24",
   "private": false,
   "type": "module",
   "description": "Standalone email renderer plugin for Flyfish File Viewer with EML, MSG, MBOX, attachments, and nested previews.",
@@ -59,7 +59,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:2.1.23",
+    "@file-viewer/core": "workspace:2.1.24",
     "@kenjiuno/msgreader": "^1.28.0",
     "postal-mime": "^2.7.4"
   },
