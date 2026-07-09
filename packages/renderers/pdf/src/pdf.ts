@@ -316,9 +316,9 @@ const installBundledPdfFakeWorker = async () => {
 
 const resolvePdfWorkerUrl = (
   options: FileViewerPdfOptions | undefined,
-  documentUrl?: string
+  documentBaseUrl?: string
 ) => {
-  return resolveFileViewerPdfAssetUrls(options, documentUrl).workerUrl;
+  return resolveFileViewerPdfAssetUrls(options, documentBaseUrl).workerUrl;
 };
 
 const buildOutlineItems = (
@@ -607,7 +607,7 @@ export default async function renderPdf(
 
       canvas.width = Math.max(1, Math.ceil(renderViewport.width));
       canvas.height = Math.max(1, Math.ceil(renderViewport.height));
-      await page.render({ canvas, canvasContext, viewport: renderViewport }).promise;
+      await page.render({ canvasContext, viewport: renderViewport }).promise;
       if (destroyed || pdfContext.document !== pdfDocument) {
         return;
       }
@@ -772,7 +772,7 @@ export default async function renderPdf(
   };
 
   const createPdfWorker = async () => {
-    const workerUrl = resolvePdfWorkerUrl(options, documentRef.URL || undefined);
+    const workerUrl = resolvePdfWorkerUrl(options, documentRef.baseURI || documentRef.URL || undefined);
     const hasExplicitWorkerUrl = isConfiguredUrl(options?.workerUrl);
     const shouldUseRealWorker = !!targetWindow?.Worker &&
       (hasExplicitWorkerUrl || await canUseResolvedPdfWorkerUrl(workerUrl));
@@ -780,7 +780,9 @@ export default async function renderPdf(
     if (shouldUseRealWorker) {
       GlobalWorkerOptions.workerSrc = workerUrl;
       try {
-        const worker = PdfJsWorker.create({ name: 'file-viewer-pdf-worker' }) as PdfWorkerInstance;
+        const worker = new PdfJsWorker({
+          name: 'file-viewer-pdf-worker',
+        } as ConstructorParameters<typeof PdfJsWorker>[0] & { name: string }) as PdfWorkerInstance;
         await worker.promise;
         return worker;
       } catch (error) {
@@ -1487,7 +1489,7 @@ export default async function renderPdf(
 
       canvas.width = Math.ceil(renderViewport.width);
       canvas.height = Math.ceil(renderViewport.height);
-      await page.render({ canvas, canvasContext, viewport: renderViewport }).promise;
+      await page.render({ canvasContext, viewport: renderViewport }).promise;
 
       const pageTitle = t('pdf.export.pageTitle', { title: exportOptions.title, page: pageNumber });
       const pageStyle = [
@@ -1538,7 +1540,6 @@ export default async function renderPdf(
         linkService: pdfLinkService,
         findController: pdfFindController,
         l10n: new GenericL10n(resolvedLocale),
-        enableAutoLinking: false,
       });
       pdfContext.viewer = pdfViewer;
       pdfContext.linkService = pdfLinkService;
@@ -1602,7 +1603,7 @@ export default async function renderPdf(
       const worker = await createPdfWorker();
       const pdfAssets = resolveFileViewerPdfAssetUrls(
         options,
-        documentRef.URL || documentRef.baseURI
+        documentRef.baseURI || documentRef.URL
       );
       const source = context?.streamUrl
         ? {
@@ -1617,7 +1618,6 @@ export default async function renderPdf(
         ...source,
         worker: worker || undefined,
         cMapUrl: pdfAssets.cMapUrl,
-        wasmUrl: pdfAssets.wasmUrl,
         standardFontDataUrl: pdfAssets.standardFontDataUrl,
         useWorkerFetch: true,
         cMapPacked: true,

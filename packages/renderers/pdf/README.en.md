@@ -39,7 +39,7 @@ const options = {
 }
 ```
 
-When no explicit URL is provided, the renderer first probes `/vendor/pdf/pdf.worker.mjs` from the site root. If the host app did not run `file-viewer-copy-assets`, does not use `@file-viewer/vite-plugin`, or a local dev server falls back to HTML for that path, the renderer lazy-loads the packaged PDF.js worker handler as a compatibility fallback so preview does not fail with `Setting up fake worker failed`. For best performance, full cMap/WASM/standard-font support, or strict offline deployments, still copy viewer assets and point these URLs at real static files.
+When no explicit URL is provided, the renderer resolves `vendor/pdf/pdf.worker.mjs` against the current document `baseURI`. Apps deployed under a subpath such as `/workspace/` therefore request `/workspace/vendor/pdf/pdf.worker.mjs` instead of forcing the site root. If the host app did not run `file-viewer-copy-assets`, does not use `@file-viewer/vite-plugin`, or a local dev server falls back to HTML for that path, the renderer lazy-loads the packaged PDF.js worker handler as a compatibility fallback so preview does not fail with `Setting up fake worker failed`. For best performance, full cMap/standard-font support, or strict offline deployments, still copy viewer assets and point these URLs at real static files; `wasmUrl` remains for PDF.js builds that ship WASM assets.
 
 ## Migration Note
 

@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-pdf",
-  "version": "2.1.24",
+  "version": "2.1.25",
   "private": false,
   "type": "module",
   "description": "Standalone PDF renderer plugin for Flyfish File Viewer powered by PDF.js.",
@@ -58,8 +58,8 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:2.1.24",
-    "pdfjs-dist": "^6.0.227"
+    "@file-viewer/core": "workspace:2.1.25",
+    "pdfjs-dist": "4.10.38"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

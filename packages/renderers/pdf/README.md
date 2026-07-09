@@ -39,7 +39,7 @@ const options = {
 }
 ```
 
-默认未显式配置时，渲染器会先探测站点根路径的 `/vendor/pdf/pdf.worker.mjs`。如果客户项目没有执行 `file-viewer-copy-assets`、没有使用 `@file-viewer/vite-plugin`，或者本地临时服务器把该路径回退成 HTML，PDF renderer 会自动懒加载包内 PDF.js worker handler 作为兼容兜底，避免 `Setting up fake worker failed` 直接中断预览。需要最佳性能、完整 cMap/WASM/standard fonts 或严格离线部署时，仍建议复制 viewer assets 并配置真实静态地址。
+默认未显式配置时，渲染器会基于当前文档 `baseURI` 探测 `vendor/pdf/pdf.worker.mjs`，因此 Vite/UMI 等项目部署在 `/workspace/` 这类子路径时会请求 `/workspace/vendor/pdf/pdf.worker.mjs`，不会强制落到站点根路径。如果客户项目没有执行 `file-viewer-copy-assets`、没有使用 `@file-viewer/vite-plugin`，或者本地临时服务器把该路径回退成 HTML，PDF renderer 会自动懒加载包内 PDF.js worker handler 作为兼容兜底，避免 `Setting up fake worker failed` 直接中断预览。需要最佳性能、完整 cMap/standard fonts 或严格离线部署时，仍建议复制 viewer assets 并配置真实静态地址；`wasmUrl` 保留给提供 WASM 资产的 PDF.js 构建兼容使用。
 
 ## 迁移说明
 
