@@ -64,7 +64,8 @@
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "type-check": "tsc -b tsconfig.json",
-    "verify:github-34": "pnpm build && node scripts/verify-github-34.mjs"
+    "verify:github-34": "pnpm build && node scripts/verify-github-34.mjs",
+    "verify:github-87": "pnpm build && node scripts/verify-github-87.mjs"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

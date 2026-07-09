@@ -2,6 +2,12 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## 当前主线 `.doc` 内嵌图片解析修复
+
+- 按 MS-DOC `PICFAndOfficeArtData` / MS-ODRAW OfficeArt BLIP 规范解析内嵌图片，不再只靠魔数扫描；修复把 OfficeArt 内嵌 PNG/JPEG 误判为 `image/emf` 或 `application/octet-stream`，导致浏览器空白占位的问题（GitHub #87）。
+- 新增 OfficeArt FBSE/BLIP 提取、DIB→BMP、压缩 EMF/WMF zlib 解压与 SVG 转换，以及 PICF 显示尺寸（`dxaGoal`/`dyaGoal`/`mx`/`my`）应用到 `<img>`。
+- 增加 `image-embedded.doc` 回归 fixture 与 `pnpm --filter @file-viewer/doc verify:github-87`，锁定 PNG/JPEG 内嵌图可解析、可渲染。
+
 ## 当前主线工具栏缩放按钮位置修复
 
 - 修复默认工具栏从 100% 点击“放大”后，“1:1”还原按钮精确出现在“放大”按钮原位置，导致连续点击时第二次点击变成误触发“还原”而非继续放大的问题（GitHub #88）：工具栏为右对齐布局，且两个图标按钮宽度相同，原实现把“1:1”插入在“放大”按钮之后，右对齐重排会让“放大”整体左移一个按钮宽度，新按钮正好顶替上“放大”刚才的像素位置。

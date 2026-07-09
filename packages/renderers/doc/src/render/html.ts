@@ -7,6 +7,7 @@ import type {
   BorderSpec,
   CharState,
   CssStyleObject,
+  ImageAsset,
   InlineNode,
   MsDocParseResult,
   MsDocRenderOptions,
@@ -141,11 +142,63 @@ function renderTextNode(node: TextInlineNode): string {
   return inner;
 }
 
+function inlineImageDisplaySizePx(asset: ImageAsset): { widthPx?: number; heightPx?: number } {
+  const widthPx = twipsToPx(asset.meta?.displayWidthTwips);
+  const heightPx = twipsToPx(asset.meta?.displayHeightTwips);
+  return {
+    widthPx: widthPx && widthPx > 0 ? widthPx : undefined,
+    heightPx: heightPx && heightPx > 0 ? heightPx : undefined,
+  };
+}
+
+function applyInlineImageDisplaySize(style: CssStyleObject, asset: ImageAsset): void {
+  const { widthPx, heightPx } = inlineImageDisplaySizePx(asset);
+  if (!widthPx && !heightPx) return;
+  if (widthPx) style.width = `${widthPx}px`;
+  if (heightPx) style.height = `${heightPx}px`;
+}
+
+function sanitizeImageSource(src: string | undefined | null): string | null {
+  const value = String(src || '').trim();
+  if (!value) return null;
+  if (/^data:image\//i.test(value)) return value;
+  if (/^(?:https?:|blob:)/i.test(value)) return value;
+  return null;
+}
+
+function sanitizeAssetHref(href: string | undefined | null): string | null {
+  const value = String(href || '').trim();
+  if (!value) return null;
+  if (/^(?:data:|blob:|https?:)/i.test(value)) return value;
+  return null;
+}
+
 function renderImageNode(node: Extract<InlineNode, { type: 'image' }>): string {
+  const src = sanitizeImageSource(node.asset.sourceUrl) || sanitizeImageSource(node.asset.dataUrl);
   const baseStyle = inlineStyleToCss(node.style);
-  baseStyle['max-width'] = '100%';
-  baseStyle.height = 'auto';
-  const img = `<img class="msdoc-image" src="${escapeHtml(node.asset.dataUrl)}" alt="" style="${styleObjectToCss(baseStyle)}">`;
+  const displaySize = inlineImageDisplaySizePx(node.asset);
+  if (displaySize.widthPx || displaySize.heightPx) {
+    applyInlineImageDisplaySize(baseStyle, node.asset);
+    baseStyle['max-width'] = 'none';
+    if (!displaySize.heightPx) baseStyle.height = 'auto';
+  } else {
+    baseStyle['max-width'] = '100%';
+    baseStyle.height = 'auto';
+  }
+
+  if (!src || node.asset.displayable === false) {
+    const fallbackHref = sanitizeAssetHref(node.asset.dataUrl) || sanitizeAssetHref(node.asset.sourceUrl);
+    const label = escapeHtml(String(node.asset.meta?.linkedPath || node.asset.mime || 'image'));
+    const inner = fallbackHref
+      ? `<a class="msdoc-attachment msdoc-image-fallback" href="${escapeHtml(fallbackHref)}" target="_blank" rel="noreferrer noopener">🖼 ${label}</a>`
+      : `<span class="msdoc-image-fallback">🖼 ${label}</span>`;
+    if (node.href) {
+      return `<a class="msdoc-link" href="${escapeHtml(node.href)}" target="_blank" rel="noreferrer noopener">${inner}</a>`;
+    }
+    return inner;
+  }
+
+  const img = `<img class="msdoc-image" src="${escapeHtml(src)}" alt="" style="${styleObjectToCss(baseStyle)}">`;
   if (node.href) {
     return `<a class="msdoc-link" href="${escapeHtml(node.href)}" target="_blank" rel="noreferrer noopener">${img}</a>`;
   }
@@ -259,6 +312,7 @@ export function defaultMsDocCss(): string {
 .msdoc-link{color:#1a73e8;text-decoration:none}
 .msdoc-link:hover{text-decoration:underline}
 .msdoc-image{display:inline-block;vertical-align:middle}
+.msdoc-image-fallback{display:inline-flex;align-items:center;gap:6px}
 .msdoc-attachment{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #d0d7de;border-radius:6px;background:#f6f8fa;color:#0969da;text-decoration:none}
 .msdoc-attachments{margin-top:20px;padding-top:12px;border-top:1px solid #e5e7eb}
 .msdoc-attachments-title{font-weight:600;margin-bottom:8px}

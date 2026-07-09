@@ -456,13 +456,79 @@ export interface FieldInstructionRaw {
 
 export type FieldInstruction = FieldInstructionHyperlink | FieldInstructionIncludePicture | FieldInstructionRaw;
 
+export interface PicfSummary {
+  pictureOffset: number;
+  lcb: number;
+  cbHeader: number;
+  mm?: number;
+  xExt?: number;
+  yExt?: number;
+  dxaGoalTwips?: number;
+  dyaGoalTwips?: number;
+  scaleXPermille?: number;
+  scaleYPermille?: number;
+  displayWidthTwips?: number;
+  displayHeightTwips?: number;
+}
+
+export interface OfficeArtBlipMeta {
+  recType?: number;
+  recInstance?: number;
+  fbseBlipType?: number;
+  fbseMime?: string | null;
+  fbseTag?: number;
+  fbseSize?: number;
+  fbseRefCount?: number;
+  fbseDelayOffset?: number;
+  fbseName?: string;
+  fbseDelayStream?: string;
+  blipIndex?: number;
+  sourceShapeId?: number;
+}
+
+/** PICF / OfficeArt BLIP / linked-picture metadata used by the HTML renderer. */
+export interface ImageAssetMeta extends PicfSummary, OfficeArtBlipMeta {
+  linkedPath?: string;
+  sourceKind?: 'embedded' | 'linked' | 'fallback';
+  localExternal?: boolean;
+  browserRenderable?: boolean;
+  metafileCompressed?: boolean;
+  metafileCompression?: number;
+  metafileFilter?: number;
+  metafileUncompressedSize?: number;
+  metafileCompressedSize?: number;
+  metafileOriginalByteLength?: number;
+  metafileDecompressed?: boolean;
+  vectorConverted?: boolean;
+  vectorSourceMime?: string;
+  vectorWidth?: number;
+  vectorHeight?: number;
+  vectorRecordCount?: number;
+  fbseIndex?: number;
+  dggOffset?: number;
+  blipIndex?: number;
+  sourceShapeId?: number;
+}
+
+export interface AttachmentAssetMeta {
+  stream?: string;
+  label?: string;
+  originalPath?: string;
+  tempPath?: string;
+  dataSize?: number;
+  sourceKind?: 'ole10-native' | 'package' | 'content' | 'unknown';
+  [key: string]: unknown;
+}
+
 export interface ImageAsset {
   id: string;
   type: 'image';
   mime: string;
   bytes: Uint8Array;
   dataUrl: string;
-  meta?: Record<string, unknown>;
+  sourceUrl?: string;
+  displayable?: boolean;
+  meta?: ImageAssetMeta;
 }
 
 export interface AttachmentAsset {
@@ -472,7 +538,7 @@ export interface AttachmentAsset {
   mime: string;
   bytes: Uint8Array;
   dataUrl: string;
-  meta?: Record<string, unknown>;
+  meta?: AttachmentAssetMeta;
 }
 
 export type MsDocAsset = ImageAsset | AttachmentAsset;

@@ -27,7 +27,7 @@
 - 常见字符样式：粗体、斜体、下划线、删除线、字号、颜色、高亮、大小写、上下标、字体切换
 - 常见段落样式：对齐、缩进、段前后距、行距、分页控制、边框
 - 表格：`sprmTDefTable`、单元格宽度、横向/纵向合并、边框、垂直对齐、nowrap、fitText
-- 图片：PICF + Data 流提取
+- 图片：按 MS-DOC PICF / OfficeArt BLIP 规范提取内嵌 PNG、JPEG、DIB、TIFF，并支持 EMF/WMF 转 SVG 预览
 - OLE / ObjectPool 附件提取
 - 域代码的基础处理（例如超链接）
 - 浏览器 Viewer 与 Worker Client
@@ -39,6 +39,7 @@ src/
   core/
     binary.ts        # 二进制读取器
     cfb.ts           # CFB/OLE 容器解析
+    inflate.ts       # OfficeArt 压缩 metafile 的 zlib/deflate 解压
     utils.ts         # 字节、编码、范围等底层工具
   msdoc/
     fib.ts           # FIB 读取
@@ -48,7 +49,9 @@ src/
     properties.ts    # PAPX / CHPX / TAPX 到状态对象的归并
     styles.ts        # STSH / 样式继承
     fonts.ts         # 字体表
-    objects.ts       # 图片 / OLE / ObjectPool
+    officeart.ts     # OfficeArt 内联 shape / BLIP 辅助解析
+    objects.ts       # PICF / OfficeArt 图片与 OLE / ObjectPool
+    vector.ts        # EMF/WMF 转 SVG
     parser.ts        # 主解析流程，输出 AST
   render/
     html.ts          # AST -> HTML/CSS
@@ -251,10 +254,10 @@ npm run build
 MS-DOC 是历史包袱很重的二进制格式，虽然主链路已经完整重构，但以下场景仍建议用更多真实样本持续压测：
 
 - 极端复杂的嵌套表格
-- 旧版 OfficeArt / shape 对象
 - 非常规域代码组合
 - 少见的 OLE 嵌入形式
 - 某些兼容模式下的边角 sprm 变体
+- 仅保存外部路径、未嵌入字节的链接图片（会给出占位提示，无法在离线环境加载本地盘路径）
 
 这些场景并不影响当前的整体架构，后续继续扩展时可直接在现有 TS 类型体系上增量补强。
 

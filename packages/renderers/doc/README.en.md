@@ -28,7 +28,8 @@ The package also exports `parseMsDocToHtml`, `mountMsDoc`, `createMsDocViewer`, 
 - OLE/CFB container parsing
 - WordDocument, 0Table/1Table, CLX, FKP, CHPX, PAPX, STSH, and font table parsing
 - Paragraph, character, table, image, OLE attachment, and basic field-code output
+- Embedded picture extraction via MS-DOC PICF / OfficeArt BLIP records (PNG, JPEG, DIB, TIFF), with EMF/WMF → SVG conversion for browser preview
 - Browser-native HTML/CSS rendering without server-side conversion
 - Optional module worker entry at `@file-viewer/doc/worker`
 
-This package intentionally tracks the old public `msdoc-viewer@0.2.0` code line. Newer private document-engine work is not used here.
+This package intentionally tracks the old public `msdoc-viewer@0.2.0` code line and continues to harden that public MS-DOC path. Newer private document-engine work is not used here.
