@@ -695,10 +695,12 @@ export {
   normalizeFileViewerUiDensity,
   normalizeFileViewerTheme,
   parseFileViewerOptions,
+  resolveFileViewerColorScheme,
   resolveFileViewerUiDensity,
   sanitizeFileViewerOptions,
   serializeFileViewerOptions,
   setFileViewerOptionsSearchParam,
+  toggleFileViewerColorScheme,
 } from './config/options';
 export {
   resolveFileViewerPresentationState,
@@ -1108,6 +1110,8 @@ export type {
   FileViewerStateDescriptor,
   FileViewerStateTheme,
   FileViewerStyleIsolation,
+  FileViewerTextOptions,
+  FileViewerResolvedThemeMode,
   FileViewerThemeMode,
   FileViewerToolbarActionMap,
   FileViewerToolbarItem,

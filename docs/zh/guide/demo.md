@@ -29,8 +29,8 @@
 Demo 默认跟随浏览器语言。中文浏览器进入中文样例体系，其他语言进入英文样例体系；也可以用 `?lang=zh-CN` 或 `?lang=en-US` 强制指定。英文体系包含公开英文 DOCX、PDF、PPTX、XLSX 样例，以及本地英文 Markdown、文本、日志、CSV、JSON、TypeScript、JavaScript、GeoJSON、glTF 和压缩包嵌套样例，运行时不依赖公网 CDN。
 
 <div class="doc-shot">
-  <img src="/_media/flyfish-viewer-demo.gif" alt="Flyfish Viewer 主示例页、文档预览和文档比对动图" />
-  <p class="doc-caption">动图展示主示例页、分组样例文件盒子、Office/PDF 阅读面、PPTX 与文档比对，是最直观的联调入口。</p>
+  <img src="/_media/flyfish-viewer-demo-zh.gif" alt="Flyfish Viewer 中文主示例页与多格式预览动图" />
+  <p class="doc-caption">动图展示纯英文主示例页，并依次打开 DOCX、PPTX、GeoJSON 地图和 ZIP 内文件列表，是最直观的联调入口。</p>
 </div>
 
 ## Demo 文件传入协议
@@ -126,8 +126,8 @@ pnpm verify:demo-output
 Word 示例被单独拿出来说明，因为它已经不只是“能打开”，而是具备更明确的页面感。`.doc` 和 `.docx` 都会尽量保留页面居中和宽度自适应的阅读体验；DOCX 会跟随 viewer 主题显示浅色纸张或深色文档面。
 
 <div class="doc-shot">
-  <img src="/_media/flyfish-viewer-demo.gif" alt="Flyfish Viewer Word、PDF、PPTX 与文档比对动图" />
-  <p class="doc-caption">动图中包含 Word / PDF 阅读面和文档比对效果；Word 文件会显示在主题协调的文档工作台中，页面居中，阅读体验更接近真实文档。</p>
+  <img src="/_media/flyfish-viewer-demo-zh.gif" alt="Flyfish Viewer 中文 Office 与多格式预览动图" />
+  <p class="doc-caption">动图从英文 DOCX 阅读面开始，再切换到 PPTX、GeoJSON 和压缩包；Word 文件会显示在主题协调的文档工作台中，页面居中。</p>
 </div>
 
 ## Vanilla JS / React 组件 Demo

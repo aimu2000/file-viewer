@@ -29,9 +29,15 @@ export const renderFileViewerCode: FileRenderHandler<FileViewerRenderedInstance,
 export const renderFileViewerMarkdown: FileRenderHandler<FileViewerRenderedInstance, HTMLDivElement> = (
   buffer,
   target,
-  _type,
+  type,
   context
-) => import('./markdown.js').then(({ default: renderMarkdown }) => renderMarkdown(buffer, target, context));
+) => import('./largeText.js').then(async ({ default: renderLargeText, shouldVirtualizeTextBuffer }) => {
+  if (shouldVirtualizeTextBuffer(buffer, context)) {
+    return renderLargeText(buffer, target, type || 'md', context);
+  }
+  const { default: renderMarkdown } = await import('./markdown.js');
+  return renderMarkdown(buffer, target, context);
+});
 
 export const textRenderer: FileViewerRendererPlugin<FileRenderHandler<FileViewerRenderedInstance, HTMLDivElement>> = {
   id: 'file-viewer-renderer-text',

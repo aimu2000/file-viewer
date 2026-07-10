@@ -216,6 +216,7 @@ const options = {
 | `fit` | 显式内容适配策略。未传时保持各 renderer 历史首屏行为；传字符串时支持 `'auto'`、`'contain'`、`'cover'`、`'width'`、`'height'`、`'actual'`、`'scale-down'`，传对象时可配置 `{ mode, resize, padding, minScale, maxScale }`。`resize` 默认 `'until-interaction'`：首屏和容器变化自动适配，用户手动缩放、平移或调用 `applyViewState()` 后停止覆盖；`'always'` 会持续跟随容器，`'initial'` 只做首屏。自定义工具栏可调用 `fitToView('width')` 主动重新适配 |
 | `watermark` | `true`、文字配置或图片配置；支持 `text`、`image`、`opacity`、`rotate`、`gapX/gapY`、`width/height`、字体和颜色 |
 | `search` | `true`、`false` 或对象；控制搜索能力。对象支持 `caseSensitive`、`wholeWord`、`maxMatches`、`debounce`、`className` 和 `activeClassName`。Word、Markdown、代码等文本类格式使用通用 DOM 高亮，PDF 等特殊格式可以走渲染器原生搜索提供器，避免污染文本层或 canvas |
+| `text` | 超大文本、代码和 Markdown 的稳定性配置。超过 `virtualizeAboveBytes`（默认 512 KiB）后使用稀疏索引和有界虚拟行；`maxRenderedLineBytes` 控制超长单行的分段大小，`virtualOverscanLines` 控制挂载缓冲，全文搜索仍覆盖完整源文件 |
 | `ai` | AI 友好结构配置；预览器不绑定云端模型，只提供 `getDocumentTextChunks()` 所需的文本切片、行号、页码、锚点和 label 上下文，业务侧可用于向量化、溯源、来源定位、召回高亮和审计 |
 | `archive.workerUrl` | 自定义 libarchive.js Worker 地址。一般不需要配置；预览器会优先尝试当前部署 base 下的 `vendor/libarchive/worker-bundle.js`，失败后自动回退到 ZIP/TAR/GZIP 兼容模式 |
 | `archive.wasmUrl` | 静态 Worker 需要从非同目录加载 libarchive WASM 时使用。只有需要指向自托管目录或自定义 wasm 位置时才配置 |

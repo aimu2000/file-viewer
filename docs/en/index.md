@@ -88,8 +88,8 @@ Flyfish Viewer is browser-side file preview infrastructure for business applicat
 </div>
 <div class="doc-demo-layout">
 <figure class="doc-demo-visual">
-<img src="/_media/flyfish-viewer-demo.gif" alt="Flyfish Viewer live demo showing document preview and comparison" />
-<figcaption>Live browser demo covering Word, PDF, PPTX, archives, drawings, charts, and side-by-side comparison.</figcaption>
+<img src="/_media/flyfish-viewer-demo-en.gif" alt="Flyfish Viewer English demo showing DOCX, PPTX, GeoJSON, and archive preview" />
+<figcaption>English browser demo covering DOCX, PPTX, GeoJSON, and on-demand preview of files inside a ZIP archive.</figcaption>
 </figure>
 <div class="doc-demo-actions">
 <a class="doc-path-card" href="https://demo.file-viewer.app" target="_blank" rel="noreferrer">

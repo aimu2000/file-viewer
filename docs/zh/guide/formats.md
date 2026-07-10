@@ -73,8 +73,8 @@
 - 如果你的业务能控制导出格式，优先推荐 `docx`；如果你面对的是存量老文档，当前 `.doc` 已经可以作为正式能力对外说明。
 
 <div class="doc-shot">
-  <img src="/_media/flyfish-viewer-demo.gif" alt="Flyfish Viewer Word、PDF、PPTX 和文档比对动图" />
-  <p class="doc-caption">动图展示 Word、PDF、PPTX 和文档比对效果；Word 类文件会显示在主题协调的文档工作台中，页面居中，阅读路径更接近真实文档软件。</p>
+  <img src="/_media/flyfish-viewer-demo-zh.gif" alt="Flyfish Viewer 中文 Office 与多格式预览动图" />
+  <p class="doc-caption">动图展示英文 DOCX、PPTX、GeoJSON 和 ZIP 内文件预览；Word 类文件会显示在主题协调的文档工作台中，页面居中。</p>
 </div>
 
 ### Office 模板格式

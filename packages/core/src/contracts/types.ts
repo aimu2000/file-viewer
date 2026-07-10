@@ -7,6 +7,8 @@ export type FileViewerSourceKind = 'file' | 'url' | 'buffer' | 'empty';
 
 export type FileViewerThemeMode = 'light' | 'dark' | 'system';
 
+export type FileViewerResolvedThemeMode = Exclude<FileViewerThemeMode, 'system'>;
+
 export type FileViewerLocale = 'auto' | 'zh-CN' | 'en-US' | (string & {});
 
 export type FileViewerStyleIsolation = 'auto' | 'shadow' | 'scoped' | 'none';
@@ -35,6 +37,9 @@ export type FileViewerMessageKey =
   | 'toolbar.searchPrevious'
   | 'toolbar.searchNext'
   | 'toolbar.searchClear'
+  | 'toolbar.theme'
+  | 'toolbar.themeToLight'
+  | 'toolbar.themeToDark'
   | 'state.ready.title'
   | 'state.ready.message'
   | 'state.empty.title'
@@ -262,6 +267,12 @@ export type FileViewerMessageKey =
   | 'drawing.toolbar.fitWidth'
   | 'drawing.state.loading'
   | 'text.code.loadingHighlight'
+  | 'text.code.indexingLargeFile'
+  | 'text.code.virtualized'
+  | 'text.code.firstSegment'
+  | 'text.code.previousSegment'
+  | 'text.code.nextSegment'
+  | 'text.code.lastSegment'
   | 'ebook.toc'
   | 'ebook.reading'
   | 'ebook.itemCount'
@@ -463,9 +474,9 @@ export type FileViewerLifecyclePhase = 'load-start' | 'load-complete' | 'unload-
 
 export type FileViewerOperationType = 'download' | 'print' | 'export-html' | 'zoom-in' | 'zoom-out' | 'zoom-reset';
 
-export type FileViewerToolbarItem = 'search' | 'zoom' | 'download' | 'print' | 'exportHtml' | 'export-html';
+export type FileViewerToolbarItem = 'search' | 'zoom' | 'download' | 'print' | 'exportHtml' | 'export-html' | 'theme';
 
-export type FileViewerResolvedToolbarItem = 'search' | 'zoom' | 'download' | 'print' | 'exportHtml';
+export type FileViewerResolvedToolbarItem = 'search' | 'zoom' | 'download' | 'print' | 'exportHtml' | 'theme';
 
 export type FileViewerToolbarActionMap = Partial<Record<FileViewerOperationType, boolean>>;
 
@@ -511,6 +522,8 @@ export interface FileViewerToolbarOptions {
   exportHtml?: boolean;
   zoom?: boolean;
   search?: boolean;
+  /** Shows a manual light/dark mode toggle without changing the host page theme. */
+  theme?: boolean;
   /** Built-in toolbar group order. Missing entries keep their default relative order. */
   order?: FileViewerToolbarItem[];
   /** Controls which built-in toolbar actions are displayed without disabling controller APIs. */
@@ -932,6 +945,15 @@ export interface FileViewerAiOptions {
   chunkOverlap?: number;
 }
 
+export interface FileViewerTextOptions {
+  /** Switches text/code/Markdown to bounded virtual rendering above this byte size. Defaults to 512 KiB. */
+  virtualizeAboveBytes?: number;
+  /** Maximum source bytes mounted for one very long logical line at a time. Defaults to 16 KiB. */
+  maxRenderedLineBytes?: number;
+  /** Extra logical lines mounted above and below the visible viewport. Defaults to 12. */
+  virtualOverscanLines?: number;
+}
+
 export type FileViewerUiDensity = 'comfortable' | 'compact';
 
 export interface FileViewerUiOptions {
@@ -1014,6 +1036,7 @@ export interface FileViewerOptions {
   toolbar?: boolean | FileViewerToolbarOptions;
   search?: boolean | FileViewerSearchOptions;
   ai?: boolean | FileViewerAiOptions;
+  text?: FileViewerTextOptions;
   /**
    * Explicit content fitting strategy. When omitted, each renderer keeps its
    * historical first-screen behavior for backward compatibility.
@@ -1289,6 +1312,7 @@ export interface FileViewerComponentEventMap {
   'zoom-change': FileViewerZoomState;
   'view-state-change': FileViewerViewStateChange;
   'fit-change': FileViewerFitResult;
+  'theme-change': FileViewerResolvedThemeMode;
 }
 
 export type FileViewerEventType = keyof FileViewerComponentEventMap;
@@ -1315,6 +1339,7 @@ export interface FileViewerComponentEmits {
   (event: 'zoom-change', state: FileViewerComponentEventMap['zoom-change']): void;
   (event: 'view-state-change', change: FileViewerComponentEventMap['view-state-change']): void;
   (event: 'fit-change', result: FileViewerComponentEventMap['fit-change']): void;
+  (event: 'theme-change', theme: FileViewerComponentEventMap['theme-change']): void;
 }
 
 export interface FileViewerPublicApi {

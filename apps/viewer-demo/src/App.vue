@@ -18,6 +18,18 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html[data-demo-theme='light'],
+html[data-demo-theme='light'] body {
+  background: #eef5f1;
+  color-scheme: light;
+}
+
+html[data-demo-theme='dark'],
+html[data-demo-theme='dark'] body {
+  background: #0f171d;
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   height: 100%;
@@ -42,8 +54,8 @@ body,
 }
 
 @media (prefers-color-scheme: dark) {
-  html,
-  body {
+  html:not([data-demo-theme]),
+  html:not([data-demo-theme]) body {
     background: #0f171d;
   }
 }

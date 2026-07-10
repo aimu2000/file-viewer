@@ -67,6 +67,7 @@ export const viewerOptions = {
 | `toolbar` | Built-in operation bar visibility, position, grouped actions, key-based items, permission gates, and button-specific guards. The print control stays a single compact button with a dropdown for **Print now** and **Mask & print**. |
 | `watermark` | Text or image watermark source, opacity, spacing, size, rotation, color, and toggle behavior. Enabled watermarks are included in print output. |
 | `search` | Document search, highlighted matches, next / previous navigation, whole-word and case-sensitive behavior. |
+| `text` | Large text/code/Markdown safety controls. Above `virtualizeAboveBytes` (default 512 KiB), the renderer uses sparse indexing and bounded virtual rows. `maxRenderedLineBytes` segments giant lines, `virtualOverscanLines` controls the mounted buffer, and search still scans the complete source. |
 | `ai` | Text chunk collection for vectorization, source tracing, source-aware highlighting, and audit workflows. It does not call a cloud model by itself. |
 | `archive` | Safe extraction limits, IndexedDB cache behavior, worker timeout, nested preview, and self-hosted libarchive paths. |
 | `pdf`, `docx`, `spreadsheet`, `cad`, `typst`, `drawing`, `data` | Renderer-specific asset URLs and behavior knobs. |

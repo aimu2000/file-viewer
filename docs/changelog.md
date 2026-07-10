@@ -2,6 +2,14 @@
 
 这份日志记录的是当前仓库主线中，对外最值得说明的能力演进。
 
+## `v2.1.26` 超大文本稳定浏览与主题切换
+
+- 全仓版本、workspace 依赖和 release matrix 推进到 `2.1.26`。
+- 文本、代码和 Markdown 超过 512 KiB 后自动使用稀疏行索引与有界虚拟滚动，不再一次性解码、高亮并挂载完整文件；52 万行代码、超长单行、全文搜索和尾部跳转均纳入真实 Chromium 回归。
+- 工具栏新增可配置的手动浅色/深色切换按钮，支持 `toolbar.theme` 和 `toolbar.order`，并在重新渲染后恢复阅读位置（GitHub #97）。
+- 发布已包含 DOCX / XLSX 图表预览修复及对应样例回归（GitHub #96）。
+- GitHub 默认 `README.md` 改为 English，中文入口迁移到 `README.zh-CN.md`；中英文页面分别只展示对应语言的 Demo GIF。
+
 ## `v2.1.25` PDF 渲染器兼容性修复
 
 - 全仓版本、workspace 依赖和 release matrix 推进到 `2.1.25`。

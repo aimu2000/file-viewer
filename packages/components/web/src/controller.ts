@@ -4,6 +4,7 @@ import {
   createViewer,
   isFileViewerShadowRoot,
   normalizeFileViewerUiDensity,
+  normalizeFileViewerTheme,
   normalizeFileViewerStyleIsolation,
   type FileViewerStyleHandle,
 } from '@file-viewer/core';
@@ -18,9 +19,11 @@ import {
   normalizeFilename,
   readFileViewerBuffer,
   resolveFileViewerSourceFilename,
+  resolveFileViewerColorScheme,
   resolveFileViewerToolbarOrder,
   resolveFileViewerToolbarPosition,
   resolveVisibleFileViewerToolbar,
+  toggleFileViewerColorScheme,
   wrapFileViewerFileRef,
   type FileViewerAiOptions,
   type FileViewerApplyViewStateOptions,
@@ -461,6 +464,7 @@ const WEB_VIEWER_STYLE = `
 .file-viewer-web-toolbar button:hover:not(:disabled){background:var(--file-viewer-button-hover-bg);color:var(--file-viewer-button-hover-color)}
 .file-viewer-web-toolbar button:disabled{color:var(--file-viewer-button-disabled-color);cursor:not-allowed}
 .file-viewer-web-toolbar .file-viewer-web-icon-button{width:var(--file-viewer-icon-button-size);min-width:var(--file-viewer-icon-button-size);padding:0;display:inline-flex;align-items:center;justify-content:center}
+.file-viewer-web-theme-button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:var(--file-viewer-zoom-meter-min-width);height:var(--file-viewer-button-height);padding:var(--file-viewer-zoom-meter-padding);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:var(--file-viewer-button-color)}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
 .file-viewer-web-print-menu{position:relative;display:inline-flex}
@@ -532,6 +536,15 @@ const createReadonlyMeter = (
   return meter;
 };
 
+const setThemeButtonIcon = (
+  button: HTMLButtonElement,
+  currentTheme: 'light' | 'dark'
+) => {
+  button.innerHTML = currentTheme === 'dark'
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>';
+};
+
 export const mountViewer = (
   container: HTMLElement,
   initialOptions: ViewerMountOptions = {},
@@ -574,6 +587,12 @@ export const mountViewer = (
 
   let disposed = false;
   let currentOptions: ViewerMountOptions = initialOptions;
+  const viewerColorSchemeQuery = documentRef.defaultView?.matchMedia?.('(prefers-color-scheme: dark)') ?? null;
+  const resolveCurrentViewerTheme = (theme: ViewerOptions['theme']) => {
+    return viewerColorSchemeQuery
+      ? resolveFileViewerColorScheme(theme, viewerColorSchemeQuery.matches)
+      : resolveFileViewerColorScheme(theme);
+  };
   let currentSource: ViewerSourceInput | null = hasSource(currentOptions)
     ? toViewerSourceInput(currentOptions)
     : null;
@@ -622,7 +641,7 @@ export const mountViewer = (
       : null,
   });
   const syncShellTheme = () => {
-    shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
+    shell.dataset.viewerTheme = normalizeFileViewerTheme(currentOptions.options?.theme);
     shell.dataset.viewerDensity = normalizeFileViewerUiDensity(currentOptions.options?.ui?.density);
   };
   let controller: ViewerController | null = null;
@@ -826,6 +845,48 @@ export const mountViewer = (
       toolbarEl.appendChild(button);
     };
 
+    const appendThemeToolbar = () => {
+      if (!visibleToolbar.theme) {
+        return;
+      }
+      const currentTheme = resolveCurrentViewerTheme(options.theme);
+      const title = currentTheme === 'dark'
+        ? t('toolbar.themeToLight')
+        : t('toolbar.themeToDark');
+      const button = createButton(documentRef, '', 'file-viewer-web-icon-button file-viewer-web-theme-button', async () => {
+        const previousViewState = instance.getViewState();
+        const nextTheme = toggleFileViewerColorScheme(
+          currentOptions.options?.theme,
+          viewerColorSchemeQuery?.matches
+        );
+        currentOptions = {
+          ...currentOptions,
+          options: {
+            ...(currentOptions.options || {}),
+            theme: nextTheme,
+          },
+        };
+        instance.updateOptions({ theme: nextTheme });
+        applyViewerEvent({ type: 'theme-change', payload: nextTheme });
+        if (currentSource) {
+          const session = await loadSource(currentSource).catch(() => null);
+          if (session && previousViewState) {
+            await instance.applyViewState(previousViewState, {
+              action: 'restore',
+              source: 'api',
+            });
+          }
+        }
+      });
+      addPart(button, 'theme-toggle');
+      setThemeButtonIcon(button, currentTheme);
+      button.title = title;
+      button.setAttribute('aria-label', title);
+      button.setAttribute('aria-pressed', String(currentTheme === 'dark'));
+      button.disabled = toolbarDisabled;
+      toolbarEl.appendChild(button);
+    };
+
     resolveFileViewerToolbarOrder(toolbar).forEach(item => {
       if (item === 'search') {
         appendSearchToolbar();
@@ -894,8 +955,15 @@ export const mountViewer = (
           t('toolbar.exportHtmlTitle'),
           () => controller?.exportRenderedHtml()
         );
+      } else if (item === 'theme') {
+        appendThemeToolbar();
       }
     });
+  };
+  const handleViewerColorSchemeChange = () => {
+    if (normalizeFileViewerTheme(currentOptions.options?.theme) === 'system') {
+      renderToolbar();
+    }
   };
   const notifyState = (event?: ViewerEvent) => {
     const snapshot = snapshotState();
@@ -944,6 +1012,7 @@ export const mountViewer = (
     options: currentOptions.options,
     onEvent: applyViewerEvent,
   });
+  viewerColorSchemeQuery?.addEventListener?.('change', handleViewerColorSchemeChange);
   renderToolbar();
 
   const cancel = () => {
@@ -1026,6 +1095,7 @@ export const mountViewer = (
       if (disposed) return;
       disposed = true;
       cancel();
+      viewerColorSchemeQuery?.removeEventListener?.('change', handleViewerColorSchemeChange);
       void instance.destroy('component-unmount');
       styleHandle.remove();
       renderRoot.replaceChildren();

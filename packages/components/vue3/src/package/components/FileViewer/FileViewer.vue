@@ -1,15 +1,19 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
-import { RotateCcw, ZoomIn, ZoomOut } from '@lucide/vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Moon, RotateCcw, Sun, ZoomIn, ZoomOut } from '@lucide/vue'
 import {
   createFileViewerTranslator,
   createFileViewerRequestScope,
   reportFileViewerLifecycleHookError,
-  reportFileViewerOperationError
+  reportFileViewerOperationError,
+  resolveFileViewerColorScheme,
+  toggleFileViewerColorScheme
 } from '@file-viewer/core'
 import type {
   FileViewerComponentEmits as FileViewerEmits,
-  FileViewerComponentProps as FileViewerProps
+  FileViewerComponentProps as FileViewerProps,
+  FileViewerOptions,
+  FileViewerResolvedThemeMode
 } from '@file-viewer/core'
 import { useLoading } from './hooks/useLoading'
 import { useViewerDocumentFeatures } from './hooks/useViewerDocumentFeatures'
@@ -35,8 +39,34 @@ const output = ref<HTMLDivElement | null>(null)
 const currentFile = ref<File | null>(null)
 const currentBuffer = ref<ArrayBuffer | null>(null)
 const currentSourceUrl = ref<string | null>(null)
+const manualViewerTheme = ref<FileViewerResolvedThemeMode | null>(null)
+const viewerColorSchemeQuery = typeof globalThis.matchMedia === 'function'
+  ? globalThis.matchMedia('(prefers-color-scheme: dark)')
+  : null
+const systemPrefersDark = ref(viewerColorSchemeQuery?.matches ?? false)
+const handleViewerColorSchemeChange = (event: MediaQueryListEvent) => {
+  systemPrefersDark.value = event.matches
+}
+
+onMounted(() => viewerColorSchemeQuery?.addEventListener?.('change', handleViewerColorSchemeChange))
+onBeforeUnmount(() => viewerColorSchemeQuery?.removeEventListener?.('change', handleViewerColorSchemeChange))
+
+const effectiveOptions = computed<FileViewerOptions | undefined>(() => {
+  if (!manualViewerTheme.value) {
+    return props.options
+  }
+  return {
+    ...(props.options || {}),
+    theme: manualViewerTheme.value
+  }
+})
+
+watch(() => props.options?.theme, () => {
+  manualViewerTheme.value = null
+})
+
 const viewerLabels = computed(() => {
-  const t = createFileViewerTranslator(props.options)
+  const t = createFileViewerTranslator(effectiveOptions.value)
   return {
     zoomGroup: t('toolbar.zoomGroup'),
     zoomOut: t('toolbar.zoomOut'),
@@ -50,7 +80,9 @@ const viewerLabels = computed(() => {
     printMask: t('toolbar.printMask'),
     printMaskTitle: t('toolbar.printMaskTitle'),
     exportHtml: t('toolbar.exportHtml'),
-    exportHtmlTitle: t('toolbar.exportHtmlTitle')
+    exportHtmlTitle: t('toolbar.exportHtmlTitle'),
+    themeToLight: t('toolbar.themeToLight'),
+    themeToDark: t('toolbar.themeToDark')
   }
 })
 const printMenuOpen = ref(false)
@@ -69,7 +101,7 @@ const {
   getDocumentTextChunks
 } = useViewerDocumentFeatures({
   output,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   emitSearchChange: state => emit('search-change', state),
   emitLocationChange: anchor => emit('location-change', anchor)
 })
@@ -86,13 +118,13 @@ const {
   getFile: () => props.file,
   getUrl: () => props.url,
   getSourceFilename: () => props.filename || props.name,
-  getOptions: () => props.options
+  getOptions: () => effectiveOptions.value
 })
 
 const {
   watermarkStyle,
   watermarkInlineStyle
-} = useViewerWatermark(() => props.options?.watermark)
+} = useViewerWatermark(() => effectiveOptions.value?.watermark)
 
 const {
   loading,
@@ -106,13 +138,13 @@ const {
   showError,
   clearError,
   resetLoading
-} = useLoading(currentExtend, () => props.options)
+} = useLoading(currentExtend, () => effectiveOptions.value)
 
 const errorState = useViewerErrorState({
   currentExtend,
   error,
   loadingTheme,
-  getOptions: () => props.options
+  getOptions: () => effectiveOptions.value
 })
 
 const {
@@ -133,7 +165,7 @@ const {
   buildRenderCompleteState,
   runBeforeOperation
 } = useViewerLifecycle({
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   getFilename: () => filename.value,
   getBufferSize: () => currentBuffer.value?.byteLength,
   getCurrentFile: () => currentFile.value,
@@ -197,7 +229,7 @@ const {
   fitToView
 } = useViewerFit({
   output,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   refreshZoomProvider,
   refreshViewStateProvider,
   emitFitChange: result => emit('fit-change', result)
@@ -213,7 +245,7 @@ const {
   setActiveRenderSession
 } = useViewerRenderSurface({
   output,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   isCurrentRequest,
   notifyActiveUnloadStart,
   notifyActiveUnloadComplete,
@@ -248,7 +280,7 @@ const {
   currentFile,
   currentSourceUrl,
   error,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   getZoomState,
   loading,
   normalizedToolbar,
@@ -265,7 +297,7 @@ const {
   getFile: () => props.file,
   getUrl: () => props.url,
   getSourceFilename: () => props.filename || props.name,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   filename,
   currentFile,
   currentBuffer,
@@ -304,7 +336,7 @@ const {
   currentSourceUrl,
   displayFilename,
   formatErrorMessage,
-  getOptions: () => props.options,
+  getOptions: () => effectiveOptions.value,
   operationAvailability,
   output,
   runBeforeOperation,
@@ -325,6 +357,32 @@ const zoomOutByUser = async () => {
 const resetZoomByUser = async () => {
   markFitUserInteraction()
   return resetZoom()
+}
+
+const resolvedViewerTheme = computed(() => {
+  return resolveFileViewerColorScheme(viewerTheme.value, systemPrefersDark.value)
+})
+const themeButtonTitle = computed(() => {
+  return resolvedViewerTheme.value === 'dark'
+    ? viewerLabels.value.themeToLight
+    : viewerLabels.value.themeToDark
+})
+
+const toggleViewerTheme = async () => {
+  const previousViewState = getViewState()
+  const nextTheme = toggleFileViewerColorScheme(viewerTheme.value, systemPrefersDark.value)
+  manualViewerTheme.value = nextTheme
+  emit('theme-change', nextTheme)
+  await nextTick()
+  if (props.file || props.url) {
+    await refreshPreview()
+    if (previousViewState) {
+      await applyViewState(previousViewState, {
+        action: 'restore',
+        source: 'api'
+      })
+    }
+  }
 }
 
 const closePrintMenu = () => {
@@ -535,6 +593,19 @@ useViewerPreviewLifecycle({
             @click='exportRenderedHtml'
           >
             {{ viewerLabels.exportHtml }}
+          </button>
+          <button
+            v-else-if='toolbarItem === "theme" && visibleToolbar.theme'
+            type='button'
+            class='viewer-icon-button viewer-theme-button'
+            :title='themeButtonTitle'
+            :aria-label='themeButtonTitle'
+            :aria-pressed='resolvedViewerTheme === "dark"'
+            :disabled='toolbarDisabled'
+            @click='toggleViewerTheme'
+          >
+            <Sun v-if='resolvedViewerTheme === "dark"' :size='15' :stroke-width='2.3' />
+            <Moon v-else :size='15' :stroke-width='2.3' />
           </button>
         </template>
       </div>
