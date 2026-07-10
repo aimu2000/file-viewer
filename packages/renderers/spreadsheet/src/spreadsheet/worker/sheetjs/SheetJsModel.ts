@@ -11,7 +11,16 @@ import type {
   WorkSheet
 } from 'styled-exceljs'
 import { utils } from 'styled-exceljs'
-import type { CellMerge, SheetColumn, SheetImage, SheetModel, SheetStructure, SheetWindow } from '../type.js'
+import type {
+  CellMerge,
+  SheetChart,
+  SheetChartDefinition,
+  SheetColumn,
+  SheetImage,
+  SheetModel,
+  SheetStructure,
+  SheetWindow
+} from '../type.js'
 import { getTintColor, indexedColors } from './color.js'
 
 const EXCEL_DEFAULT_COLUMN_WIDTH = 8.43
@@ -49,6 +58,7 @@ interface SheetSliceOptions {
   pageSize?: number
   totalRows?: number
   totalCols?: number
+  charts?: SheetChartDefinition[]
 }
 
 type SheetColumnMeta = ColInfo & {
@@ -391,6 +401,8 @@ export default class SheetJsModel implements SheetModel {
 
   private readonly _totalCols?: number
 
+  private readonly _charts: SheetChartDefinition[]
+
   private static readonly defaults = defaults
 
   private _data: undefined | string[][]
@@ -423,6 +435,7 @@ export default class SheetJsModel implements SheetModel {
     this._pageSize = Math.max(options.pageSize || 500, 1)
     this._totalRows = options.totalRows
     this._totalCols = options.totalCols
+    this._charts = options.charts || []
     const { '!ref': refs } = ws
     this.range = utils.decode_range(refs || 'A1')
   }
@@ -561,6 +574,39 @@ export default class SheetJsModel implements SheetModel {
         row: from?.row || 0,
         col: from?.col || 0
       }]
+    })
+
+    return result.length ? result : undefined
+  }
+
+  private getCharts(): SheetChart[] | undefined {
+    const result = this._charts.map((chart): SheetChart => {
+      const left = this.getMarkerLeft(chart.from)
+      const top = this.getMarkerTop(chart.from)
+      const right = chart.to
+        ? this.getMarkerLeft(chart.to)
+        : left + emuToPixels(chart.ext?.width)
+      const bottom = chart.to
+        ? this.getMarkerTop(chart.to)
+        : top + emuToPixels(chart.ext?.height)
+
+      return {
+        id: chart.id,
+        type: chart.type,
+        title: chart.title,
+        categoryAxisTitle: chart.categoryAxisTitle,
+        valueAxisTitle: chart.valueAxisTitle,
+        barDirection: chart.barDirection,
+        grouping: chart.grouping,
+        legendPosition: chart.legendPosition,
+        series: chart.series,
+        left: Math.max(0, left),
+        top: Math.max(0, top),
+        width: Math.max(1, right > left ? right - left : DEFAULT_IMAGE_WIDTH),
+        height: Math.max(1, bottom > top ? bottom - top : DEFAULT_IMAGE_HEIGHT),
+        row: chart.from.row,
+        col: chart.from.col
+      }
     })
 
     return result.length ? result : undefined
@@ -738,7 +784,8 @@ export default class SheetJsModel implements SheetModel {
       colWidths: this.getColWidths(),
       rowHeights: this.getAllRowHeights(),
       columns: this.getColumns(),
-      images: this.getImages()
+      images: this.getImages(),
+      charts: this.getCharts()
     }
   }
 

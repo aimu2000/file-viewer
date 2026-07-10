@@ -11,7 +11,8 @@ if (ctx) {
   const context = createSpreadsheetParserContext()
 
   ctx.onmessage = async (message) => {
-    handleSpreadsheetWorkerRequest(context, message.data).forEach(response => {
+    const responses = await handleSpreadsheetWorkerRequest(context, message.data)
+    responses.forEach(response => {
       ctx.postMessage(response)
     })
   }

@@ -1,7 +1,8 @@
 import type { WorkBook } from 'styled-exceljs';
 import { read, utils } from 'styled-exceljs';
 import SheetJsModel from './SheetJsModel.js';
-import type { SheetDefinition } from '../type.js';
+import { parseSpreadsheetCharts } from './chartParser.js';
+import type { SheetChartDefinition, SheetDefinition } from '../type.js';
 
 interface DrawingMarkerLike {
   row?: number;
@@ -24,6 +25,7 @@ interface WorksheetWithDrawings {
 export interface SpreadsheetParserContext {
   workbook: WorkBook | null;
   sheets: SheetDefinition[];
+  charts: Record<string, SheetChartDefinition[]>;
 }
 
 export interface SpreadsheetWorkerRequest {
@@ -49,6 +51,7 @@ const readOptions = {
 export const createSpreadsheetParserContext = (): SpreadsheetParserContext => ({
   workbook: null,
   sheets: [],
+  charts: {},
 });
 
 const toErrorResponse = (
@@ -78,6 +81,26 @@ const getDrawingBounds = (worksheet: WorksheetWithDrawings | undefined) => {
   });
 };
 
+const getChartBounds = (charts: SheetChartDefinition[] | undefined) => {
+  return (charts || []).reduce((bounds, chart) => {
+    const estimatedRows = chart.ext?.height
+      ? Math.ceil(chart.ext.height / 9525 / 20)
+      : 0;
+    const estimatedCols = chart.ext?.width
+      ? Math.ceil(chart.ext.width / 9525 / 64)
+      : 0;
+    const row = chart.to?.row ?? chart.from.row + estimatedRows;
+    const col = chart.to?.col ?? chart.from.col + estimatedCols;
+    return {
+      rowCount: Math.max(bounds.rowCount, row + 1),
+      colCount: Math.max(bounds.colCount, col + 1),
+    };
+  }, {
+    rowCount: 0,
+    colCount: 0,
+  });
+};
+
 const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerResponse[] => {
   const workbook = context.workbook;
   if (!workbook?.SheetNames) {
@@ -89,7 +112,8 @@ const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerRespon
     const worksheet = workbook.Sheets[name];
     const ref = worksheet?.['!ref'];
     const drawingBounds = getDrawingBounds(worksheet as WorksheetWithDrawings | undefined);
-    if (!ref && !drawingBounds.rowCount && !drawingBounds.colCount) {
+    const chartBounds = getChartBounds(context.charts[name]);
+    if (!ref && !drawingBounds.rowCount && !drawingBounds.colCount && !chartBounds.rowCount && !chartBounds.colCount) {
       return result;
     }
     const range = ref ? utils.decode_range(ref) : utils.decode_range('A1');
@@ -97,8 +121,8 @@ const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerRespon
       id: result.length,
       name,
       hidden: !!workbookSheets[sourceIndex]?.Hidden,
-      rowCount: Math.max(range.e.r + 1, drawingBounds.rowCount),
-      colCount: Math.max(range.e.c + 1, drawingBounds.colCount),
+      rowCount: Math.max(range.e.r + 1, drawingBounds.rowCount, chartBounds.rowCount),
+      colCount: Math.max(range.e.c + 1, drawingBounds.colCount, chartBounds.colCount),
     });
     return result;
   }, []);
@@ -106,12 +130,23 @@ const parseSheets = (context: SpreadsheetParserContext): SpreadsheetWorkerRespon
   return [{ type: 'sheets', payload: { sheets: context.sheets } }];
 };
 
-export const parseSpreadsheetWorkbook = (
+export const parseSpreadsheetWorkbook = async (
   context: SpreadsheetParserContext,
   data: ArrayBuffer
-): SpreadsheetWorkerResponse[] => {
+): Promise<SpreadsheetWorkerResponse[]> => {
   try {
     context.workbook = read(data, readOptions);
+    const signature = data.byteLength >= 2 ? new DataView(data).getUint16(0, false) : 0;
+    if (signature === 0x504b) {
+      try {
+        context.charts = await parseSpreadsheetCharts(data);
+      } catch (error) {
+        context.charts = {};
+        console.warn('[file-viewer] Spreadsheet chart parsing failed; continuing with cell content.', error);
+      }
+    } else {
+      context.charts = {};
+    }
     return parseSheets(context);
   } catch (error) {
     return [toErrorResponse(error)];
@@ -147,6 +182,7 @@ export const parseSpreadsheetSheet = (
       pageSize,
       totalRows: sheetMeta?.rowCount,
       totalCols: sheetMeta?.colCount,
+      charts: context.charts[sheetName],
     });
     const windowData = sheetModel.toObject();
     const structure = startRow === 0 ? sheetModel.structure : undefined;
@@ -170,7 +206,7 @@ export const parseSpreadsheetSheet = (
 export const handleSpreadsheetWorkerRequest = (
   context: SpreadsheetParserContext,
   request: SpreadsheetWorkerRequest
-): SpreadsheetWorkerResponse[] => {
+): SpreadsheetWorkerResponse[] | Promise<SpreadsheetWorkerResponse[]> => {
   switch (request.type) {
     case 'parseWorkbook':
       return parseSpreadsheetWorkbook(context, request.payload?.workbook);

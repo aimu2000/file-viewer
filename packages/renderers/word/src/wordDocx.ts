@@ -23,6 +23,7 @@ import {
   type FileViewerZoomState,
   type PrintPageSize,
 } from '@file-viewer/core'
+import { applyDocxChartSeriesNames } from './docxChart.js'
 
 const DOCX_DEFAULT_PAGE_SIZE: PrintPageSize = {
   width: 794,
@@ -608,6 +609,7 @@ export default async function(buffer: ArrayBuffer, target: HTMLDivElement, conte
     ...defaultOptions,
     ...docxOptions
   })
+  await applyDocxChartSeriesNames(buffer, target)
   notifyProgressiveRender()
 
   const disposeResponsive = makeDocxResponsive(target, context)

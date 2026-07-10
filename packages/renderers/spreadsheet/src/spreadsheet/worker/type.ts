@@ -17,12 +17,56 @@ export interface SheetImage {
   col: number;
 }
 
+export type SheetChartType = 'bar' | 'line' | 'area' | 'pie' | 'doughnut' | 'scatter' | 'radar';
+
+export interface SheetDrawingMarker {
+  row: number;
+  col: number;
+  rowOff: number;
+  colOff: number;
+}
+
+export interface SheetChartSeries {
+  name: string;
+  categories: string[];
+  values: number[];
+  color?: string;
+}
+
+export interface SheetChartDefinition {
+  id: string;
+  type: SheetChartType;
+  title?: string;
+  categoryAxisTitle?: string;
+  valueAxisTitle?: string;
+  barDirection?: 'column' | 'bar';
+  grouping?: string;
+  legendPosition?: 'top' | 'right' | 'bottom' | 'left';
+  series: SheetChartSeries[];
+  from: SheetDrawingMarker;
+  to?: SheetDrawingMarker;
+  ext?: {
+    width: number;
+    height: number;
+  };
+}
+
+export interface SheetChart extends Omit<SheetChartDefinition, 'from' | 'to' | 'ext'> {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  row: number;
+  col: number;
+}
+
 export interface SheetStructure {
   merge?: CellMerge[];
   colWidths?: number | number[];
   rowHeights?: number | number[];
   columns?: SheetColumn[];
   images?: SheetImage[];
+  charts?: SheetChart[];
 }
 
 export interface SheetColumn {

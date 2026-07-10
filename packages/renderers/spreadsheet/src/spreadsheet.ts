@@ -10,7 +10,8 @@ import {
   type FileViewerWorkerFactory,
   type FileViewerZoomState,
 } from '@file-viewer/core';
-import type { SheetDefinition, SheetImage, SheetModel } from './spreadsheet/worker/type.js';
+import { renderSpreadsheetChart } from './spreadsheet/chartRenderer.js';
+import type { SheetChart, SheetDefinition, SheetImage, SheetModel } from './spreadsheet/worker/type.js';
 import {
   buildRows,
   clampWindowStart,
@@ -116,6 +117,8 @@ const spreadsheetStyle = `
 .excel-wrapper .excel-image-viewport{position:absolute;z-index:35;overflow:hidden;pointer-events:none}
 .excel-wrapper .excel-image-layer{position:absolute;inset:0 auto auto 0;width:0;height:0;transform-origin:0 0;will-change:transform}
 .excel-wrapper .excel-image{position:absolute;display:block;max-width:none;height:auto;object-fit:contain;user-select:none}
+.excel-wrapper .excel-chart{position:absolute;display:block;max-width:none;overflow:hidden;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.08);user-select:none}
+.excel-wrapper .excel-chart svg{display:block;width:100%;height:100%;overflow:visible}
 .excel-wrapper .loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.96);z-index:999;backdrop-filter:blur(6px)}
 .excel-wrapper .loading-card{width:min(100%,460px);display:flex;align-items:center;gap:18px;padding:22px;border-radius:24px;background:rgba(255,255,255,.92);border:1px solid rgba(33,163,102,.1);box-shadow:0 22px 48px rgba(18,36,27,.12)}
 .excel-wrapper .loading-brand{flex-shrink:0;width:78px;height:78px;display:flex;align-items:center;justify-content:center;border-radius:22px;background:linear-gradient(135deg,rgba(33,163,102,.14),rgba(33,163,102,.04));color:#1a7f50;font-size:18px;font-weight:900;letter-spacing:0}
@@ -290,10 +293,11 @@ class MainThreadSpreadsheetWorker {
     }
     try {
       const parser = await this.loadParser();
-      parser.handleSpreadsheetWorkerRequest(
+      const responses = await parser.handleSpreadsheetWorkerRequest(
         this.context || parser.createSpreadsheetParserContext(),
         message as import('./spreadsheet/worker/sheetjs/parser.js').SpreadsheetWorkerRequest
-      ).forEach(response => {
+      );
+      responses.forEach(response => {
         if (!this.destroyed) {
           this.dispatchMessage(response);
         }
@@ -689,6 +693,7 @@ const renderFileViewerSpreadsheet = async (
   let loadedWindowCount = 0;
   let loadingWindowCount = 0;
   let sheetImages: SheetImage[] = [];
+  let sheetCharts: SheetChart[] = [];
   let zoom = 1;
   let imageViewportState = {
     scrollX: 0,
@@ -700,6 +705,7 @@ const renderFileViewerSpreadsheet = async (
   let virtualState = createEmptyVirtualState();
   const sheetStateCache = new Map<number, VirtualSheetState>();
   const sheetImageCache = new Map<number, SheetImage[]>();
+  const sheetChartCache = new Map<number, SheetChart[]>();
   let table: EVirtTableInstance | null = null;
   let resizeObserver: ResizeObserver | null = null;
   let resizeFrame = 0;
@@ -817,8 +823,16 @@ const renderFileViewerSpreadsheet = async (
         y + scalePx(image.height) >= -margin &&
         y <= height + margin;
     });
+    const visibleCharts = sheetCharts.filter((chart) => {
+      const x = scalePx(chart.left) - imageViewportState.scrollX;
+      const y = scalePx(chart.top) - imageViewportState.scrollY;
+      return x + scalePx(chart.width) >= -margin &&
+        x <= width + margin &&
+        y + scalePx(chart.height) >= -margin &&
+        y <= height + margin;
+    });
 
-    setHidden(imageViewport, visibleImages.length === 0);
+    setHidden(imageViewport, visibleImages.length === 0 && visibleCharts.length === 0);
     Object.assign(imageViewport.style, {
       left: `${scalePx(INDEX_COLUMN_WIDTH)}px`,
       top: `${scalePx(HEADER_HEIGHT)}px`,
@@ -829,7 +843,7 @@ const renderFileViewerSpreadsheet = async (
     });
     imageLayer.style.transform =
       `translate(${-imageViewportState.scrollX}px, ${-imageViewportState.scrollY}px)`;
-    imageLayer.replaceChildren(...visibleImages.map((image, index) => {
+    const imageElements = visibleImages.map((image, index) => {
       const element = documentRef.createElement('img');
       element.className = 'excel-image';
       element.src = image.src;
@@ -843,7 +857,18 @@ const renderFileViewerSpreadsheet = async (
       });
       element.dataset.imageIndex = `${index}`;
       return element;
-    }));
+    });
+    const chartElements = visibleCharts.map((chart) => {
+      const element = renderSpreadsheetChart(documentRef, chart);
+      Object.assign(element.style, {
+        left: `${scalePx(chart.left)}px`,
+        top: `${scalePx(chart.top)}px`,
+        width: `${scalePx(chart.width)}px`,
+        height: `${scalePx(chart.height)}px`,
+      });
+      return element;
+    });
+    imageLayer.replaceChildren(...imageElements, ...chartElements);
   };
 
   const scrollActiveSheetIntoView = () => {
@@ -1441,6 +1466,13 @@ const renderFileViewerSpreadsheet = async (
         sheetImageCache.set(sheetId, structure.images);
       }
     }
+    if (structure?.charts) {
+      sheetCharts = structure.charts;
+      const sheetId = getActiveSheetId();
+      if (sheetId !== undefined) {
+        sheetChartCache.set(sheetId, structure.charts);
+      }
+    }
   };
 
   const applyVirtualWindow = (ws: SheetModel) => {
@@ -1495,6 +1527,7 @@ const renderFileViewerSpreadsheet = async (
     totalCols = 0;
     sheetDefaults = { ...DEFAULT_SHEET_DEFAULTS };
     sheetImages = [];
+    sheetCharts = [];
     virtualState = createEmptyVirtualState();
     hasInitialWindow = false;
     resetViewportTracking();
@@ -1531,6 +1564,7 @@ const renderFileViewerSpreadsheet = async (
     totalCols = cached.totalCols;
     sheetDefaults = cached.defaults;
     sheetImages = sheetImageCache.get(sheetId) || [];
+    sheetCharts = sheetChartCache.get(sheetId) || [];
     hasInitialWindow = cached.loadedWindows.size > 0;
     sheetInitializing = !hasInitialWindow;
     syncWindowStats();
