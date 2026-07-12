@@ -351,6 +351,31 @@ export default async function renderPptx(
   const surface = createElement(documentRef, 'div', 'pptx-render-surface');
   shell.append(loading, error, surface);
   target.replaceChildren(style, shell);
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      const hasFirstVisual = () => Boolean(
+        viewer?.thumbnailDataUrl || surface.querySelector('.slide, .flyfish-pptx-thumbnail')
+      );
+      while ((state === 'loading' || (state === 'ready' && !hasFirstVisual())) && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => {
+          if (targetWindow) targetWindow.setTimeout(resolve, 16);
+          else setTimeout(resolve, 16);
+        });
+      }
+      if (state === 'error') {
+        throw new Error(errorMessage || t('presentation.error.parseFailed'));
+      }
+    },
+    capture: () => viewer?.thumbnailDataUrl
+      ? fetch(viewer.thumbnailDataUrl).then(response => response.blob())
+      : null,
+    // Keep the renderer ancestry in the snapshot: slide CSS is scoped below
+    // .pptx-render-surface and loses layout when the slide node is cloned alone.
+    getTarget: () => surface,
+  });
 
   const getCurrentZoomPercent = () => clampZoomPercent(viewer?.zoomPercent ?? zoomPercent);
 
@@ -484,6 +509,7 @@ export default async function renderPptx(
     unmount() {
       disposed = true;
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
       unregisterFileViewerZoomProvider(shell);
       viewer?.destroy();
       viewer = null;

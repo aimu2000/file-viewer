@@ -361,11 +361,18 @@ export default async function renderUmd(
       renderError(error instanceof Error ? localize(error.message) : String(error));
     }
   }
+  context?.registerThumbnailAdapter?.({
+    capture: () => book?.cover
+      ? new Blob([copyImageBytes(book.cover)], { type: book.cover.mimeType })
+      : null,
+    getTarget: () => stage.querySelector('.umd-book-head, .umd-chapter') || stage,
+  });
 
   return {
     $el: target,
     unmount() {
       disposed = true;
+      context?.registerThumbnailAdapter?.(null);
       tocButton.removeEventListener('click', toggleToc);
       prevButton.removeEventListener('click', goPrev);
       nextButton.removeEventListener('click', goNext);

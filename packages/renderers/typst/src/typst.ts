@@ -701,6 +701,24 @@ export default async function renderTypst(
   };
 
   void render();
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      while (state === 'loading' && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => {
+          const view = documentRef.defaultView;
+          if (view) view.setTimeout(resolve, 16);
+          else setTimeout(resolve, 16);
+        });
+      }
+      if (state === 'error') {
+        throw new Error(errorMessage || t('typst.error.title'));
+      }
+    },
+    getTarget: () => pageShells.get(1) || body.querySelector('.typst-page-shell') || body,
+  });
 
   return {
     $el: target,
@@ -709,6 +727,7 @@ export default async function renderTypst(
       renderToken += 1;
       unregisterFileViewerZoomProvider(root);
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
       target.replaceChildren();
     },
   };

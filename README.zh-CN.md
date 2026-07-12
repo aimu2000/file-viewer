@@ -370,6 +370,8 @@ Preset 选择:
 
 生态边界很清楚: `@file-viewer/core` 只负责底层预览能力和 API；各标准组件包只依赖 core 和自己的框架依赖，不嵌套其他框架实现；历史兼容包只负责旧包名继续可用，不建议新项目优先选择。
 
+文件列表需要批量生成首页缩略图时，可安装独立的 `@file-viewer/thumbnail`。它在浏览器中复用 renderer、固定并发 viewer 池和可选的原生 thumbnail adapter，默认输出 `320 × 240` WebP；`generateBatch()` 保持输入顺序，`generateStream()` 支持边生成边上传。该包不会把截图依赖加入 core，也不会持久化源文件或结果。
+
 常见安装方式:
 
 ```bash
@@ -377,6 +379,7 @@ pnpm add @file-viewer/web
 pnpm add @file-viewer/vue3
 pnpm add @file-viewer/react
 pnpm add @file-viewer/core
+pnpm add @file-viewer/thumbnail
 pnpm add @file-viewer/renderer-word
 pnpm add @file-viewer/pptx
 ```

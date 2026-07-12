@@ -307,6 +307,23 @@ export default async function renderOfd(
       startResizeObserver();
     }
   });
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      while (state === 'loading' && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => {
+          if (targetWindow) targetWindow.setTimeout(resolve, 16);
+          else setTimeout(resolve, 16);
+        });
+      }
+      if (state === 'error') {
+        throw new Error(errorMessage || t('ofd.error.parseFailed'));
+      }
+    },
+    getTarget: () => stage.querySelector('.ofd-page-frame, .ofd-page') || stage,
+  });
 
   return {
     $el: viewer,
@@ -319,6 +336,7 @@ export default async function renderOfd(
       unregisterFileViewerZoomProvider(viewer);
       clearStage();
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
     },
   };
 }

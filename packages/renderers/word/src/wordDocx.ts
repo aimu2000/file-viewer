@@ -622,11 +622,15 @@ export default async function(buffer: ArrayBuffer, target: HTMLDivElement, conte
     printStyle: () => buildDocxPrintStyle(target),
     toHtml: () => prepareDocxCloneForExport(target)
   })
+  context?.registerThumbnailAdapter?.({
+    getTarget: () => target.querySelector('.docx-page-frame, .docx-flow-frame') || target
+  })
 
   return {
     $el: target,
     unmount() {
       context?.registerExportAdapter?.(null)
+      context?.registerThumbnailAdapter?.(null)
       disposeResponsive()
       delete target.dataset.docxWorker
       delete target.dataset.docxDarkMode
