@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/renderer-ofd",
-  "version": "2.1.26",
+  "version": "2.1.27",
   "private": false,
   "type": "module",
   "description": "Standalone OFD renderer plugin for Flyfish File Viewer powered by DLTech21/ofd.js.",
@@ -60,7 +60,7 @@
     "verify:render-fidelity": "node scripts/verify-render-fidelity.mjs"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:2.1.26",
+    "@file-viewer/core": "workspace:2.1.27",
     "jszip": "^3.10.1"
   },
   "devDependencies": {

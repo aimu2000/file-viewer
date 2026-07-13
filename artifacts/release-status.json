@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-13T01:58:06.548Z",
-  "version": "2.1.26",
+  "generatedAt": "2026-07-13T02:42:43.881Z",
+  "version": "2.1.27",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
   "sourceBaseline": {
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "1d1ba3777e3bfa265143ffe05dc9980cbb68c613",
+    "authoritativeCommit": "925356ba3f4a8fd6897302a5ca83a01fa0e7bf40",
     "localBranch": "main",
-    "localCommit": "1d1ba3777e3bfa265143ffe05dc9980cbb68c613",
+    "localCommit": "925356ba3f4a8fd6897302a5ca83a01fa0e7bf40",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "1d1ba3777e3bfa265143ffe05dc9980cbb68c613",
-    "shortCommit": "1d1ba377",
-    "dirty": false
+    "commit": "925356ba3f4a8fd6897302a5ca83a01fa0e7bf40",
+    "shortCommit": "925356ba",
+    "dirty": true
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "1d1ba3777e3bfa265143ffe05dc9980cbb68c613",
+    "hash": "925356ba3f4a8fd6897302a5ca83a01fa0e7bf40",
     "error": ""
   },
   "openSourceMain": {
@@ -32,33 +32,33 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "0c858c6635e8f218c3623f1e4c1faf1bdf1ab718",
+      "hash": "7fca14189c44aa8fe526f4d892994846d736e13c",
       "error": ""
     },
     "gitee": {
       "url": "https://gitee.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "8dd7d6595ddcc776a1628b8af5ad5e20eada8800",
+      "hash": "ab3c0d0c6345e7acb507df5411e008f4e1286931",
       "error": ""
     },
     "inSync": false,
-    "syncMode": "unchecked",
-    "treeChecked": false,
-    "referenceTree": "5a9e1709d78972bafc8ae813d6c6c6050a0e85a2",
-    "giteeTree": "",
-    "treeError": "local public repository 92fa1f853b64 does not match GitHub 0c858c6635e8",
+    "syncMode": "stale",
+    "treeChecked": true,
+    "referenceTree": "3af6a6bda2665ad1d8673a7b035cdf8166c43d8e",
+    "giteeTree": "2fe3eaa6b76637e7b9f4eb7aa7aa0507e3e7327a",
+    "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": true,
-    "tag": "v2.1.26",
-    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/v2.1.26",
-    "assetCount": 58,
-    "hasManifest": true,
-    "hasStatus": true,
-    "hasSchema": true,
-    "error": ""
+    "ok": false,
+    "tag": "v2.1.27",
+    "url": "",
+    "assetCount": 0,
+    "hasManifest": false,
+    "hasStatus": false,
+    "hasSchema": false,
+    "error": "release not found"
   },
   "componentRepositories": [
     {
@@ -371,253 +371,253 @@
   "npmPackages": [
     {
       "packageName": "@file-viewer/core",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/thumbnail",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": null,
-      "ok": false,
-      "error": "npm warn Unknown user config \"shamefully-hoist\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"auto-install-peers\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm warn Unknown user config \"strict-peer-dependencies\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm error code E404\nnpm error 404 Not Found - GET https://registry.npmjs.org/@file-viewer%2fthumbnail - Not found\nnpm error 404\nnpm error 404  The requested resource '@file-viewer/thumbnail@*' could not be found or you do not have permission to access it.\nnpm error 404\nnpm error 404 Note that you can also install from a\nnpm error 404 tarball, folder, http url, or git url.\nnpm error A complete log of this run can be found in: <npm-debug-log>"
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
+      "ok": true,
+      "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-pdf",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-ofd",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-presentation",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/doc",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-word",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-spreadsheet",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-drawing",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-3d",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-mindmap",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-cad",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-typst",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-archive",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-email",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-epub",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-text",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-image",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-media",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-geo",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-data",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/eda-layout",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/eda-orcad",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/geometry-engine",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/renderer-eda",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/pptx",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-all",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-lite",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-office",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/preset-engineering",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vite-plugin",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer3",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "file-viewer3",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer-web",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@flyfish-group/file-viewer-react",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
@@ -630,143 +630,156 @@
     },
     {
       "packageName": "@file-viewer/web",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/web-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue3",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue3-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.7",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.7-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.6",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/vue2.6-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-legacy",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/react-legacy-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/jquery",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/jquery-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/svelte",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     },
     {
       "packageName": "@file-viewer/svelte-full",
-      "expectedVersion": "2.1.26",
-      "publishedVersion": "2.1.26",
+      "expectedVersion": "2.1.27",
+      "publishedVersion": "2.1.27",
       "ok": true,
       "error": ""
     }
   ],
   "gaps": [
-    "@file-viewer/thumbnail npm unpublished !== 2.1.26"
+    "local source worktree has uncommitted changes",
+    "GitHub Release v2.1.27 missing"
   ],
   "gapSummary": {
-    "total": 1,
+    "total": 2,
     "externalBlockers": 1,
-    "localActionable": 0,
+    "localActionable": 1,
     "byChannel": {
-      "npm": 1
+      "source-worktree": 1,
+      "github-release": 1
     },
     "externalBlockerChannels": [
-      "npm"
+      "github-release"
     ],
-    "localActionableChannels": []
+    "localActionableChannels": [
+      "source-worktree"
+    ]
   },
   "gapDetails": [
     {
-      "id": "npm-@file-viewer-thumbnail-npm-unpublished-2.1.26",
-      "channel": "npm",
-      "scope": "package-registry",
+      "id": "source-worktree-local-source-worktree-has-uncommitted-changes",
+      "channel": "source-worktree",
+      "scope": "local",
+      "externalBlocker": false,
+      "message": "local source worktree has uncommitted changes",
+      "nextAction": "Commit or clean the local source worktree, then rerun the release audit."
+    },
+    {
+      "id": "github-release-github-release-v2.1.27-missing",
+      "channel": "github-release",
+      "scope": "release-assets",
       "externalBlocker": true,
-      "message": "@file-viewer/thumbnail npm unpublished !== 2.1.26",
-      "nextAction": "Complete npm login/passkey and publish the ecosystem packages."
+      "message": "GitHub Release v2.1.27 missing",
+      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
     }
   ],
   "nextActions": [
-    "Run `npm login` / passkey in an interactive terminal, then `pnpm release:ecosystem:publish`."
+    "Create or update the GitHub Release assets, then rerun `pnpm release:public`.",
+    "Commit and push the local source/public repository changes, then regenerate the release status report."
   ]
 }
