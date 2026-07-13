@@ -9,5 +9,8 @@ artifacts/*.tgz
 artifacts/*.tar.gz
 packages/components/web/viewer/
 packages/compat/web/viewer/
+examples/*/public/flyfish-viewer-assets.json
+examples/*/public/vendor/
+examples/*/public/wasm/
 *.log
 .DS_Store

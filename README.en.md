@@ -14,6 +14,7 @@
   <a href="https://demo.file-viewer.app/"><strong>Live Demo</strong></a> ·
   <a href="https://doc.file-viewer.app/"><strong>Documentation</strong></a> ·
   <a href="#quick-start"><strong>Quick Start</strong></a> ·
+  <a href="examples"><strong>Runnable Examples</strong></a> ·
   <a href="https://doc.file-viewer.app/guide/formats"><strong>Format Matrix (206 Extensions)</strong></a> ·
   <a href="https://github.com/flyfish-dev/file-viewer/releases"><strong>GitHub Releases</strong></a> ·
   <a href="https://github.com/sponsors/wybaby168"><strong>GitHub Sponsors</strong></a>
@@ -199,6 +200,7 @@ pnpm verify:browser-smoke
 | Renderers | [`packages/renderers`](packages/renderers) |
 | Presets and Vite plugin | [`packages/presets`](packages/presets) |
 | Components | [`packages/components`](packages/components) |
+| Runnable examples | [`examples`](examples) |
 | Demo | [`apps/viewer-demo`](apps/viewer-demo) |
 | Documentation | [`docs`](docs) |
 <!-- FILE_VIEWER_PUBLIC_GENERATED:END -->
