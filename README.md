@@ -19,8 +19,12 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@file-viewer/web"><img alt="npm version" src="https://img.shields.io/npm/v/@file-viewer/web?logo=npm&color=cb3837"></a>
-  <a href="https://www.npmjs.com/package/@file-viewer/web"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@file-viewer/web?logo=npm"></a>
+  <strong>English</strong> · <a href="README.zh-CN.md"><strong>简体中文</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@file-viewer/core"><img alt="npm version" src="https://img.shields.io/npm/v/@file-viewer/core?logo=npm&color=cb3837"></a>
+  <a href="https://www.npmjs.com/package/@file-viewer/core"><img alt="core total downloads" src="https://img.shields.io/npm/dt/@file-viewer/core?logo=npm&label=core%20downloads"></a>
   <a href="https://github.com/flyfish-dev/file-viewer/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/flyfish-dev/file-viewer?logo=github"></a>
   <a href="https://github.com/flyfish-dev/file-viewer/releases/latest"><img alt="latest release" src="https://img.shields.io/github/v/release/flyfish-dev/file-viewer?logo=github"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/github/license/flyfish-dev/file-viewer"></a>
@@ -37,8 +41,6 @@
 <p align="center">
   <a href="https://demo.file-viewer.app/"><img src="docs/public/_media/flyfish-viewer-demo-en.gif" width="920" alt="Flyfish File Viewer English demo showing multi-format browser preview"></a>
 </p>
-
-[中文说明](README.zh-CN.md)
 
 ## Why File Viewer
 
