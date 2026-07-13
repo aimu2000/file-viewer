@@ -1673,6 +1673,24 @@ const renderFileViewerSpreadsheet = async (
     print: false,
     exportHtml: false,
   });
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      while (!hasInitialWindow && !errorMessage && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => {
+          const view = getTargetWindow(target);
+          if (view) view.setTimeout(resolve, 16);
+          else setTimeout(resolve, 16);
+        });
+      }
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
+    },
+    getTarget: () => tableWrapper,
+  });
 
   ensureTable();
   const ResizeObserverCtor = getTargetWindow(target)?.ResizeObserver ||
@@ -1710,6 +1728,7 @@ const renderFileViewerSpreadsheet = async (
       table?.destroy();
       table = null;
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
     },
   };
 };

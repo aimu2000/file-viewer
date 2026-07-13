@@ -111,7 +111,8 @@ const resolveRtfJs = async () => {
 const renderRtf = async (
   buffer: ArrayBuffer,
   target: HTMLDivElement,
-  t: OpenDocumentTranslator
+  t: OpenDocumentTranslator,
+  context?: FileRenderContext
 ): Promise<FileViewerRenderedInstance> => {
   const RTFJS = await resolveRtfJs();
   RTFJS.loggingEnabled?.(false);
@@ -130,10 +131,12 @@ const renderRtf = async (
   elements.forEach((element: HTMLElement) => paper.appendChild(element));
   stage.append(header, paper);
   target.replaceChildren(createStyle(), stage);
+  context?.registerThumbnailAdapter?.({ getTarget: () => paper });
 
   return {
     $el: target,
     unmount() {
+      context?.registerThumbnailAdapter?.(null);
       target.replaceChildren();
     },
   };
@@ -148,17 +151,21 @@ export default async function renderOpenDocument(
   const t = createFileViewerTranslator(context?.options);
   const normalizedType = (type || 'odt').toLowerCase();
   if (normalizedType === 'rtf') {
-    return renderRtf(buffer, target, t);
+    return renderRtf(buffer, target, t, context);
   }
   const pages = await parseOdf(buffer, normalizedType, t);
   const title = normalizedType === 'odp'
     ? t('word.title.openDocumentPresentation')
     : t('word.title.openDocumentText');
   target.replaceChildren(createStyle(), renderOdfPages(normalizedType, title, pages));
+  context?.registerThumbnailAdapter?.({
+    getTarget: () => target.querySelector('.odf-page') || target
+  });
 
   return {
     $el: target,
     unmount() {
+      context?.registerThumbnailAdapter?.(null);
       target.replaceChildren();
     },
   };

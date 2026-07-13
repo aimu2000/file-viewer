@@ -40,6 +40,7 @@ import {
   type FileViewerViewStateChangeAction,
   type FileViewerViewStateChangeSource,
   type FileViewerZoomState,
+  type FileViewerThumbnailCaptureOptions,
 } from '@file-viewer/core';
 import {
   DEFAULT_FILE_VIEWER_PDF_WORKER_PATH,
@@ -790,6 +791,67 @@ export default async function renderPdf(
       pendingPdfThumbnails.delete(pageNumber);
     }
   };
+
+  const renderFirstPageThumbnail = async (
+    captureOptions: FileViewerThumbnailCaptureOptions
+  ) => {
+    const pdfDocument = pdfContext.document;
+    if (!pdfDocument) {
+      return null;
+    }
+    if (captureOptions.signal?.aborted) {
+      throw captureOptions.signal.reason;
+    }
+    const page = await pdfDocument.getPage(1);
+    await ensurePdfPageCjkFontFallback(1, page as unknown as PdfTextContentPage);
+    const baseViewport = page.getViewport({ scale: 1, rotation: currentRotation });
+    const scale = Math.max(0.1, Math.min(
+      captureOptions.width / Math.max(baseViewport.width, 1),
+      captureOptions.height / Math.max(baseViewport.height, 1)
+    ));
+    const viewport = page.getViewport({ scale, rotation: currentRotation });
+    const canvas = documentRef.createElement('canvas');
+    const canvasContext = canvas.getContext('2d');
+    if (!canvasContext) {
+      return null;
+    }
+    canvas.width = Math.max(1, Math.ceil(viewport.width));
+    canvas.height = Math.max(1, Math.ceil(viewport.height));
+    const renderTask = page.render({ canvas, canvasContext, viewport });
+    const cancelRender = () => renderTask.cancel();
+    captureOptions.signal?.addEventListener('abort', cancelRender, { once: true });
+    try {
+      await renderTask.promise;
+      if (captureOptions.signal?.aborted) {
+        throw captureOptions.signal.reason;
+      }
+      return await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+    } catch (error) {
+      if (captureOptions.signal?.aborted) {
+        throw captureOptions.signal.reason;
+      }
+      throw error;
+    } finally {
+      captureOptions.signal?.removeEventListener('abort', cancelRender);
+      canvas.width = 0;
+      canvas.height = 0;
+      page.cleanup?.();
+    }
+  };
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      while (loadStatus === 'loading' && !destroyed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => targetWindow.setTimeout(resolve, 16));
+      }
+      if (loadStatus === 'error') {
+        throw new Error(errorMessage || t('pdf.error.loadFailed'));
+      }
+    },
+    capture: renderFirstPageThumbnail,
+  });
 
   const ensureThumbnailObserver = () => {
     if (!thumbnailsEnabled || thumbnailObserver || typeof targetWindow.IntersectionObserver !== 'function') {
@@ -2066,6 +2128,7 @@ export default async function renderPdf(
       unregisterFileViewerViewStateProvider(root);
       outlineItems = [];
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
       const resource = pdfContext.resource;
       pdfContext.viewer = null;
       pdfContext.linkService = null;

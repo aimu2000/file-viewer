@@ -145,6 +145,7 @@ export class PptxViewer {
   private userZoomPercent = 100;
   private currentZoomPercent = 100;
   private thumbnailElement: HTMLImageElement | null = null;
+  private previewThumbnailDataUrl: string | null = null;
   private slideSize: PptxSlideSize | null = null;
   private slideRecords: WindowedSlideRecord[] = [];
   private slideWindowTarget: HTMLElement | Window | null = null;
@@ -175,6 +176,10 @@ export class PptxViewer {
     return Math.round(this.currentZoomPercent);
   }
 
+  get thumbnailDataUrl() {
+    return this.previewThumbnailDataUrl;
+  }
+
   async open() {
     ensureZipWithinLimits(this.buffer, this.options);
     ensurePptxViewerStyles(this.target.ownerDocument || document, this.options.styleRoot);
@@ -192,6 +197,7 @@ export class PptxViewer {
 
   destroy() {
     this.disposed = true;
+    this.previewThumbnailDataUrl = null;
     this.worker?.terminate();
     this.worker = null;
     this.resizeObserver?.disconnect();
@@ -210,6 +216,7 @@ export class PptxViewer {
     this.worker?.terminate();
     this.completed = false;
     this.charts = null;
+    this.previewThumbnailDataUrl = null;
     this.slideSize = null;
     this.slideRecords = [];
     this.content.replaceChildren();
@@ -309,14 +316,18 @@ export class PptxViewer {
   }
 
   private showThumbnail(base64Jpeg: string) {
-    if (!base64Jpeg || this.content.children.length > 0) {
+    if (!base64Jpeg) {
+      return;
+    }
+    this.previewThumbnailDataUrl = `data:image/jpeg;base64,${base64Jpeg}`;
+    if (this.content.children.length > 0) {
       return;
     }
 
     const image = this.target.ownerDocument.createElement('img');
     image.className = 'flyfish-pptx-thumbnail';
     image.alt = 'PPTX preview thumbnail';
-    image.src = `data:image/jpeg;base64,${base64Jpeg}`;
+    image.src = this.previewThumbnailDataUrl;
     this.thumbnailElement = image;
     this.scaleBox.insertBefore(image, this.content);
   }

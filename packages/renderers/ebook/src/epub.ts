@@ -402,12 +402,37 @@ export default async function renderEpub(
   });
 
   syncUi();
+  context?.registerThumbnailAdapter?.({
+    captureSource: 'embedded',
+    beforeCapture: async ({ signal }) => {
+      while (status === 'loading' && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await wait(16);
+      }
+      if (status === 'error') {
+        throw new Error(state.textContent || t('epub.renderIncomplete'));
+      }
+    },
+    capture: async () => {
+      const coverUrl = await (book as (Book & { coverUrl?: () => Promise<string | null> }) | undefined)
+        ?.coverUrl?.()
+        .catch(() => null);
+      if (!coverUrl) {
+        return null;
+      }
+      return fetch(coverUrl).then(response => response.ok ? response.blob() : null).catch(() => null);
+    },
+    getTarget: () => stage.querySelector('iframe')?.contentDocument?.body || stage,
+  });
   void openBook();
 
   return {
     $el: root,
     unmount() {
       disposed = true;
+      context?.registerThumbnailAdapter?.(null);
       timers.forEach(timer => window.clearTimeout(timer));
       timers.clear();
       if (rendition) {

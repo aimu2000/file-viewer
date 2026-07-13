@@ -161,6 +161,13 @@ export default async function renderImage(
   const image = documentRef.createElement('img');
   image.alt = t('image.alt');
   image.src = src;
+  const normalizedType = (type || '').trim().toLowerCase();
+  context?.registerThumbnailAdapter?.({
+    capture: () => normalizedType === 'heic' || normalizedType === 'heif'
+      ? null
+      : new Blob([buffer], { type: getImageBlobType(normalizedType) }),
+    getTarget: () => image,
+  });
   stage.append(image);
   root.append(stage);
 
@@ -294,6 +301,7 @@ export default async function renderImage(
   return {
     $el: target,
     unmount() {
+      context?.registerThumbnailAdapter?.(null);
       unregisterFileViewerZoomProvider(root);
       resizeObserver.disconnect();
       image.removeEventListener('load', updateViewportSize);

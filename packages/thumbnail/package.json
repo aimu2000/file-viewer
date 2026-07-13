@@ -1,0 +1,46 @@
+{
+  "name": "@file-viewer/thumbnail",
+  "version": "2.1.26",
+  "private": false,
+  "type": "module",
+  "description": "High-performance browser thumbnail generation for Flyfish File Viewer.",
+  "keywords": ["file-viewer", "thumbnail", "preview", "batch", "browser"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer.git",
+    "directory": "packages/thumbnail"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "README.md", "README.en.md", "LICENSE"],
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -b tsconfig.json --force",
+    "type-check": "tsc -b tsconfig.json && tsc -p tsconfig.test.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@file-viewer/core": "workspace:2.1.26",
+    "epubjs": "^0.3.93",
+    "jszip": "^3.10.1",
+    "modern-screenshot": "^4.7.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.8.4",
+    "typescript": "^6.0.3",
+    "vitest": "3.2.4"
+  },
+  "license": "Apache-2.0"
+}

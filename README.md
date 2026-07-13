@@ -370,6 +370,8 @@ The current version follows the npm registry `latest` dist-tag. The ecosystem pu
 
 The boundary is intentional: `@file-viewer/core` owns low-level preview capability and APIs; every standard component package depends only on core plus its own ecosystem dependencies; historical aliases keep old package names working and are not the recommended first choice for new projects.
 
+Use the standalone `@file-viewer/thumbnail` package when a file browser needs thumbnails. It prefers packaged previews such as EPUB covers, OOXML/OpenDocument/3MF thumbnails, XMind previews, and Numbers Quick Look images before rendering first content, then reuses installed renderers, a bounded viewer pool, and optional native renderer adapters in the browser. The default output is a `320 × 240` WebP. `generateBatch()` preserves input order, while `generateStream()` supports upload-as-completed workflows. Screenshot and archive dependencies do not enter core, and source files or results are never persisted.
+
 Common installs:
 
 ```bash
@@ -377,6 +379,7 @@ pnpm add @file-viewer/web
 pnpm add @file-viewer/vue3
 pnpm add @file-viewer/react
 pnpm add @file-viewer/core
+pnpm add @file-viewer/thumbnail
 pnpm add @file-viewer/renderer-word
 pnpm add @file-viewer/pptx
 ```

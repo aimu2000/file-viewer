@@ -701,6 +701,48 @@ export default async function renderTypst(
   };
 
   void render();
+  context?.registerThumbnailAdapter?.({
+    beforeCapture: async ({ signal }) => {
+      while (state === 'loading' && !disposed) {
+        if (signal?.aborted) {
+          throw signal.reason;
+        }
+        await new Promise(resolve => {
+          const view = documentRef.defaultView;
+          if (view) view.setTimeout(resolve, 16);
+          else setTimeout(resolve, 16);
+        });
+      }
+      if (state === 'error') {
+        throw new Error(errorMessage || t('typst.error.title'));
+      }
+    },
+    capture: async ({ width, height, background, signal }) => {
+      const firstPage = pages[0];
+      if (!firstPage) {
+        return null;
+      }
+      const canvasHost = documentRef.createElement('div');
+      const pixelPerPt = Math.max(0.5, Math.min(
+        width / Math.max(firstPage.width, 1),
+        height / Math.max(firstPage.height, 1)
+      ));
+      await $typst.canvas(canvasHost, {
+        mainContent: source,
+        pixelPerPt,
+        backgroundColor: background,
+      });
+      if (signal?.aborted) {
+        throw signal.reason;
+      }
+      const canvas = canvasHost.querySelector('canvas');
+      if (!canvas) {
+        return null;
+      }
+      return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+    },
+    getTarget: () => pageShells.get(1) || body.querySelector('.typst-page-shell') || body,
+  });
 
   return {
     $el: target,
@@ -709,6 +751,7 @@ export default async function renderTypst(
       renderToken += 1;
       unregisterFileViewerZoomProvider(root);
       context?.registerExportAdapter?.(null);
+      context?.registerThumbnailAdapter?.(null);
       target.replaceChildren();
     },
   };

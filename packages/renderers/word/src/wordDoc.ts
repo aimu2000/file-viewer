@@ -410,11 +410,15 @@ export default async function render(buffer: ArrayBuffer, target: HTMLDivElement
     printStyle: buildMsDocPrintStyle,
     toHtml: () => prepareMsDocCloneForExport(target)
   })
+  context?.registerThumbnailAdapter?.({
+    getTarget: () => target.querySelector('.msdoc-page') || target
+  })
 
   return {
     $el: target,
     unmount() {
       context?.registerExportAdapter?.(null)
+      context?.registerThumbnailAdapter?.(null)
       disposeResponsive()
       target.innerHTML = ''
     }
