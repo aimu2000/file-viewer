@@ -38,6 +38,7 @@ export {
   resolveFileViewerDrawioViewerScriptUrl,
   resolveFileViewerPdfAssetUrls,
   resolveFileViewerRendererAssets,
+  resolveFileViewerRuntimeAssetBaseUrl,
   resolveFileViewerSpreadsheetWorkerUrl,
   resolveFileViewerTypstCompilerWasmUrl,
   resolveFileViewerTypstRendererWasmUrl,

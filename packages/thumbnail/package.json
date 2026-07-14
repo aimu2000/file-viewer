@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/thumbnail",
-  "version": "2.1.27",
+  "version": "2.1.28",
   "private": false,
   "type": "module",
   "description": "High-performance browser thumbnail generation for Flyfish File Viewer.",
@@ -43,7 +43,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@file-viewer/core": "workspace:2.1.27",
+    "@file-viewer/core": "workspace:2.1.28",
     "epubjs": "^0.3.93",
     "jszip": "^3.10.1",
     "modern-screenshot": "^4.7.0"

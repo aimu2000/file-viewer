@@ -45,6 +45,7 @@ import {
 import {
   DEFAULT_FILE_VIEWER_PDF_WORKER_PATH,
   resolveFileViewerPdfAssetUrls,
+  resolveFileViewerRuntimeAssetBaseUrl,
 } from '@file-viewer/core/assets';
 import { pdfViewerStyle } from './pdfStyles.js';
 import {
@@ -413,53 +414,6 @@ const resolvePdfWorkerUrl = (
   return resolveFileViewerPdfAssetUrls(options, documentBaseUrl).workerUrl;
 };
 
-const readBundlerPublicBaseUrl = () => {
-  try {
-    const value = (import.meta as ImportMeta & {
-      env?: { BASE_URL?: unknown };
-    }).env?.BASE_URL;
-    return typeof value === 'string' ? value.trim() : '';
-  } catch {
-    return '';
-  }
-};
-
-const resolvePdfRuntimeAssetBaseUrl = (documentRef: Document) => {
-  const documentBaseUrl = documentRef.baseURI || documentRef.URL || 'file:///';
-  const bundlerBaseUrl = readBundlerPublicBaseUrl();
-  if (bundlerBaseUrl && bundlerBaseUrl !== '.' && bundlerBaseUrl !== './') {
-    try {
-      return new URL(bundlerBaseUrl.endsWith('/') ? bundlerBaseUrl : `${bundlerBaseUrl}/`, documentBaseUrl).href;
-    } catch {
-      // Continue with DOM-based public-path detection.
-    }
-  }
-
-  // An explicit <base> is authoritative and already reflected by baseURI.
-  if (documentRef.querySelector('base[href]')) {
-    return documentBaseUrl;
-  }
-
-  // Entry scripts remain under the public deployment base when an SPA route
-  // changes document.baseURI. This covers Vite and common UMI/Webpack layouts.
-  for (const script of Array.from(documentRef.querySelectorAll<HTMLScriptElement>('script[src]'))) {
-    try {
-      const scriptUrl = new URL(script.src || script.getAttribute('src') || '', documentBaseUrl);
-      const assetDirectory = scriptUrl.pathname.match(/^(.*\/)(?:assets|static)\/[^/]+$/i);
-      if (assetDirectory) {
-        return new URL(assetDirectory[1], scriptUrl.origin).href;
-      }
-      if (/\/(?:umi|main|index)(?:[.-][^/]*)?\.(?:m?js)$/i.test(scriptUrl.pathname)) {
-        return new URL('./', scriptUrl).href;
-      }
-    } catch {
-      // Ignore unrelated or malformed script URLs.
-    }
-  }
-
-  return documentBaseUrl;
-};
-
 const buildOutlineItems = (
   items: Array<{ title?: string; dest?: string | unknown[] | null; items?: unknown[] }>,
   prefix = 'outline',
@@ -491,7 +445,7 @@ export default async function renderPdf(
     throw new Error(t('pdf.error.browserWindow'));
   }
   const options = context?.options?.pdf;
-  const pdfRuntimeAssetBaseUrl = resolvePdfRuntimeAssetBaseUrl(documentRef);
+  const pdfRuntimeAssetBaseUrl = resolveFileViewerRuntimeAssetBaseUrl(documentRef);
   const cjkFontFallbackEnabled = options?.cjkFontFallback !== false;
   const identityFontRepairEnabled = options?.identityFontRepair !== false;
   const fontInspectionEnabled = cjkFontFallbackEnabled || identityFontRepairEnabled;

@@ -27,12 +27,12 @@ allowBuilds:
   fsevents: true
 
 overrides:
-  '@file-viewer/example-vanilla-vite>@file-viewer/web': workspace:2.1.27
-  '@file-viewer/example-vanilla-vite>@file-viewer/preset-lite': workspace:2.1.27
-  '@file-viewer/example-vanilla-vite>@file-viewer/vite-plugin': workspace:2.1.27
-  '@file-viewer/example-react-vite>@file-viewer/react': workspace:2.1.27
-  '@file-viewer/example-react-vite>@file-viewer/preset-office': workspace:2.1.27
-  '@file-viewer/example-react-vite>@file-viewer/vite-plugin': workspace:2.1.27
-  '@file-viewer/example-vue3-vite>@file-viewer/vue3-full': workspace:2.1.27
-  '@file-viewer/example-vue3-vite>@file-viewer/preset-all': workspace:2.1.27
-  '@file-viewer/example-vue3-vite>@file-viewer/vite-plugin': workspace:2.1.27
+  '@file-viewer/example-vanilla-vite>@file-viewer/web': workspace:2.1.28
+  '@file-viewer/example-vanilla-vite>@file-viewer/preset-lite': workspace:2.1.28
+  '@file-viewer/example-vanilla-vite>@file-viewer/vite-plugin': workspace:2.1.28
+  '@file-viewer/example-react-vite>@file-viewer/react': workspace:2.1.28
+  '@file-viewer/example-react-vite>@file-viewer/preset-office': workspace:2.1.28
+  '@file-viewer/example-react-vite>@file-viewer/vite-plugin': workspace:2.1.28
+  '@file-viewer/example-vue3-vite>@file-viewer/vue3-full': workspace:2.1.28
+  '@file-viewer/example-vue3-vite>@file-viewer/preset-all': workspace:2.1.28
+  '@file-viewer/example-vue3-vite>@file-viewer/vite-plugin': workspace:2.1.28

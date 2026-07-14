@@ -547,6 +547,7 @@ const fileViewerOptimizationExcludedPackages = [
 
 const cjsInteropPackages = [
   '@file-viewer/docx',
+  '@xmldom/xmldom',
   'jszip'
 ] as const
 

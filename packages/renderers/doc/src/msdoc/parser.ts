@@ -429,6 +429,29 @@ export function finalizeTableGrid(rows: TableRowBlock[]): void {
       }
     }
   }
+
+  // HTML tables need one shared column grid even when Word stores a different
+  // TDefTable boundary list per row (usually because cells are merged). Map
+  // every visible cell back onto the union of physical boundaries so colspan
+  // preserves the original geometry instead of squeezing later row cells.
+  const boundaries = Array.from(new Set(rows.flatMap((row) => row.cells.flatMap((cell) => {
+    const left = cell.meta?.leftBoundary;
+    const right = cell.meta?.rightBoundary;
+    return [left, right].filter((value): value is number => value != null);
+  })))).sort((left, right) => left - right);
+  if (boundaries.length > 1) {
+    for (const row of rows) {
+      for (const cell of row.cells) {
+        if (!cell.meta) continue;
+        const leftIndex = boundaries.indexOf(cell.meta.leftBoundary ?? Number.NaN);
+        const rightIndex = boundaries.indexOf(cell.meta.rightBoundary ?? Number.NaN);
+        if (leftIndex >= 0) cell.colIndex = leftIndex;
+        if (!cell.hidden && leftIndex >= 0 && rightIndex > leftIndex) {
+          cell.colspan = rightIndex - leftIndex;
+        }
+      }
+    }
+  }
 }
 
 function resolveTableGridBorders(rows: TableRowBlock[]): void {
@@ -472,7 +495,38 @@ function paragraphToBlock(paragraph: ParagraphModel): ParagraphBlock {
   };
 }
 
-function normalizeRowEndOnlyTables(paragraphs: ParagraphModel[]): void {
+function tableGridSignature(paragraph: ParagraphModel): string {
+  const cells = applyTableStateToCells(paragraph.tableState);
+  if (!cells.length) return '';
+  const state = paragraph.tableState;
+  const border = (side: keyof typeof state.borders) => {
+    const value = state.borders?.[side];
+    return `${value?.borderType ?? ''}:${value?.lineWidth ?? ''}:${value?.nil ? 1 : 0}`;
+  };
+  return [
+    cells[0]?.leftBoundary ?? '',
+    cells[cells.length - 1]?.rightBoundary ?? '',
+    state.alignment ?? '',
+    state.leftIndent ?? '',
+    state.gapHalf ?? '',
+    state.rtl ? 1 : 0,
+    border('top'),
+    border('left'),
+    border('bottom'),
+    border('right'),
+    border('horizontalInside'),
+    border('verticalInside'),
+  ].join('|');
+}
+
+function inheritRowEndTableState(paragraph: ParagraphModel, rowEnd: ParagraphModel): void {
+  paragraph.paraState.inTable = true;
+  paragraph.paraState.itap = Math.max(rowEnd.paraState.itap || 1, paragraph.paraState.itap || 0);
+  paragraph.tableState = rowEnd.tableState;
+  paragraph.tableProps = rowEnd.tableProps;
+}
+
+export function normalizeRowEndOnlyTables(paragraphs: ParagraphModel[]): void {
   for (let index = 0; index < paragraphs.length; index += 1) {
     const rowEnd = paragraphs[index]!;
     const cellCount = applyTableStateToCells(rowEnd.tableState).length;
@@ -482,16 +536,43 @@ function normalizeRowEndOnlyTables(paragraphs: ParagraphModel[]): void {
     rowEnd.paraState.itap = Math.max(1, rowEnd.paraState.itap || 0);
 
     let remainingCells = cellCount;
-    for (let cursor = index - 1; cursor >= 0 && remainingCells > 0; cursor -= 1) {
+    let cursor = index - 1;
+    const rowParagraphs: ParagraphModel[] = [];
+    for (; cursor >= 0 && remainingCells > 0; cursor -= 1) {
       const paragraph = paragraphs[cursor]!;
       if (paragraph.paraState.tableRowEnd || paragraph.paraState.innerTableRowEnd) break;
-      if (paragraph.terminator !== DOC_CONTROL.cellMark) break;
-      paragraph.paraState.inTable = true;
-      paragraph.paraState.itap = Math.max(rowEnd.paraState.itap || 1, paragraph.paraState.itap || 0);
-      paragraph.tableState = rowEnd.tableState;
-      paragraph.tableProps = rowEnd.tableProps;
-      remainingCells -= 1;
+      rowParagraphs.push(paragraph);
+      if (paragraph.terminator === DOC_CONTROL.cellMark) remainingCells -= 1;
     }
+
+    if (remainingCells > 0) continue;
+
+    // Some Word/WPS producers store all table properties only on the row-end
+    // PAPX. Paragraph marks inside a cell then look like ordinary paragraphs.
+    // When the immediately preceding row has the same outer grid and table
+    // border identity, everything between the two row terminators belongs to
+    // the current row, including leading paragraphs in its first cell.
+    let previousRowEndIndex = cursor;
+    while (
+      previousRowEndIndex >= 0
+      && !paragraphs[previousRowEndIndex]!.paraState.tableRowEnd
+      && !paragraphs[previousRowEndIndex]!.paraState.innerTableRowEnd
+      && paragraphs[previousRowEndIndex]!.terminator !== DOC_CONTROL.cellMark
+    ) {
+      previousRowEndIndex -= 1;
+    }
+    const previousRowEnd = paragraphs[previousRowEndIndex];
+    if (
+      previousRowEnd?.paraState.tableRowEnd
+      && tableGridSignature(previousRowEnd) === tableGridSignature(rowEnd)
+    ) {
+      for (let leading = previousRowEndIndex + 1; leading < index; leading += 1) {
+        const paragraph = paragraphs[leading]!;
+        if (!rowParagraphs.includes(paragraph)) rowParagraphs.push(paragraph);
+      }
+    }
+
+    rowParagraphs.forEach((paragraph) => inheritRowEndTableState(paragraph, rowEnd));
   }
 }
 

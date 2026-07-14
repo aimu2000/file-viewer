@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { finalizeTableGrid } from '../dist/msdoc/parser.js'
+import { finalizeTableGrid, normalizeRowEndOnlyTables } from '../dist/msdoc/parser.js'
 import { applyTableStateToCells, tablePropsToState } from '../dist/msdoc/properties.js'
 import { decodeGrpprl, decodeSprm, SprmCodes } from '../dist/msdoc/sprm.js'
 import { mergePropertyArrays } from '../dist/msdoc/styles.js'
@@ -203,5 +203,70 @@ finalizeTableGrid(verticalRows)
 assert.equal(verticalRows[0].cells[0].rowspan, 2)
 assert.equal(verticalRows[0].cells[0].meta.borders.bottom.borderType, 1)
 assert.equal(verticalRows[1].cells[0].hidden, true)
+
+// Rows can use different TDefTable boundaries for the same physical table.
+// Their HTML colspans must be projected onto one union grid.
+const mixedBoundaryRows = [
+  { cells: [
+    { meta: { ...makeCell(0), leftBoundary: 0, rightBoundary: 1200 } },
+    { meta: { ...makeCell(1), leftBoundary: 1200, rightBoundary: 4800 } },
+  ] },
+  { cells: [
+    { meta: { ...makeCell(0), leftBoundary: 0, rightBoundary: 1200 } },
+    { meta: { ...makeCell(1), leftBoundary: 1200, rightBoundary: 2400 } },
+    { meta: { ...makeCell(2), leftBoundary: 2400, rightBoundary: 3600 } },
+    { meta: { ...makeCell(3), leftBoundary: 3600, rightBoundary: 4800 } },
+  ] },
+]
+finalizeTableGrid(mixedBoundaryRows)
+assert.deepEqual(mixedBoundaryRows[0].cells.map(cell => cell.colspan), [1, 3])
+assert.deepEqual(mixedBoundaryRows[1].cells.map(cell => cell.colspan), [1, 1, 1, 1])
+assert.deepEqual(mixedBoundaryRows[1].cells.map(cell => cell.colIndex), [0, 1, 2, 3])
+
+// Word/WPS may place table properties only on the empty row terminator. Keep
+// paragraph marks inside multi-paragraph cells attached to the surrounding row.
+const twoCellState = makeTableState([], 2)
+const fourCellState = makeTableState([], 4)
+fourCellState.defTable.rgdxaCenter = [0, 600, 1200, 1800, 2400]
+fourCellState.defTable.cells.forEach(cell => { cell.wWidth = 600 })
+const paragraph = (text, terminator, overrides = {}) => ({
+  text,
+  terminator,
+  paraState: {
+    inTable: false,
+    tableRowEnd: false,
+    innerTableRowEnd: false,
+    itap: 0,
+    ...overrides,
+  },
+  tableState: makeTableState([], 0),
+  tableProps: [],
+})
+const rowEnd = () => paragraph('', '\u0007', {
+  inTable: true,
+  tableRowEnd: true,
+  itap: 1,
+})
+const rowEndOne = rowEnd()
+rowEndOne.tableState = twoCellState
+const rowEndTwo = rowEnd()
+rowEndTwo.tableState = fourCellState
+const rowEndOnlyParagraphs = [
+  paragraph('first row left', '\u0007'),
+  paragraph('first row right', '\u0007'),
+  rowEndOne,
+  paragraph('first cell line one', '\r'),
+  paragraph('first cell line two', '\u0007'),
+  paragraph('second cell line one', '\r'),
+  paragraph('second cell line two', '\u0007'),
+  paragraph('third cell', '\u0007'),
+  paragraph('fourth cell', '\u0007'),
+  rowEndTwo,
+  paragraph('after table', '\r'),
+]
+normalizeRowEndOnlyTables(rowEndOnlyParagraphs)
+assert.equal(rowEndOnlyParagraphs.slice(0, 10).every(item => item.paraState.inTable), true)
+assert.equal(rowEndOnlyParagraphs[10].paraState.inTable, false)
+assert.equal(rowEndOnlyParagraphs[3].tableState, fourCellState)
 
 console.log('[doc] MS-DOC table operand and rendering regression checks passed.')
