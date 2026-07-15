@@ -4,10 +4,14 @@
 
 <h1 align="center">Flyfish File Viewer</h1>
 
-<p align="center"><strong>Open-source, browser-native file viewer for private and internal web apps.</strong></p>
+<p align="center"><strong>Uploading a private DOCX or DWG just to preview it is awful.</strong></p>
 
 <p align="center">
-  <strong>206 extensions across 24 preview pipelines.</strong> Preview Office, PDF/OFD, CAD, archives, email, diagrams, 3D, media and data in the browser—without server-side conversion.
+  File Viewer is a browser-native file viewer for private and internal web apps. It previews Office, PDF/OFD, CAD, archives, email, diagrams, 3D, media and data without a mandatory conversion backend. Workers, WASM, fonts and vendor assets can stay on your network.
+</p>
+
+<p align="center">
+  <strong>206 extensions across 24 preview pipelines.</strong> Heavy paths load only when the active format needs them.
 </p>
 
 <p align="center">
@@ -16,12 +20,11 @@
 
 <p align="center">
   <a href="https://demo.file-viewer.app/"><strong>Live Demo</strong></a> ·
-  <a href="https://doc.file-viewer.app/"><strong>Documentation</strong></a> ·
   <a href="#quick-start"><strong>Quick Start</strong></a> ·
-  <a href="examples"><strong>Runnable Examples</strong></a> ·
+  <a href="https://doc.file-viewer.app/"><strong>Documentation</strong></a> ·
   <a href="https://doc.file-viewer.app/guide/formats"><strong>Format Matrix</strong></a> ·
   <a href="https://github.com/flyfish-dev/file-viewer/releases"><strong>GitHub Releases</strong></a> ·
-  <a href="https://github.com/sponsors/wybaby168"><strong>GitHub Sponsors</strong></a>
+  <a href="https://github.com/sponsors/wybaby168"><strong>Sponsor</strong></a>
 </p>
 
 <p align="center">
@@ -29,39 +32,20 @@
   <a href="https://www.npmjs.com/package/@file-viewer/core"><img alt="npm version" src="https://img.shields.io/npm/v/@file-viewer/core?logo=npm&color=cb3837"></a>
   <a href="https://www.npmjs.com/package/@file-viewer/core"><img alt="core total downloads" src="https://img.shields.io/npm/dt/@file-viewer/core?logo=npm&label=core%20downloads"></a>
   <a href="https://github.com/flyfish-dev/file-viewer"><img alt="GitHub stars" src="https://img.shields.io/github/stars/flyfish-dev/file-viewer?style=flat&logo=github&logoColor=white&label=stars&color=2563eb"></a>
-  <a href="https://github.com/sponsors/wybaby168"><img alt="GitHub Sponsors" src="https://img.shields.io/badge/GitHub-Sponsor-ea4aaa?logo=githubsponsors&logoColor=white"></a>
   <a href="https://github.com/flyfish-dev/file-viewer/releases/latest"><img alt="latest release" src="https://img.shields.io/github/v/release/flyfish-dev/file-viewer?logo=github"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/github/license/flyfish-dev/file-viewer"></a>
-</p>
-
-<p align="center">
   <a href="https://hub.docker.com/r/flyfishdev/file-viewer"><img alt="Docker pulls" src="https://img.shields.io/docker/pulls/flyfishdev/file-viewer?logo=docker"></a>
-  <a href="https://doc.file-viewer.app/guide/formats"><img alt="206 supported file extensions" src="https://img.shields.io/badge/file%20extensions-206-2563eb"></a>
-  <a href="https://doc.file-viewer.app/guide/formats"><img alt="24 rendering pipelines" src="https://img.shields.io/badge/preview%20pipelines-24-7c3aed"></a>
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-native-3178c6?logo=typescript&logoColor=white">
-  <img alt="offline and self-hosted" src="https://img.shields.io/badge/runtime-offline%20%7C%20self--hosted-168f64">
 </p>
 
 <p align="center">
   <a href="https://demo.file-viewer.app/"><img src="docs/public/_media/flyfish-viewer-demo-en.gif" width="920" alt="Flyfish File Viewer English demo showing multi-format browser preview"></a>
 </p>
 
-## Choose By Scenario
-
-**206 extensions across 24 preview pipelines** means you can start with the file problem you have today instead of assembling a different viewer for every attachment type.
-
-| Your product needs to preview | Formats you can look for immediately | Fastest path |
-| --- | --- | --- |
-| Contracts, reports and OA/CRM attachments | PDF/OFD, DOCX/DOC, XLSX/XLS, PPTX, RTF and OpenDocument | [Try the live demo](https://demo.file-viewer.app/) · [`preset-office`](https://doc.file-viewer.app/guide/on-demand-renderers) |
-| Engineering drawings, models and chip/design assets | DWG, DXF, DWF/DWFX, STEP/IFC/3D, OLB/DRA and GDS/OASIS | [`preset-engineering`](https://doc.file-viewer.app/guide/on-demand-renderers) · [check fidelity](https://doc.file-viewer.app/guide/format-fidelity) |
-| Archives whose contents must remain private | ZIP, RAR, 7Z, TAR, ISO and 20+ related formats, with nested file preview | [Archive coverage](https://doc.file-viewer.app/guide/formats) · [offline deployment](https://doc.file-viewer.app/guide/distribution) |
-| Email, support-ticket and knowledge-base attachments | EML, MSG, MBOX, EPUB, Markdown, source code, diff/patch and Git bundle | [Full format matrix](https://doc.file-viewer.app/guide/formats) · [full packages](#quick-start) |
-| Diagrams, design files and structured data | Draw.io, Excalidraw, Mermaid, PlantUML, XMind, PSD, SQLite, Parquet and more | [Full format matrix](https://doc.file-viewer.app/guide/formats) · [`preset-all`](#choose-the-right-package) |
-| Intranet or air-gapped deployment | Self-hosted JavaScript, Worker, WASM, fonts and vendor assets | [Offline guide](https://doc.file-viewer.app/guide/distribution) · [Docker](https://doc.file-viewer.app/guide/docker) |
-
-Looking for one exact suffix? Search the maintained [206-extension format matrix](https://doc.file-viewer.app/guide/formats), which records the renderer, support level and deployment requirements for each pipeline.
+> ⭐ If File Viewer saves your team from maintaining a conversion service for attachments, star the repo. It helps the next team with the same problem find it.
 
 ## Why File Viewer
+
+Uploading private files to a SaaS converter is awful. Running a separate preview backend for each format is not much better. File Viewer keeps the preview path in the browser and gives the host app one API.
 
 - **No mandatory conversion backend.** Files are parsed and rendered in the browser whenever the format allows it.
 - **Offline and private-deployment friendly.** Runtime code, workers, WASM and vendor assets can all be hosted inside your network.
@@ -72,7 +56,7 @@ Looking for one exact suffix? Search the maintained [206-extension format matrix
 
 ## Quick Start
 
-The full packages are the fastest honest path: they include the complete preset. Use a light package plus a preset when bundle control matters.
+Start with a full package if you want every renderer wired in. Use a light package plus a preset when you want exact control over what ships.
 
 ### Web Component / Vanilla JS
 
@@ -119,7 +103,7 @@ import { FileViewer } from '@file-viewer/vue3-full'
 </template>
 ```
 
-| Ecosystem | Light package | Full package | Guide |
+| Framework | Light package | Full package | Guide |
 | --- | --- | --- | --- |
 | Vanilla JS / Web Component | `@file-viewer/web` | `@file-viewer/web-full` | [Web](https://doc.file-viewer.app/guide/quickstart-web) |
 | React 18 / 19 | `@file-viewer/react` | `@file-viewer/react-full` | [React](https://doc.file-viewer.app/guide/quickstart-react) |
@@ -128,6 +112,21 @@ import { FileViewer } from '@file-viewer/vue3-full'
 | Vue 2.7 / 2.6 | `@file-viewer/vue2.7` / `@file-viewer/vue2.6` | matching `-full` package | [Vue 2](https://doc.file-viewer.app/guide/quickstart-vue2) |
 | Svelte | `@file-viewer/svelte` | `@file-viewer/svelte-full` | [Svelte](https://doc.file-viewer.app/guide/quickstart-svelte) |
 | jQuery | `@file-viewer/jquery` | `@file-viewer/jquery-full` | [jQuery](https://doc.file-viewer.app/guide/ecosystem#jquery) |
+
+## Choose By Scenario
+
+**206 extensions across 24 preview pipelines** means you can start with the file problem you have today instead of assembling a different viewer for every attachment type.
+
+| Your product needs to preview | Formats you can look for immediately | Fastest path |
+| --- | --- | --- |
+| Contracts, reports and OA/CRM attachments | PDF/OFD, DOCX/DOC, XLSX/XLS, PPTX, RTF and OpenDocument | [Try the live demo](https://demo.file-viewer.app/) · [`preset-office`](https://doc.file-viewer.app/guide/on-demand-renderers) |
+| Engineering drawings, models and chip/design assets | DWG, DXF, DWF/DWFX, STEP/IFC/3D, OLB/DRA and GDS/OASIS | [`preset-engineering`](https://doc.file-viewer.app/guide/on-demand-renderers) · [check fidelity](https://doc.file-viewer.app/guide/format-fidelity) |
+| Archives whose contents must remain private | ZIP, RAR, 7Z, TAR, ISO and 20+ related formats, with nested file preview | [Archive coverage](https://doc.file-viewer.app/guide/formats) · [offline deployment](https://doc.file-viewer.app/guide/distribution) |
+| Email, support-ticket and knowledge-base attachments | EML, MSG, MBOX, EPUB, Markdown, source code, diff/patch and Git bundle | [Full format matrix](https://doc.file-viewer.app/guide/formats) · [full packages](#quick-start) |
+| Diagrams, design files and structured data | Draw.io, Excalidraw, Mermaid, PlantUML, XMind, PSD, SQLite, Parquet and more | [Full format matrix](https://doc.file-viewer.app/guide/formats) · [`preset-all`](#choose-the-right-package) |
+| Intranet or air-gapped deployment | Self-hosted JavaScript, Worker, WASM, fonts and vendor assets | [Offline guide](https://doc.file-viewer.app/guide/distribution) · [Docker](https://doc.file-viewer.app/guide/docker) |
+
+Looking for one exact suffix? Search the maintained [206-extension format matrix](https://doc.file-viewer.app/guide/formats), which records the renderer, support level and deployment requirements for each pipeline.
 
 ## Choose the Right Package
 
@@ -166,6 +165,16 @@ The exact implementation and support level varies by format. Use the maintained 
 
 If a documented format fails on a real file, the most useful contribution is a **sanitized sample**, browser/version details and a minimal reproduction.
 
+## Support the Work
+
+I started working on the idea behind File Viewer in 2022 because uploading private files to another service just to preview them felt wrong. The hard part now is not the happy-path demo. It is reproducing broken Office files, CAD edge cases, encrypted archives, Worker paths, WASM assets and old framework builds.
+
+If File Viewer saves your team time, [sponsor the maintenance](https://github.com/sponsors/wybaby168). It buys focused time for compatibility tests, fixes, documentation and releases. Open-source features stay open.
+
+- [GitHub Sponsors](https://github.com/sponsors/wybaby168): one-time or monthly support.
+- [WeChat / Alipay](https://dev.flyfish.group/sponsor?source=github): one-time support for domestic users.
+- [Enterprise support](https://dev.flyfish.group/shop): private deployment, custom file compatibility or work that needs a committed response time.
+
 ## Architecture
 
 ```text
@@ -178,12 +187,12 @@ framework component / Web Component
  local workers · WASM · vendor assets
 ```
 
-`@file-viewer/core` is framework-independent TypeScript. Renderer packages own format pipelines; presets compose them; each ecosystem package implements its native lifecycle without nesting another framework implementation.
+`@file-viewer/core` is framework-independent TypeScript. Renderer packages own format pipelines; presets compose them; each framework package implements its native lifecycle without nesting another framework implementation.
 
 <!-- FILE_VIEWER_PUBLIC_GENERATED:START -->
 ## Open-source Workspace
 
-This repository contains the public source for the demo, documentation, framework-independent core, renderer pipelines, presets, Vite plugin and standard ecosystem components. Release archives and npm tarballs live in [GitHub Releases](https://github.com/flyfish-dev/file-viewer/releases), not in Git history.
+This repository contains the public source for the demo, documentation, framework-independent core, renderer pipelines, presets, Vite plugin and standard framework components. Release archives and npm tarballs live in [GitHub Releases](https://github.com/flyfish-dev/file-viewer/releases), not in Git history.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -214,18 +223,8 @@ pnpm verify:browser-smoke
 - [Offline deployment](https://doc.file-viewer.app/guide/distribution)
 - [Asset-copy CLI](packages/tools/copy-assets): `npx --yes file-viewer-copy-assets ./public/file-viewer`
 - [Docker](https://doc.file-viewer.app/guide/docker)
-- [Ecosystem packages](https://doc.file-viewer.app/guide/ecosystem)
+- [Framework packages](https://doc.file-viewer.app/guide/ecosystem)
 - [Releases and downloadable archives](https://github.com/flyfish-dev/file-viewer/releases)
-
-## Support the Project
-
-File Viewer remains Apache-2.0 open source. Sponsorship helps fund rendering compatibility, documentation, examples, offline assets, and long-term maintenance.
-
-- [GitHub Sponsors](https://github.com/sponsors/wybaby168): one-time or recurring support through the primary maintainer's approved Sponsors profile.
-- [WeChat / Alipay](https://dev.flyfish.group/sponsor?source=github): a convenient one-time option for domestic supporters.
-- [Enterprise support](https://dev.flyfish.group/shop): private deployment, custom compatibility work, or requirements with committed response expectations.
-
-Sponsorship does not change access to open-source features and does not include a service-level agreement unless a published tier explicitly says otherwise. For higher-fidelity native document workflows, see the [commercial edition](https://file-viewer.app/).
 
 ## Contributing
 
