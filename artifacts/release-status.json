@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T15:02:49.236Z",
+  "generatedAt": "2026-07-17T15:10:49.941Z",
   "version": "2.2.1",
   "sourcePolicy": "private-complete-original-workspace",
   "openSourcePolicy": "public-open-source-main-repository",
@@ -8,23 +8,23 @@
     "repository": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "policy": "private-complete-original-workspace",
-    "authoritativeCommit": "3251e7a16f28f56a221ab0780e1be6ddd464140e",
+    "authoritativeCommit": "1d14aaa3c7b996ee3378948147012a1ee6527e3e",
     "localBranch": "main",
-    "localCommit": "3251e7a16f28f56a221ab0780e1be6ddd464140e",
+    "localCommit": "1d14aaa3c7b996ee3378948147012a1ee6527e3e",
     "inSync": true,
     "note": "Private Gitea main is the complete original aggregate workspace. The local checkout branch is only the execution context and can be transitional during branch cutover."
   },
   "local": {
     "branch": "main",
-    "commit": "3251e7a16f28f56a221ab0780e1be6ddd464140e",
-    "shortCommit": "3251e7a1",
+    "commit": "1d14aaa3c7b996ee3378948147012a1ee6527e3e",
+    "shortCommit": "1d14aaa3",
     "dirty": false
   },
   "sourceRemote": {
     "url": "https://git.flyfish.dev/flyfish-group/file-viewer.git",
     "branch": "main",
     "ok": true,
-    "hash": "3251e7a16f28f56a221ab0780e1be6ddd464140e",
+    "hash": "1d14aaa3c7b996ee3378948147012a1ee6527e3e",
     "error": ""
   },
   "openSourceMain": {
@@ -32,7 +32,7 @@
       "url": "https://github.com/flyfish-dev/file-viewer",
       "branch": "main",
       "ok": true,
-      "hash": "e7ba12bc9a8d375ad764a6a7da938dd518def4ca",
+      "hash": "f2a139390b089ebc770aa7d06922fba05484a90a",
       "error": ""
     },
     "gitee": {
@@ -45,20 +45,20 @@
     "inSync": false,
     "syncMode": "stale",
     "treeChecked": true,
-    "referenceTree": "a7bcf4bf93266aecfcebe18af9e10d56e42c5537",
+    "referenceTree": "bfa62221a59c5bbc3eede819e2be050764fa547f",
     "giteeTree": "365521b3065b1f73d7105c13a5fa0757990b59ef",
     "treeError": "",
     "reportHashNote": "The open-source main repository mirrors the current public source tree and records the private source commit in the public commit body for traceability. The observed remote hash can trail until that mirror commit is pushed. Gitee can intentionally use a shallow snapshot commit; inSync is true when the file tree matches even if commit hashes differ. Use pnpm audit:ecosystem-status for live remote heads."
   },
   "githubRelease": {
-    "ok": false,
+    "ok": true,
     "tag": "v2.2.1",
-    "url": "",
-    "assetCount": 0,
-    "hasManifest": false,
-    "hasStatus": false,
-    "hasSchema": false,
-    "error": "release not found"
+    "url": "https://github.com/flyfish-dev/file-viewer/releases/tag/untagged-6994c175430264efc322",
+    "assetCount": 63,
+    "hasManifest": true,
+    "hasStatus": true,
+    "hasSchema": true,
+    "error": ""
   },
   "componentRepositories": [
     {
@@ -748,32 +748,17 @@
       "error": ""
     }
   ],
-  "gaps": [
-    "GitHub Release v2.2.1 missing"
-  ],
+  "gaps": [],
   "gapSummary": {
-    "total": 1,
-    "externalBlockers": 1,
+    "total": 0,
+    "externalBlockers": 0,
     "localActionable": 0,
-    "byChannel": {
-      "github-release": 1
-    },
-    "externalBlockerChannels": [
-      "github-release"
-    ],
+    "byChannel": {},
+    "externalBlockerChannels": [],
     "localActionableChannels": []
   },
-  "gapDetails": [
-    {
-      "id": "github-release-github-release-v2.2.1-missing",
-      "channel": "github-release",
-      "scope": "release-assets",
-      "externalBlocker": true,
-      "message": "GitHub Release v2.2.1 missing",
-      "nextAction": "Upload the missing GitHub Release metadata or artifact and rerun verify:github-release-assets."
-    }
-  ],
+  "gapDetails": [],
   "nextActions": [
-    "Create or update the GitHub Release assets, then rerun `pnpm release:public`."
+    "Release channels are aligned. Keep this report attached to the GitHub Release for downstream verification."
   ]
 }

@@ -5,6 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  epubjs>@xmldom/xmldom: 0.9.10
+  dompurify: 3.4.12
   '@file-viewer/example-vanilla-vite>@file-viewer/web': workspace:2.2.1
   '@file-viewer/example-vanilla-vite>@file-viewer/preset-lite': workspace:2.2.1
   '@file-viewer/example-vanilla-vite>@file-viewer/vite-plugin': workspace:2.2.1
@@ -2885,11 +2887,6 @@ packages:
 
   '@vueuse/shared@12.4.0':
     resolution: {integrity: sha512-9yLgbHVIF12OSCojnjTIoZL1+UA10+O4E1aD6Hpfo/DKVm5o3SZIwz6CupqGy3+IcKI8d6Jnl26EQj/YucnW0Q==}
-
-  '@xmldom/xmldom@0.7.5':
-    resolution: {integrity: sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==}
-    engines: {node: '>=10.0.0'}
-    deprecated: this version is no longer supported, please update to at least 0.8.*
 
   '@xmldom/xmldom@0.9.10':
     resolution: {integrity: sha512-A9gOqLdi6cV4ibazAjcQufGj0B1y/vDqYrcuP6d/6x8P27gRS8643Dj9o1dEKtB6O7fwxb2FgBmJS2mX7gpvdw==}
@@ -5960,8 +5957,6 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@xmldom/xmldom@0.7.5': {}
-
   '@xmldom/xmldom@0.9.10': {}
 
   abbrev@1.0.3: {}
@@ -6439,7 +6434,7 @@ snapshots:
   epubjs@0.3.93:
     dependencies:
       '@types/localforage': 0.0.34
-      '@xmldom/xmldom': 0.7.5
+      '@xmldom/xmldom': 0.9.10
       core-js: 3.49.0
       event-emitter: 0.3.5
       jszip: 3.10.1
