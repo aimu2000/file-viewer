@@ -35,8 +35,8 @@
 Demo 默认跟随浏览器语言。中文浏览器进入中文样例体系，其他语言进入英文样例体系；推荐用 `?locale=zh-CN` 或 `?locale=en-US` 固定语言，历史 `lang` 参数继续兼容。英文体系包含公开英文 DOCX、PDF、PPTX、XLSX 样例，以及本地英文 Markdown、文本、日志、CSV、JSON、TypeScript、JavaScript、GeoJSON、glTF 和压缩包嵌套样例，运行时不依赖公网 CDN。
 
 <div class="doc-shot">
-  <img src="/_media/file-viewer-demo-v2.2.2-zh.gif" alt="Flyfish Viewer v2.2.2 中文主 Demo，展示沉浸式文档画布、胶囊融合和多格式预览" width="1200" height="750" loading="lazy" />
-  <p class="doc-caption">动图从中文 DOCX 工作台开始，展示文件胶囊与顶部操作栏的融合交互，再打开样例库并切换不同预览链路。</p>
+  <img src="/_media/file-viewer-demo-v2.2.2-zh.gif" alt="Flyfish Viewer v2.2.2 中文主 Demo，展示 DOCX、PPTX、DWG、可交互三维 STEP 与文件胶囊融合" width="1200" height="750" loading="lazy" />
+  <p class="doc-caption">动图依次停留在中文 DOCX、NASA PPTX、Autodesk DWG 平面图和可旋转的 STEP 实体，并保留真实的样例库与文件胶囊融合交互。</p>
 </div>
 
 <div class="doc-shot">

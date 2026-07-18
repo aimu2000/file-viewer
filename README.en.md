@@ -36,7 +36,7 @@
 </p>
 
 <p align="center">
-  <a href="https://demo.file-viewer.app/"><img src="docs/public/_media/file-viewer-demo-v2.2.2-en.gif" width="920" alt="File Viewer v2.2.2 English product demo showing the immersive workspace, sample picker, file-capsule transition, and multi-format preview"></a>
+  <a href="https://demo.file-viewer.app/"><img src="docs/public/_media/file-viewer-demo-v2.2.2-en.gif" width="920" alt="File Viewer v2.2.2 English product demo showing rich DOCX, PPTX, DWG, and interactive 3D STEP previews in the immersive workspace"></a>
 </p>
 
 The demo is the real product surface, not a static mockup: the fixed glass toolbar, filename-driven sample picker, local recent-file history, light/dark themes, responsive mobile controls, and document-only scrolling all run against the same renderers published to npm.
